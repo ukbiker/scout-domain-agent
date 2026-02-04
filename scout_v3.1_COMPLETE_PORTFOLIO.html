@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SECURITY: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <!-- SECURITY: Prevent MIME sniffing -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- SECURITY: Clickjacking protection -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <!-- SECURITY: No referrer leakage -->
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <title>Scout - Domain Terrier AI Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FF8C42 0%, #2E5266 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #FF8C42 0%, #FF6B35 100%);
+            padding: 30px;
+            color: white;
+        }
+        
+        .scout-avatar {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .scout-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .scout-title {
+            font-size: 14px;
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+        }
+        
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+        
+        .chat-header {
+            background: #2E5266;
+            color: white;
+            padding: 20px 30px;
+            border-bottom: 3px solid #FF8C42;
+        }
+        
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            padding-bottom: 80px;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .message.scout {
+            align-items: flex-start;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #FF8C42;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            max-width: 70%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .message.user .message-content {
+            background: #2E5266;
+            color: white;
+        }
+        
+        .message-actions {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .chat-input {
+            padding: 20px 30px;
+            background: white;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #FF8C42;
+        }
+        
+        .input-group button {
+            padding: 15px 30px;
+            background: #FF8C42;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .input-group button:hover {
+            background: #FF6B35;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,140,66,0.4);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .quick-action {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-action:hover {
+            background: #FF8C42;
+            color: white;
+            border-color: #FF8C42;
+        }
+        
+        .domain-card {
+            background: #f8f9fa;
+            border-left: 4px solid #FF8C42;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        .domain-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E5266;
+            margin-bottom: 5px;
+        }
+        
+        .domain-price {
+            font-size: 20px;
+            color: #FF8C42;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .domain-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .contact-box {
+            background: linear-gradient(135deg, #2E5266 0%, #1a3344 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .contact-box h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .contact-item a {
+            color: #FF8C42;
+            text-decoration: none;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+        
+        .privacy-badge {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 13px;
+            border-top: 2px solid #FF8C42;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .privacy-badge-icon {
+            font-size: 16px;
+        }
+        
+        .privacy-badge-text {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        .privacy-badge-details {
+            opacity: 0.9;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding-bottom: 50px;
+            }
+            .sidebar {
+                display: none;
+            }
+            .privacy-badge {
+                font-size: 11px;
+                padding: 10px 15px;
+            }
+            .privacy-badge-details {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="scout_avatar.jpg" alt="Scout" class="scout-avatar" id="scoutAvatar">
+            <div class="scout-name">🐕 Scout</div>
+            <div class="scout-title">AI Domain Hunting Agent</div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Total Domains:</span>
+                    <span class="stat-value">700+</span>
+                </div>
+                <div class="stat-item">
+                    <span>Web2 (.com):</span>
+                    <span class="stat-value">300+</span>
+                </div>
+                <div class="stat-item">
+                    <span>Web3:</span>
+                    <span class="stat-value">400+</span>
+                </div>
+                <div class="stat-item">
+                    <span>TLDs Owned:</span>
+                    <span class="stat-value">33</span>
+                </div>
+            </div>
+            
+            <div class="contact-box">
+                <h3>🐕 *Ears perked* Ready to Buy?</h3>
+                <div class="contact-item">
+                    📧 <a href="/cdn-cgi/l/email-protection#cba2a5ada48bafa4a6aaa2a5bfaeb9b9a2aeb9e5a8a4a6"><span class="__cf_email__" data-cfemail="a4cdcac2cbe4c0cbc9c5cdcad0c1d6d6cdc1d68ac7cbc9">[email&#160;protected]</span></a>
+                </div>
+                <div class="contact-item">
+                    <img src="linkedin_icon.png" alt="LinkedIn" class="social-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">💼</span>
+                    <a href="https://linkedin.com/in/colinbell-domainterrier/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+                </div>
+                <div class="contact-item">
+                    🌐 <a href="https://domainterrier.com" target="_blank" rel="noopener noreferrer">domainterrier.com</a>
+                </div>
+                <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
+                    Woof! I'm here 24/7, but Colin handles negotiations!
+                </p>
+            </div>
+        </div>
+        
+        <div class="chat-area">
+            <div class="chat-header">
+                <h1>🐕 Ask Me Anything</h1>
+                <p>Scout knows every domain in the collection. Let's find your perfect match!</p>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message scout">
+                    <div class="message-avatar">🐕</div>
+                    <div class="message-content">
+                        <div class="message-actions">*Tail wags*</div>
+                        <strong>Woof! Welcome to Domain Terrier!</strong>
+                        <p style="margin-top: 10px;">
+                            I'm Scout, your AI domain hunting companion. I showcase <strong>175+ hand-picked domains</strong> from Colin's collection of 
+                            <strong>700+ premium domains</strong> - 300+ Web2, 400+ Web3, plus 33 TLDs!
+                        </p>
+                        <p style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-left: 4px solid #FF8C42; border-radius: 5px; font-size: 14px;">
+                            📋 <strong>Featured Portfolio Selection</strong><br>
+                            <em>Showcasing aviation, smart glasses, robotics, RWA, privacy crypto, AI agents, and more. Many additional premium domains available on request!</em>
+                        </p>
+                        <p style="margin-top: 10px;">
+                            What brings you here today?<br>
+                            🔍 Searching for a specific domain?<br>
+                            💡 Exploring opportunities?<br>
+                            ❓ Have questions about Web3?
+                        </p>
+                        <p style="margin-top: 10px;">
+                            Just ask - I'm here to help!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Ask Scout about domains, Web3, privacy crypto, TLDs..."
+                        maxlength="200"
+                        autocomplete="off"
+                        onkeypress="if(event.key==='Enter') sendMessage()"
+                    >
+                    <button onclick="sendMessage()">Send 🐕</button>
+                </div>
+                <div class="quick-actions">
+                    <div class="quick-action" onclick="quickQuery('spaceAviation')">✈️ Aviation</div>
+                    <div class="quick-action" onclick="quickQuery('privacy')">🔐 Privacy</div>
+                    <div class="quick-action" onclick="quickQuery('ai')">🤖 AI Agents</div>
+                    <div class="quick-action" onclick="quickQuery('smartglasses')">👓 Smart Glasses</div>
+                    <div class="quick-action" onclick="quickQuery('robotics')">🤖 Robotics</div>
+                    <div class="quick-action" onclick="quickQuery('rwa')">💎 RWA</div>
+                    <div class="quick-action" onclick="quickQuery('filipino')">🇵🇭 Filipino</div>
+                    <div class="quick-action" onclick="quickQuery('zkp')">🔐 ZKP</div>
+                    <div class="quick-action" onclick="quickQuery('tlds')">🏆 TLDs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================================
+        // SECURITY: Input validation (FIX 4)
+        // ============================================================
+        const INPUT_MAX_LENGTH = 200;
+        // Characters that have no legitimate use in a domain query
+        const BLOCKED_PATTERN = /[<>{}|\\^`\[\]]/g;
+
+        function validateInput(raw) {
+            if (typeof raw !== 'string') return '';
+            // Trim whitespace
+            let cleaned = raw.trim();
+            // Enforce length cap (belt-and-suspenders with HTML maxlength)
+            if (cleaned.length > INPUT_MAX_LENGTH) {
+                cleaned = cleaned.substring(0, INPUT_MAX_LENGTH);
+            }
+            // Strip any characters that could be used in injection attempts
+            cleaned = cleaned.replace(BLOCKED_PATTERN, '');
+            return cleaned;
+        }
+
+        // ============================================================
+        // SECURITY: Client-side rate limiter (FIX 5)
+        // Prevents spam / automated input flooding
+        // ============================================================
+        const RATE_LIMIT_MAX = 10;       // max messages in the window
+        const RATE_LIMIT_WINDOW = 10000; // 10-second window (ms)
+        const messageTimes = [];
+
+        function isRateLimited() {
+            const now = Date.now();
+            // Remove timestamps older than the window
+            while (messageTimes.length > 0 && messageTimes[0] < now - RATE_LIMIT_WINDOW) {
+                messageTimes.shift();
+            }
+            // If we've hit the cap within the window, block
+            if (messageTimes.length >= RATE_LIMIT_MAX) {
+                return true;
+            }
+            // Record this message time
+            messageTimes.push(now);
+            return false;
+        }
+
+        // Scout's AI responses
+        const scoutResponses = {
+
+            // ============================================================
+            // CONVERSATIONAL RESPONSES — greetings, about, education, trust
+            // ============================================================
+
+            greeting: {
+                action: "*Tail wags frantically*",
+                sound: "Woof woof!",
+                response: `Welcome to Domain Terrier! 🐕<br><br>
+                    I'm <strong>Scout</strong> — your friendly domain-hunting assistant. I'm here to help you find the perfect domain name for yourself or your business.<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🐾 Here's what I can help with:</div>
+                        <div class="domain-description">
+                            🔍 Browse our curated domain portfolio<br>
+                            📚 Learn about Web3 domains & TLDs<br>
+                            💰 Understand pricing & what's affordable<br>
+                            📬 Get in touch with Colin directly<br>
+                            ❓ Answer any questions you might have
+                        </div>
+                    </div>
+                    Just type what you're looking for — or ask me anything! 🐕`
+            },
+
+            thanksOrBye: {
+                action: "*Wags tail happily*",
+                sound: "Woof!",
+                response: `You're very welcome! 😊<br><br>
+                    If you think of anything else — whether it's a domain question or you'd just like to chat with Colin — you know where to find us.<br><br>
+                    📧 <a href="mailto:info@domainterrier.com">info@domainterrier.com</a><br>
+                    🌐 <a href="https://domainterrier.com" target="_blank" rel="noopener noreferrer">domainterrier.com</a><br><br>
+                    <em>*Sits proudly* It's been a pleasure. Come back anytime! 🐕</em>`
+            },
+
+            about: {
+                action: "*Sits proudly*",
+                sound: "Woof!",
+                response: `Great question — let me tell you about the team! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🏢 Domain Terrier</div>
+                        <div class="domain-description">
+                            Domain Terrier is a specialist domain investment and reselling business, run by <strong>Colin Bell</strong> from the UK. We focus on finding and curating premium domain names — both traditional Web2 domains and cutting-edge Web3 TLDs.<br><br>
+                            Colin has over <strong>300 domains</strong> and <strong>32 Web3 TLDs</strong> across sectors like aviation, robotics, AI, Filipino identity, and more.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">👨‍💼 About Colin</div>
+                        <div class="domain-description">
+                            Colin has been running businesses for over <strong>20 years</strong> — including a long-standing courier and logistics operation with a loyal client base, and previously a movie memorabilia business with a <strong>100% positive feedback</strong> record on eBay.<br><br>
+                            He has a genuine passion for helping people find the perfect name for their brand or personal identity. Colin is not interested in data-mining or collecting unnecessary information — just in connecting the right people with the right domains.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🛡️ Trusted Registrars</div>
+                        <div class="domain-description">
+                            All domains are registered and protected through trusted, legitimate registrars:<br><br>
+                            • <strong>Dynadot</strong> — established Web2 registrar<br>
+                            • <strong>Atom</strong> — reliable domain registration<br>
+                            • <strong>Freename</strong> — ICANN-accredited Web3 registrar<br>
+                            • <strong>Unstoppable Domains</strong> — leading blockchain domain platform<br><br>
+                            Every domain comes with <strong>full security and protection</strong> built in.
+                        </div>
+                    </div>
+                    📧 Want to say hello? <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            whatCanYouDo: {
+                action: "*Perks up ears*",
+                sound: "Woof!",
+                response: `Glad you asked — I've got quite a few tricks up my sleeve! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🔍 Browse Domains by Category</div>
+                        <div class="domain-description">
+                            I can show you domains across all of Terrier's specialist areas:<br><br>
+                            ✈️ <strong>Aviation</strong> — pilot domains, aircraft, flight<br>
+                            🤖 <strong>Robotics & AMR</strong> — autonomous mobile robotics<br>
+                            👓 <strong>Smart Glasses & AR</strong> — augmented reality tech<br>
+                            💎 <strong>RWA</strong> — Real World Assets & tokenization<br>
+                            🎮 <strong>Gaming & Metaverse</strong> — virtual world domains<br>
+                            🔐 <strong>Privacy Crypto</strong> — Monero and beyond<br>
+                            🇵🇭 <strong>Filipino TLDs</strong> — identity & community<br>
+                            🤖 <strong>AI Agents</strong> — the next big thing<br>
+                            📚 <strong>ZKP</strong> — zero knowledge proofs<br>
+                            🏆 <strong>TLD Ownership</strong> — how Web3 TLDs work
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">📚 Learn & Explore</div>
+                        <div class="domain-description">
+                            Not sure what a TLD is? Or how Web3 domains differ from regular ones? I can explain all of that in plain English — no jargon, I promise!
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">📬 Connect with Colin</div>
+                        <div class="domain-description">
+                            Found something you like? I can point you straight to Colin for pricing, availability, and everything you need to move forward.
+                        </div>
+                    </div>
+                    Just type what you're curious about — I'll sniff it out! 🐕`
+            },
+
+            web3Education: {
+                action: "*Tilts head curiously*",
+                sound: "Woof!",
+                response: `Brilliant question — let me break this down nice and simply! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🌐 What's a Domain Name?</div>
+                        <div class="domain-description">
+                            A domain name is the address people type to find a website — like <strong>google.com</strong> or <strong>domainterrier.com</strong>. The bit after the dot (like <em>.com</em> or <em>.org</em>) is called the <strong>TLD</strong> — the <strong>Top Level Domain</strong>.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🔗 Web2 vs Web3 — What's the Difference?</div>
+                        <div class="domain-description">
+                            <strong>Web2</strong> (traditional) domains like <em>.com</em> and <em>.uk</em> are controlled by <strong>ICANN</strong> — a central organisation. You don't truly <em>own</em> them; you're paying for a licence to use them, and you have to renew every year.<br><br>
+                            <strong>Web3</strong> domains live on the <strong>blockchain</strong>. That means they're decentralised — no single organisation controls them. When you buy one, <strong>you genuinely own it</strong>, forever, with no renewal fees. It's yours as a digital asset, just like an NFT.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🏆 What's a TLD & Why Does It Matter?</div>
+                        <div class="domain-description">
+                            A TLD is the extension at the end of a domain — <em>.com</em>, <em>.aviator</em>, <em>.filipino</em>. On Web3, people can actually <strong>own entire TLDs</strong>. That's exactly what Colin does — he owns TLDs like <em>.aviator</em>, <em>.filipino</em>, and many more.<br><br>
+                            When someone buys a domain under one of Colin's TLDs (like <em>maria.filipino</em>), Colin earns a <strong>royalty</strong>, and the buyer gets <strong>full ownership</strong> of their domain as a blockchain asset.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⛓️ What's Blockchain?</div>
+                        <div class="domain-description">
+                            Think of blockchain as a <strong>public, tamper-proof notebook</strong> that thousands of computers all keep a copy of. Once something is written in it, nobody can secretly change it. Web3 domains are recorded on blockchain — which is why they're so secure and truly yours.
+                        </div>
+                    </div>
+                    Want to browse specific domains, or got more questions? Just ask! 🐕`
+            },
+
+            pricingGeneral: {
+                action: "*Sniffs around excitedly*",
+                sound: "Woof!",
+                response: `Great question — and good news: there's something for every budget! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 The Honest Picture</div>
+                        <div class="domain-description">
+                            Domain pricing varies a <em>lot</em> depending on how desirable the name is. Here's how Terrier's portfolio breaks down:
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🏅 Premium Domains — The Crown Jewels</div>
+                        <div class="domain-price">£5,000 – £17,995</div>
+                        <div class="domain-description">
+                            These are the big-ticket names — short, memorable, professionally valued .com domains and top-tier Web3 names. Think <em>velocair.com</em> at £17,995. These are serious brand assets.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Strong Web3 Domains</div>
+                        <div class="domain-price">$1,000 – $2,500</div>
+                        <div class="domain-description">
+                            Premium generic words under Web3 TLDs — names like <em>filipino.balikbayan</em> or <em>f35raptor.pilot</em>. These have real brand potential and scarcity value.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">✨ Mid-Range Domains</div>
+                        <div class="domain-price">$500 – $999</div>
+                        <div class="domain-description">
+                            Solid, strategic names with good keyword value. Great for startups or businesses looking for a distinctive identity without the premium price tag.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🌱 Affordable Personal Domains</div>
+                        <div class="domain-price">From $10 – $15</div>
+                        <div class="domain-description">
+                            This is where it gets really exciting. <strong>Your own name</strong> under a Web3 TLD — like <em>yourname.filipino</em> or <em>johndoe.aviator</em> — starts from just <strong>$10-15</strong>. Own it forever, no renewals, truly yours on the blockchain.
+                        </div>
+                    </div>
+                    <p style="margin-top: 12px; padding: 10px; background: #fff3e0; border-left: 4px solid #FF8C42; border-radius: 5px; font-size: 14px;">
+                        💡 <strong>Tip:</strong> Not sure what's in your budget? Just email Colin — he's happy to work with you to find the perfect fit. <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>
+                    </p>
+                    Want to see domains in a specific category? Just ask! 🐕`
+            },
+
+            howItWorks: {
+                action: "*Trots forward helpfully*",
+                sound: "Woof!",
+                response: `Good thinking — let me walk you through it step by step! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">📋 The Simple Steps</div>
+                        <div class="domain-description">
+                            <strong>Step 1:</strong> Browse and find a domain you love (I can help with that!)<br>
+                            <strong>Step 2:</strong> Email Colin at <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> with the domain name<br>
+                            <strong>Step 3:</strong> Colin confirms pricing and availability<br>
+                            <strong>Step 4:</strong> Complete your purchase through the relevant registrar<br>
+                            <strong>Step 5:</strong> The domain is yours! 🎉
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⛓️ Do I Need a Crypto Wallet?</div>
+                        <div class="domain-description">
+                            It depends on the type of domain:<br><br>
+                            <strong>Web3 domains</strong> (like <em>.aviator</em>, <em>.filipino</em>) — Yes, you'll need a crypto wallet like <strong>MetaMask</strong> or <strong>Trust Wallet</strong> to receive your domain as a blockchain asset. Colin will guide you through this if it's your first time — it's easier than it sounds!<br><br>
+                            <strong>Traditional Web2 domains</strong> (like <em>.com</em>) — No wallet needed. These work just like any other domain registration.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💳 Payment & Security</div>
+                        <div class="domain-description">
+                            All purchases go through <strong>trusted, legitimate registrars</strong> — Dynadot, Atom, Freename, or Unstoppable Domains. Your payment is handled directly by them, so you're fully protected. Colin doesn't handle payment details personally.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⏱️ How Long Does It Take?</div>
+                        <div class="domain-description">
+                            Most domain registrations are <strong>instant or within 24 hours</strong>. Web3 domains are minted onto the blockchain once payment is confirmed — usually very fast.
+                        </div>
+                    </div>
+                    Got a specific domain in mind? Just let me know and I'll help you take the next step! 🐕`
+            },
+
+            trust: {
+                action: "*Sits tall and proud*",
+                sound: "Woof!",
+                response: `Absolutely fair question — and we respect you for asking it! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">✅ Why You Can Trust Domain Terrier</div>
+                        <div class="domain-description">
+                            <strong>Real person, real business.</strong> Domain Terrier is run by Colin Bell, a UK-based entrepreneur with over <strong>20 years</strong> of business experience. He's not a faceless corporation — he's a real person who handles enquiries personally and genuinely cares about matching people with the right domain.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">📊 Proven Track Record</div>
+                        <div class="domain-description">
+                            Colin previously ran a movie memorabilia business with a <strong>100% positive feedback</strong> record on eBay — not a single complaint. He's currently been running a successful courier and logistics business for over <strong>20 years</strong> with a loyal, happy client base. Trust is built over time, and Colin has done exactly that.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🛡️ Only Legitimate Registrars</div>
+                        <div class="domain-description">
+                            Every single domain in the portfolio is registered through <strong>trusted, legitimate registrars</strong>:<br><br>
+                            • <strong>Dynadot</strong> — well-established Web2 registrar<br>
+                            • <strong>Atom</strong> — reliable registration platform<br>
+                            • <strong>Freename</strong> — the first <strong>ICANN-accredited</strong> Web3 registrar<br>
+                            • <strong>Unstoppable Domains</strong> — leading blockchain domain authority<br><br>
+                            Colin only works with legitimate, reputable registrars. Full stop.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🔒 Your Privacy Matters</div>
+                        <div class="domain-description">
+                            Colin has no interest in data-mining or collecting unnecessary information. Domain Terrier exists to help people find great domain names — nothing more, nothing less. Scout (that's me!) collects <strong>zero data</strong> whatsoever.
+                        </div>
+                    </div>
+                    Still got questions? Colin welcomes them — drop him a line at <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> 🐕`
+            },
+
+            refund: {
+                action: "*Tilts head thoughtfully*",
+                sound: "Woof!",
+                response: `Really good question — and the answer is: <strong>it depends on the registrar</strong>, but there is a window. Here's the honest breakdown: 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🔄 Dynadot & Atom (Web2 Domains)</div>
+                        <div class="domain-description">
+                            Dynadot offers a <strong>"Grace Period Deletion"</strong> — if your domain is <strong>less than 5 days old</strong>, you can request a grace deletion and receive a refund as account credit, minus a small deletion fee (typically <strong>$1–$3</strong>). This is the industry standard window across most traditional registrars.<br><br>
+                            <strong>Important notes:</strong><br>
+                            • The refund is usually credited to your registrar account balance<br>
+                            • Not all domain extensions qualify (most popular ones like .com do)<br>
+                            • Grace deletion is not 100% guaranteed — it depends on the registrar's deletion rate limits<br>
+                            • Act quickly if you change your mind — the 5-day window is firm
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⛓️ Freename & Unstoppable (Web3 Domains)</div>
+                        <div class="domain-description">
+                            Web3 domains are a different story. Once a Web3 domain registration is submitted to the registry, <strong>fees are generally non-refundable</strong> — this is stated in Freename's terms. This is because Web3 domains are minted as blockchain assets (NFTs) the moment they're registered.<br><br>
+                            <strong>However</strong> — Web3 domains are <em>yours forever</em> with no renewal fees, and you can always <strong>sell or transfer</strong> them later if you change your mind. They're an asset, not an expense.
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💡 The Best Advice</div>
+                        <div class="domain-description">
+                            If you're unsure about a domain, <strong>email Colin before you buy</strong>. He's happy to talk it through, help you compare options, and make sure you're confident before committing. No pressure, ever.
+                        </div>
+                    </div>
+                    📧 Questions about a specific domain? <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> 🐕`
+            },
+
+            contact: {
+                action: "*Wags tail and trots over*",
+                sound: "Woof!",
+                response: `Of course — Colin loves hearing from people! 🐕<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">📬 Get In Touch</div>
+                        <div class="domain-description">
+                            <strong>📧 Email:</strong> <a href="mailto:info@domainterrier.com">info@domainterrier.com</a><br>
+                            Colin personally reads and responds to every message — usually pretty quickly!<br><br>
+                            <strong>🌐 Website:</strong> <a href="https://domainterrier.com" target="_blank" rel="noopener noreferrer">domainterrier.com</a><br>
+                            Browse the full portfolio, learn more about the business, and find everything you need.<br><br>
+                            <strong>📍 Based in:</strong> The United Kingdom 🇬🇧
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💬 What to Say</div>
+                        <div class="domain-description">
+                            Whether you've spotted a domain you like, have a question, or just want to say hello — anything goes. Colin's genuinely happy to chat. Just drop him a line and mention what you're after (or even just say hi!).
+                        </div>
+                    </div>
+                    Is there anything else I can help you with before you go? 🐕`
+            },
+
+            domainCheck: function(msg) {
+                // Try to extract a domain name from the message
+                const domainMatch = msg.match(/\b([a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,})\b/);
+                const domainMention = domainMatch ? domainMatch[1] : '';
+
+                // Try to detect which category the domain might belong to
+                const lower = msg.toLowerCase();
+                let categoryHint = '';
+                if (lower.includes('filipino') || lower.includes('balikbayan') || lower.includes('pinoy')) categoryHint = 'filipino';
+                else if (lower.includes('aviator') || lower.includes('pilot') || lower.includes('aviation')) categoryHint = 'aviation';
+                else if (lower.includes('robot') || lower.includes('amr')) categoryHint = 'robotics';
+                else if (lower.includes('gaming') || lower.includes('game')) categoryHint = 'gaming';
+                else if (lower.includes('smart glass') || lower.includes('ar')) categoryHint = 'smartglasses';
+                else if (lower.includes('rwa') || lower.includes('tokeniz')) categoryHint = 'rwa';
+                else if (lower.includes('privacy') || lower.includes('monero')) categoryHint = 'privacy';
+                else if (lower.includes('ai') || lower.includes('agent')) categoryHint = 'ai';
+
+                const domainLine = domainMention
+                    ? `<p style="margin-top: 10px; padding: 10px; background: #fff3e0; border-left: 4px solid #FF8C42; border-radius: 5px; font-size: 14px;">
+                        👀 You're asking about: <strong>${domainMention}</strong>
+                      </p>`
+                    : '';
+
+                const categoryLine = categoryHint
+                    ? `<p style="margin-top: 10px; padding: 10px; background: #f0f4ff; border-left: 4px solid #4a90d9; border-radius: 5px; font-size: 14px;">
+                        💡 That looks like it could be in our <strong>${categoryHint.charAt(0).toUpperCase() + categoryHint.slice(1)}</strong> collection — want me to show you everything we have in that area? Just type <strong>${categoryHint}</strong> and I'll pull it up!
+                      </p>`
+                    : '';
+
+                return {
+                    action: "*Sniffs the ground*",
+                    sound: "Woof!",
+                    response: `Good nose! 🐕<br><br>
+                        ${domainLine}
+                        <div class="domain-card">
+                            <div class="domain-name">🔍 Checking Availability</div>
+                            <div class="domain-description">
+                                I don't have live access to the registrar databases, so I can't check availability in real time — but <strong>Colin can</strong>. He'll be able to tell you instantly whether that exact name is available and what it would cost.<br><br>
+                                The quickest way to find out is to drop him a message:
+                            </div>
+                        </div>
+                        <div class="domain-card">
+                            <div class="domain-name">📧 Email Colin</div>
+                            <div class="domain-description">
+                                <a href="mailto:info@domainterrier.com?subject=Domain%20Availability%20Check${domainMention ? '%20-%20' + encodeURIComponent(domainMention) : ''}" style="color: #FF8C42; font-weight: 600;">info@domainterrier.com</a><br><br>
+                                Just mention the domain name and he'll get straight back to you with the details — pricing, availability, the lot.
+                            </div>
+                        </div>
+                        ${categoryLine}
+                        *Wags tail* Anything else I can help you sniff out? 🐕`
+                };
+            },
+
+            // ============================================================
+            // EXISTING DOMAIN CATEGORIES (unchanged)
+            // ============================================================
+
+            spaceAviation: {
+                action: "*Ears perked, looking skyward*",
+                sound: "Woof!",
+                response: `From the cockpit to the cosmos — Terrier's complete aerospace collection! 🚀✈️<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🚀 Space & Aviation TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/aviator" target="_blank" rel="noopener noreferrer">.aviator</a> - Pilots & aviation professionals<br>
+                            • <a href="https://freename.io/discover/flightsim" target="_blank" rel="noopener noreferrer">.flightsim</a> - Flight simulation enthusiasts<br>
+                            • <a href="https://freename.io/discover/flightschool" target="_blank" rel="noopener noreferrer">.flightschool</a> - Pilot training & education<br>
+                            • <a href="https://freename.io/discover/spacetech" target="_blank" rel="noopener noreferrer">.spacetech</a> - Space technology & innovation<br>
+                            • <a href="https://freename.io/discover/spaceexplorer" target="_blank" rel="noopener noreferrer">.spaceexplorer</a> - Space exploration & discovery
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium .com Crown Jewel:</div>
+                        <div class="domain-price">£17,995</div>
+                        <div class="domain-description">
+                            • velocair.com - Professionally valued aviation domain
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">✈️ Premium Aviation Domains (.aviator):</div>
+                        <div class="domain-description">
+                            • f14tomcat.aviator - $2,500 (Top Gun nostalgia!)<br>
+                            • f35raptor.aviator - $2,000 (5th gen stealth)<br>
+                            • fa18hornet.aviator - $1,800 (Navy Super Hornet)<br>
+                            • f16viper.aviator - $1,800 (Fighting Falcon)<br>
+                            • f15eagle.aviator - $1,800 (Air superiority)<br>
+                            • dogfighter.aviator - $1,500 (Air combat)<br>
+                            • topgun.aviator - $1,500 (Iconic!)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🚀 Premium Space Domains:</div>
+                        <div class="domain-description">
+                            • mars.spaceexplorer - $2,500 (The Red Planet!)<br>
+                            • rocket.spacetech - $2,000 (Core space tech)<br>
+                            • nasa.spaceexplorer - $1,800 (Space agency brand)<br>
+                            • satellite.spacetech - $1,500 (Satellite industry)<br>
+                            • apollo.spaceexplorer - $1,500 (Historic missions)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🎮 Flight Simulation Domains:</div>
+                        <div class="domain-description">
+                            • msfs.flightsim - $2,000 (Microsoft Flight Sim)<br>
+                            • xplane.flightsim - $1,800 (X-Plane community)<br>
+                            • cessna.flightsim - $1,500 (Popular aircraft)<br>
+                            • boeing.flightsim - $1,500 (Commercial aircraft)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal Aerospace Domains:</div>
+                        <div class="domain-description">
+                            <strong>Your own aviation or space identity!</strong><br>
+                            • yourname.aviator - From $10-15<br>
+                            • callsign.aviator - From $10-15<br>
+                            • yourname.spaceexplorer - From $10-15<br>
+                            • academy.flightschool - From $10-15<br>
+                            • yourname.flightsim - From $10-15<br><br>
+                            <em>Premium aircraft names and space terms command higher prices, but personal names are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why Aerospace Domains Matter:</strong><br>
+                    ✓ $900B+ global aviation industry<br>
+                    ✓ Space tech is the next trillion-dollar sector (SpaceX, Blue Origin, NASA)<br>
+                    ✓ Flight sim community growing massively (MSFS 2020/2024)<br>
+                    ✓ Pilot training market expanding globally<br>
+                    ✓ Perfect for flight schools, space startups, sim enthusiasts, aviation pros<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>🚀 5 aerospace TLDs shown above.</strong> From earth to orbit and beyond!
+                    </p>
+                    *Nose to the sky* Building a flight school? Space tech startup? Sim community?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            privacy: {
+                action: "*Sniffing around*",
+                sound: "Grrr...",
+                response: `Perfect timing! Privacy crypto is more important than ever.<br><br>
+                    <strong>I've found our extensive privacy collection:</strong><br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium Monero Payment Domains (.xmr):</div>
+                        <div class="domain-description">
+                            • privatecoin.xmr - $3,000 (BEST .xmr domain!)<br>
+                            • sendmonero.xmr - $2,500 (Payment action)<br>
+                            • sendxmr.xmr - $2,500 (Send XMR)<br>
+                            • wiremonero.xmr - $2,500 (Wire Monero)<br>
+                            • untrackable.xmr - $2,500 (Core value)<br>
+                            • nontraceable.xmr - $2,500 (Monero essence)<br>
+                            • privatetoken.xmr - $2,500<br>
+                            • privatecash.xmr - $2,500<br>
+                            • privatemoney.xmr - $2,500<br>
+                            • privacytoken.xmr - $2,500<br>
+                            • privatesend.xmr - $2,500 (Monero feature!)<br>
+                            • securemoney.xmr - $2,000<br>
+                            • wirexmr.xmr - $2,000<br>
+                            • sendcrypto.xmr - $2,000
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🔐 Etherlink Privacy Collection:</div>
+                        <div class="domain-description">
+                            • realworldassets.etherlink - $3,000 (RWA leader)<br>
+                            • realworldasset.etherlink - $2,500<br>
+                            • privacycrypto.etherlink - $2,500<br>
+                            • privatecoin.etherlink - $2,500<br>
+                            • cryptoprivacy.etherlink - $2,500<br>
+                            • privatecash.etherlink - $2,500<br>
+                            • privatemoney.etherlink - $2,500<br>
+                            • securemoney.etherlink - $2,000
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💸 Web3 Payment Actions:</div>
+                        <div class="domain-description">
+                            • sendcrypto.onchain - $2,000<br>
+                            • sendbtc.onchain - $2,000<br>
+                            • sendeth.onchain - $2,000
+                        </div>
+                    </div>
+                    <strong>Why .xmr?</strong> Monero = privacy crypto king! These domains signal your commitment to privacy in the age of surveillance.<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 25 privacy domains shown above.</strong> More available on request!
+                    </p>
+                    *Ears perked* Want to understand zero-knowledge proofs vs government surveillance? Click "ZKP Education" above!<br><br>
+                    Interested in package pricing? Contact Colin: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            ai: {
+                action: "*Tail wags*",
+                sound: "Woof!",
+                response: `Excellent timing! The AI agent explosion is HERE in 2025-2026.<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🤖 Premium .agi Domains:</div>
+                        <div class="domain-price">$5,000</div>
+                        <div class="domain-description">
+                            • supermind.agi - Ultimate AI intelligence!<br><br>
+                            <strong>Character AI Names:</strong><br>
+                            • k9.agi - $2,500 (K9 robot dog!)<br>
+                            • alfred.agi - $2,500 (Batman's AI butler)<br>
+                            • k2.agi - $2,000 (Mountain metaphor)<br>
+                            • magi.agi - $2,000 (Wise AI)<br>
+                            • phobos.agi - $1,800 (Mars moon)<br>
+                            • rowan.agi - $1,500 (Nature name)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🎯 Premium .agent Domains:</div>
+                        <div class="domain-description">
+                            • supermind.agent - $3,000 (Pairs with .agi!)<br>
+                            • innovator.agent - $2,500 (Matches .innovator TLD!)<br>
+                            • askrobot.agent - $1,500<br>
+                            • asktitan.agent - $1,500<br>
+                            • asksynth.agent - $1,500<br>
+                            • graywolf.agent - $1,500 (Codename style)<br>
+                            • grizzly.agent - $1,500<br>
+                            • wildcat.agent - $1,500
+                        </div>
+                    </div>
+                    <strong>Why now?</strong> We're at the tipping point of the AGI wave. 2025-2026 is the AI agent breakthrough year. These domains position you at the forefront.<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 15 AI agent domains shown above.</strong> Perfect timing for the AI revolution!
+                    </p>
+                    *Sniffing around* Building an AI agent platform? Need agent character names? Want AI-focused branding?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            // ============================================================
+            // NEW CLUSTERS — Complete portfolio coverage
+            // ============================================================
+
+            geographic: {
+                action: "*Tail wags excitedly*",
+                sound: "Woof!",
+                response: `Regional identity matters — and Terrier has TLDs for communities around the world! 🌍<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🌏 Regional Identity TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/filipino" target="_blank" rel="noopener noreferrer">.filipino</a> - Filipino cultural identity<br>
+                            • <a href="https://freename.io/discover/balikbayan" target="_blank" rel="noopener noreferrer">.balikbayan</a> - Overseas Filipino workers<br>
+                            • <a href="https://freename.io/discover/fareast" target="_blank" rel="noopener noreferrer">.fareast</a> - East Asian diaspora<br>
+                            • <a href="https://freename.io/discover/britishisles" target="_blank" rel="noopener noreferrer">.britishisles</a> - UK & Ireland identity<br>
+                            • <a href="https://freename.io/discover/southeastasia" target="_blank" rel="noopener noreferrer">.southeastasia</a> - Southeast Asian region (650M people!)<br>
+                            • <a href="https://freename.io/discover/caribbeanislands" target="_blank" rel="noopener noreferrer">.caribbeanislands</a> - Caribbean diaspora & culture<br>
+                            • <a href="https://freename.io/discover/pacificislands" target="_blank" rel="noopener noreferrer">.pacificislands</a> - Pacific island communities
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium Regional Domains:</div>
+                        <div class="domain-description">
+                            • london.britishisles - $2,500 (Capital city!)<br>
+                            • singapore.southeastasia - $2,500 (Major hub)<br>
+                            • manila.filipino - $2,500 (Premium city)<br>
+                            • caribbean.caribbeanislands - $2,500 (One-word premium)<br>
+                            • fiji.pacificislands - $2,000 (Destination brand)<br>
+                            • scotland.britishisles - $1,800 (Strong identity)<br>
+                            • bali.southeastasia - $1,800 (Tourism powerhouse)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal & Community Domains:</div>
+                        <div class="domain-description">
+                            <strong>Claim your regional identity — much more affordable!</strong><br>
+                            • yourname.filipino - From $10-15<br>
+                            • familyname.britishisles - From $10-15<br>
+                            • business.southeastasia - From $10-15<br>
+                            • yourname.caribbeanislands - From $10-15<br>
+                            • community.pacificislands - From $10-15<br><br>
+                            <em>Premium geographic names command higher prices, but personal names and businesses are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why Regional Identity TLDs Matter:</strong><br>
+                    ✓ Billions of people identify with their region or diaspora<br>
+                    ✓ Strong cultural and community connections<br>
+                    ✓ Growing demand for digital regional identity<br>
+                    ✓ Perfect for expat communities, cultural organizations, regional businesses<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>🌍 7 regional identity TLDs shown above.</strong> Claim your place in the world!
+                    </p>
+                    *Tail wags* Building a regional community platform? Diaspora organization? Cultural business?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            techCrypto: {
+                action: "*Sniffs around tech gear*",
+                sound: "Woof!",
+                response: `Building the future — Terrier's tech, innovation & crypto TLD collection! 💻⚡<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">💡 Tech & Innovation TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/innovator" target="_blank" rel="noopener noreferrer">.innovator</a> - Entrepreneurs, creators, visionaries<br>
+                            • <a href="https://freename.io/discover/technophile" target="_blank" rel="noopener noreferrer">.technophile</a> - Tech enthusiasts & early adopters<br>
+                            • <a href="https://freename.io/discover/codebreaker" target="_blank" rel="noopener noreferrer">.codebreaker</a> - Developers, hackers, problem solvers<br>
+                            • <a href="https://freename.io/discover/cryptonian" target="_blank" rel="noopener noreferrer">.cryptonian</a> - Crypto believers & blockchain advocates<br>
+                            • <a href="https://freename.io/discover/cryptohunter" target="_blank" rel="noopener noreferrer">.cryptohunter</a> - Crypto traders & investors
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium Innovation Domains:</div>
+                        <div class="domain-description">
+                            • ai.innovator - $2,500 (Artificial Intelligence!)<br>
+                            • startup.innovator - $2,000 (Startup ecosystem)<br>
+                            • blockchain.innovator - $2,000 (Blockchain innovation)<br>
+                            • tech.technophile - $1,800 (Tech culture)<br>
+                            • hacker.codebreaker - $1,800 (Hacker culture)<br>
+                            • developer.codebreaker - $1,500 (Dev community)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">₿ Premium Crypto Domains:</div>
+                        <div class="domain-description">
+                            • bitcoin.cryptonian - $2,500 (The OG crypto!)<br>
+                            • ethereum.cryptonian - $2,000 (ETH ecosystem)<br>
+                            • defi.cryptonian - $2,000 (Decentralized finance)<br>
+                            • trading.cryptohunter - $1,800 (Crypto trading)<br>
+                            • whale.cryptohunter - $1,500 (Big holders)<br>
+                            • hodl.cryptonian - $1,500 (Crypto culture)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal Tech Domains:</div>
+                        <div class="domain-description">
+                            <strong>Your own tech or crypto identity!</strong><br>
+                            • yourname.innovator - From $10-15<br>
+                            • yourname.technophile - From $10-15<br>
+                            • yourname.codebreaker - From $10-15<br>
+                            • yourname.cryptonian - From $10-15<br>
+                            • portfolio.cryptohunter - From $10-15<br><br>
+                            <em>Premium tech/crypto terms command higher prices, but personal names are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why Tech & Crypto TLDs Matter:</strong><br>
+                    ✓ $5T+ global tech industry<br>
+                    ✓ Crypto market cap over $2T<br>
+                    ✓ Developer community growing 20%+ annually<br>
+                    ✓ Perfect for startups, tech brands, crypto projects, developers, investors<br>
+                    ✓ Web3-native domains for Web3-native businesses<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>💻 5 tech & crypto TLDs shown above.</strong> Build your digital empire!
+                    </p>
+                    *Tail wags* Launching a tech startup? Crypto project? Dev community?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            lifestyle: {
+                action: "*Wags tail enthusiastically*",
+                sound: "Woof!",
+                response: `Life is about passion — and Terrier has TLDs for every interest! 🌟<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">✨ Lifestyle & Passion TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/travelphile" target="_blank" rel="noopener noreferrer">.travelphile</a> - Travel lovers & wanderers<br>
+                            • <a href="https://freename.io/discover/travelhacker" target="_blank" rel="noopener noreferrer">.travelhacker</a> - Smart travelers & points enthusiasts<br>
+                            • <a href="https://freename.io/discover/naturelover" target="_blank" rel="noopener noreferrer">.naturelover</a> - Outdoor enthusiasts & conservationists<br>
+                            • <a href="https://freename.io/discover/foodieworld" target="_blank" rel="noopener noreferrer">.foodieworld</a> - Culinary adventures & food culture<br>
+                            • <a href="https://freename.io/discover/bibliophile" target="_blank" rel="noopener noreferrer">.bibliophile</a> - Book lovers & literary minds<br>
+                            • <a href="https://freename.io/discover/cinephile" target="_blank" rel="noopener noreferrer">.cinephile</a> - Film buffs & cinema enthusiasts<br>
+                            • <a href="https://freename.io/discover/trailfinder" target="_blank" rel="noopener noreferrer">.trailfinder</a> - Hikers, explorers, pathfinders<br>
+                            • <a href="https://freename.io/discover/dreambuilder" target="_blank" rel="noopener noreferrer">.dreambuilder</a> - Life coaches, motivators, goal-setters
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">✈️ Premium Travel Domains:</div>
+                        <div class="domain-description">
+                            • nomad.travelphile - $2,000 (Digital nomad culture)<br>
+                            • wanderlust.travelphile - $1,800 (Travel spirit!)<br>
+                            • backpacker.travelphile - $1,500 (Backpacking community)<br>
+                            • miles.travelhacker - $1,800 (Miles & points)<br>
+                            • adventure.trailfinder - $1,500 (Adventure travel)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">📚 Premium Culture & Lifestyle Domains:</div>
+                        <div class="domain-description">
+                            • bookclub.bibliophile - $1,500 (Book community)<br>
+                            • classics.bibliophile - $1,200 (Literary classics)<br>
+                            • film.cinephile - $2,000 (Film industry)<br>
+                            • chef.foodieworld - $1,800 (Culinary professionals)<br>
+                            • recipe.foodieworld - $1,500 (Recipe sharing)<br>
+                            • hiking.naturelover - $1,500 (Hiking community)<br>
+                            • coach.dreambuilder - $1,500 (Coaching business)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal Passion Domains:</div>
+                        <div class="domain-description">
+                            <strong>Your own passion identity!</strong><br>
+                            • yourname.travelphile - From $10-15<br>
+                            • yourname.bibliophile - From $10-15<br>
+                            • yourname.cinephile - From $10-15<br>
+                            • blog.foodieworld - From $10-15<br>
+                            • yourname.dreambuilder - From $10-15<br>
+                            • trail.trailfinder - From $10-15<br><br>
+                            <em>Premium passion keywords command higher prices, but personal names are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why Lifestyle TLDs Matter:</strong><br>
+                    ✓ Billions of people passionate about travel, food, books, film<br>
+                    ✓ Influencer & creator economy booming<br>
+                    ✓ Perfect for bloggers, coaches, content creators, community builders<br>
+                    ✓ Strong personal branding opportunities<br>
+                    ✓ Stand out from generic .com domains<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>✨ 8 lifestyle & passion TLDs shown above.</strong> Live your passion online!
+                    </p>
+                    *Tail wags* Building a travel blog? Book club? Food community? Life coaching platform?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            sportsFitness: {
+                action: "*Barks energetically*",
+                sound: "Woof woof!",
+                response: `Athletes, fighters, adrenaline junkies — Terrier's got your domains! 💪🔥<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🏆 Sports & Fitness TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/fittest" target="_blank" rel="noopener noreferrer">.fittest</a> - Fitness enthusiasts & athletes<br>
+                            • <a href="https://freename.io/discover/combatsport" target="_blank" rel="noopener noreferrer">.combatsport</a> - MMA, boxing, martial arts<br>
+                            • <a href="https://freename.io/discover/fightfightfight" target="_blank" rel="noopener noreferrer">.fightfightfight</a> - Combat sports culture<br>
+                            • <a href="https://freename.io/discover/speedfreak" target="_blank" rel="noopener noreferrer">.speedfreak</a> - Racing, motorsports, adrenaline<br>
+                            • <a href="https://freename.io/discover/mindcoach" target="_blank" rel="noopener noreferrer">.mindcoach</a> - Mental performance & wellness<br>
+                            • <a href="https://freename.io/discover/thrillseeker" target="_blank" rel="noopener noreferrer">.thrillseeker</a> - Extreme sports & adventure<br>
+                            • <a href="https://freename.io/discover/bonkers" target="_blank" rel="noopener noreferrer">.bonkers</a> - Wild, unconventional, fearless
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🥊 Premium Combat Sports Domains:</div>
+                        <div class="domain-description">
+                            • ufc.combatsport - $2,500 (Ultimate Fighting!)<br>
+                            • mma.combatsport - $2,000 (Mixed Martial Arts)<br>
+                            • boxing.combatsport - $2,000 (Sweet science)<br>
+                            • muaythai.combatsport - $1,500 (Art of 8 limbs)<br>
+                            • knockout.fightfightfight - $1,500 (Fight culture)<br>
+                            • warrior.fightfightfight - $1,200 (Fighter spirit)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💪 Premium Fitness & Performance Domains:</div>
+                        <div class="domain-description">
+                            • crossfit.fittest - $2,000 (CrossFit community)<br>
+                            • athlete.fittest - $1,800 (Athletic performance)<br>
+                            • gym.fittest - $1,800 (Fitness industry)<br>
+                            • performance.mindcoach - $1,500 (Peak performance)<br>
+                            • mental.mindcoach - $1,200 (Mental training)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🏁 Premium Racing & Extreme Domains:</div>
+                        <div class="domain-description">
+                            • racing.speedfreak - $1,800 (Racing culture)<br>
+                            • formula1.speedfreak - $1,500 (F1 fans)<br>
+                            • extreme.thrillseeker - $1,500 (Extreme sports)<br>
+                            • skydiving.thrillseeker - $1,200 (Adrenaline!)<br>
+                            • wild.bonkers - $1,000 (Wild lifestyle)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal Sports Domains:</div>
+                        <div class="domain-description">
+                            <strong>Your own athletic identity!</strong><br>
+                            • yourname.fittest - From $10-15<br>
+                            • gym.combatsport - From $10-15<br>
+                            • yourname.mindcoach - From $10-15<br>
+                            • team.speedfreak - From $10-15<br>
+                            • yourname.thrillseeker - From $10-15<br><br>
+                            <em>Premium sport terms command higher prices, but personal names are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why Sports & Fitness TLDs Matter:</strong><br>
+                    ✓ $100B+ global fitness industry<br>
+                    ✓ Combat sports exploding (UFC worth $12B+)<br>
+                    ✓ Motorsports massive global following<br>
+                    ✓ Perfect for gyms, fighters, coaches, athletes, teams, events<br>
+                    ✓ Strong community & lifestyle branding<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>💪 7 sports & fitness TLDs shown above.</strong> Dominate your arena!
+                    </p>
+                    *Tail wags intensely* Building a gym brand? Fight promotion? Racing team? Coaching business?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+
+            filipino: {
+                action: "*Tail wags*",
+                sound: "Woof!",
+                response: `Colin has a genuine connection to the Filipino community!<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🇵🇭 Filipino Identity TLDs:</div>
+                        <div class="domain-description">
+                            • <a href="https://freename.io/discover/filipino" target="_blank" rel="noopener noreferrer">.filipino</a> - Filipino cultural identity<br>
+                            • <a href="https://freename.io/discover/balikbayan" target="_blank" rel="noopener noreferrer">.balikbayan</a> - Overseas Filipino workers<br>
+                            • <a href="https://freename.io/discover/fareast" target="_blank" rel="noopener noreferrer">.fareast</a> - East Asian diaspora
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium Identity Domains:</div>
+                        <div class="domain-description">
+                            • filipino.balikbayan - $2,500 (Premium one-word!)<br>
+                            • pinoy.balikbayan - $2,500 (Cultural pride)<br>
+                            • manila.filipino - $2,500 (Premium city name)<br>
+                            • overseasfilipino.balikbayan - $1,200
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Affordable Personal Domains:</div>
+                        <div class="domain-description">
+                            <strong>Your own Filipino identity - much more affordable!</strong><br>
+                            • yourname.filipino - From $10-15<br>
+                            • familyname.balikbayan - From $10-15<br>
+                            • nickname.filipino - From $10-15<br><br>
+                            <em>Premium names like manila.filipino or pilot.aviator command higher prices, but personal names and family names are very affordable!</em>
+                        </div>
+                    </div>
+                    <strong>Why These Matter:</strong><br>
+                    ✓ 100M+ Filipinos worldwide<br>
+                    ✓ Strong diaspora community bonds<br>
+                    ✓ $36B+ annual remittances<br>
+                    ✓ Growing digital adoption`
+            },
+            smartglasses: {
+                action: "*Ears perked*",
+                sound: "Woof!",
+                response: `Smart glasses are the NEXT major computing platform - Apple Vision Pro, Meta Ray-Ban, and more!<br><br>
+                    <strong>Terrier's curated smart glasses collection:</strong><br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">👓 Premium AR/VR Expo & Tech:</div>
+                        <div class="domain-description">
+                            • ARVRExpo.com - £12,995 (AR/VR expo - perfect timing!)<br>
+                            • TekSpex.com - £8,995 (Smart glasses tech)<br>
+                            • ARSpex.com - £6,995 (AR glasses market)<br>
+                            • AugVis.com - £6,995 (Augmented vision)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🥽 Eye Tech & Optics:</div>
+                        <div class="domain-description">
+                            • EyeGates.com - £6,495 (Eye tech gateway)<br>
+                            • RetinaGate.com - £5,995 (Retina technology)<br>
+                            • VisScan.com - £5,995 (Vision scanning)<br>
+                            • OpticRealms.com - £5,495 (VR optics)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🎬 Holographic & HUD:</div>
+                        <div class="domain-description">
+                            • HoloScream.com - £5,495 (Holographic entertainment)<br>
+                            • HoloSymphonic.com - £5,495 (Holographic music)<br>
+                            • hudspecs.com - £4,995 (HUD smart glasses)<br>
+                            • smarthuds.com - £4,995 (Smart HUD displays)<br>
+                            • EyeChi.com - £4,295 (Eye wellness tech)
+                        </div>
+                    </div>
+                    <strong>Why Now?</strong> Meta Ray-Ban glasses selling fast, Apple Vision Pro launched 2024, every major tech company entering. This is the 2025-2030 computing platform shift!<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 13 smart glasses domains shown above.</strong> Position yourself in the next computing revolution!<br>
+                        Learn more: <a href="https://freename.com/domains/web3-domains" target="_blank" rel="noopener noreferrer">Web3 Domains Basics</a>
+                    </p>
+                    *Tail wags* Building smart glasses platform? AR app? Review site?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            robotics: {
+                action: "*Tail wags*",
+                sound: "Grrr...",
+                response: `Robotics & AMR (Autonomous Mobile Robots) - Terrier's EXTENSIVE collection!<br><br>
+                    <strong>Premium Autonomous Aviation & Vehicles:</strong><br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🤖 Crown Jewels - Autonomous:</div>
+                        <div class="domain-description">
+                            • AutonoAir.com - £12,995 (Autonomous aviation!)<br>
+                            • autonosurgeon.com - $18,950 (Surgical robotics premium!)<br>
+                            • AutonoCargo.com - £9,995 (Cargo automation)<br>
+                            • AutonoNav.com - £9,995 (Navigation systems)<br>
+                            • AutonoPilot.com - £9,995 (Autopilot market)<br>
+                            • AutonoHaul.com - £8,995 (Autonomous trucking)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🏭 Industrial Robotics Portfolio:</div>
+                        <div class="domain-description">
+                            • AVRRobotics.com - £9,995<br>
+                            • EMRRobotics.com - £9,995 (Medical robotics)<br>
+                            • EVRRobotics.com - £9,995<br>
+                            • IMRRobotics.com - £9,995 (Industrial)<br>
+                            • rimrobotics.com - $10,995<br>
+                            • ammrobotics.com - $9,995 (AMR focus!)<br>
+                            • amrexpo.com - $9,995 (AMR expo)<br>
+                            • amrmobility.com - $8,995<br>
+                            • amrdynamics.com - $8,995
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⚙️ Robotics Brands & Solutions:</div>
+                        <div class="domain-description">
+                            • apxrobotics.com - $8,995<br>
+                            • ravrobotics.com - $8,995<br>
+                            • reedrobotics.com - $8,995<br>
+                            • autonofinance.com - $8,995<br>
+                            • RotorRobotics.com - £6,995 (Rotary wing)<br>
+                            • ixrrobotics.com - $6,995<br>
+                            • vlamrobotics.com - $6,995<br>
+                            • vertrobotics.com - $5,995
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🛡️ Autonomous Support & Services:</div>
+                        <div class="domain-description">
+                            • autonosolutions.com - $6,995<br>
+                            • autonosupport.com - $6,995<br>
+                            • autonopredict.com - $6,995<br>
+                            • autonoguard.com - $6,995<br>
+                            • autonosentry.com - $6,995<br>
+                            • autonoassist.com - $6,995<br>
+                            • autonovan.com - $6,995
+                        </div>
+                    </div>
+                    <strong>Market Size:</strong> Global robotics reaching $218B by 2030. AMR sector growing 20%+ annually. Warehouse automation exploding NOW!<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 35 robotics domains shown above.</strong> Terrier's authentic robotics portfolio - many more available!<br>
+                        Learn more: <a href="https://unstoppabledomains.com/learn" target="_blank" rel="noopener noreferrer">Blockchain Domains Guide</a>
+                    </p>
+                    *Sniffing around* Building robotics platform? AMR solution? Automation service?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            rwa: {
+                action: "*Sniffing around*",
+                sound: "Grrr...",
+                response: `Real World Asset (RWA) tokenization - THE trillion-dollar opportunity!<br><br>
+                    <strong>Terrier's strategic RWA collection:</strong><br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">💎 Premium Geographic & Industry RWA:</div>
+                        <div class="domain-description">
+                            • RWAUniverse.com - £9,995 (RWA ecosystem)<br>
+                            • LandRWA.io - £9,995 (Real estate RWA)<br>
+                            • SealRWA.com - £9,995 (Marine RWA)<br>
+                            • AssetLawyers.org - £9,995 (Legal premium)<br>
+                            • RWAMarine.com - £8,995 (Marine industry)<br>
+                            • MetalRWA.io - £8,995 (Metals tokenization)<br>
+                            • AviationRWA.com - £8,995 (Aviation assets)<br>
+                            • factoryrwa.com - $8,995 (Factory automation)<br>
+                            • shippingrwa.com - $8,995 (Shipping industry)<br>
+                            • technologyrwa.com - $8,995 (Tech assets)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🌍 Regional & Specialty RWA:</div>
+                        <div class="domain-description">
+                            • CaliforniaRWA.com - £7,995 (Major state)<br>
+                            • UraniumRWA.com - £7,995 (Nuclear energy)<br>
+                            • RealWorldMint.com - £7,995 (RWA minting)<br>
+                            • WorldOnchain.io - £7,995 (Global positioning)<br>
+                            • FloridaRWA.com - £6,995 (Major state)<br>
+                            • OrbitalRWA.com - £6,995 (Space RWA)<br>
+                            • RWAOnchain.io - £6,995 (Blockchain RWA)<br>
+                            • MetalRWA.com - £6,495 (Metals)
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">⚖️ RWA Services & Resources:</div>
+                        <div class="domain-description">
+                            • AssetAttorneys.org - £6,995<br>
+                            • RWALawyers.org - £6,995<br>
+                            • RWAAttorneys.org - £6,995<br>
+                            • RWADirectory.org - £6,995<br>
+                            • CollectiblesRWA.com - £5,995<br>
+                            • RealWorldMint.io - £5,995<br>
+                            • MineralsRWA.com - £5,995
+                        </div>
+                    </div>
+                    <strong>Market Opportunity:</strong> $16 TRILLION in real-world assets waiting to be tokenized. Geographic RWAs, industrial assets, legal services - first movers dominate!<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 25 RWA domains shown above.</strong> Colin owns 50+ more RWA domains!<br>
+                        Learn more: <a href="https://freename.com/domains/web3-domains" target="_blank" rel="noopener noreferrer">Web3 Domains Basics</a>
+                    </p>
+                    *Tail wags* Tokenizing assets? Building RWA platform? Need legal services positioning?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            gaming: {
+                action: "*Tail wags excitedly*",
+                sound: "Woof!",
+                response: `Gaming + Web3 = The future of play-to-earn!<br><br>
+                    <strong>Terrier's Web3 gaming collection:</strong><br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🎮 Strategy & Simulation:</div>
+                        <div class="domain-description">
+                            • strategygames.onchain - $2,000<br>
+                            • rpggame.onchain - $1,500<br>
+                            • gamedev.onchain - $1,800<br>
+                            • spaceflightsim.onchain - $1,500<br>
+                            • combatflightsimulator.onchain - $1,500<br>
+                            • trainsimulator.onchain - $1,500
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">🕹️ Gaming Genres:</div>
+                        <div class="domain-description">
+                            • consolegames.onchain - $1,500<br>
+                            • computergames.onchain - $1,500<br>
+                            • retrogaming.onchain - $1,500<br>
+                            • shootergame.onchain - $1,500<br>
+                            • magictgc.onchain - $1,500 (Magic TCG market)
+                        </div>
+                    </div>
+                    <strong>Why Web3 Gaming?</strong> Play-to-earn, NFT assets, true ownership. Gaming is leading blockchain adoption in 2025!<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📋 Gaming domains from Terrier's collection.</strong> Web3 gaming revolution is here!
+                    </p>
+                    *Ears perked* Launching Web3 game? Gaming platform? NFT marketplace?<br>
+                    Contact: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+            },
+            zkp: {
+                action: "*Sits attentively*",
+                sound: "",
+                response: `<strong>Zero-Knowledge Proofs vs Government Digital IDs</strong><br><br>
+                    Two digital futures are being built. Here's the difference:<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">❌ Government Digital IDs:</div>
+                        <div class="domain-description">
+                            • Central government database stores ALL your info<br>
+                            • Government can see EVERY transaction<br>
+                            • Single point of failure<br>
+                            • Total surveillance
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">✅ Zero-Knowledge Proofs:</div>
+                        <div class="domain-description">
+                            • YOU control your identity data<br>
+                            • Prove things WITHOUT revealing data<br>
+                            • Privacy-preserving by design<br>
+                            • Self-sovereign identity
+                        </div>
+                    </div>
+                    <strong>Example:</strong><br>
+                    Traditional: "Show me your driver's license" (reveals everything)<br>
+                    Zero-Knowledge: "Prove you're over 21" (reveals NOTHING except yes/no)<br><br>
+                    <strong>Why This Matters for Domains:</strong><br>
+                    Privacy-conscious builders need privacy-signaling domains. That's why domains like privatecoin.xmr, privacytoken.xmr, and our .xmr collection are so valuable.<br><br>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📚 Learn More About Web3 & Privacy:</strong><br>
+                        • <a href="https://freename.com/domains/web3-domains" target="_blank" rel="noopener noreferrer">Web3 Domains Basics (Freename)</a><br>
+                        • <a href="https://unstoppabledomains.com/learn" target="_blank" rel="noopener noreferrer">Blockchain Domains Guide (Unstoppable Domains)</a>
+                    </p>
+                    Want to see privacy-focused domains? Ask about "privacy crypto"!`
+            },
+            tlds: {
+                action: "*Ears perked*",
+                sound: "",
+                response: `<strong>What's a TLD? Why Own One?</strong><br><br>
+                    TLD = Top-Level Domain (like .com, .org, but YOU own it!)<br><br>
+                    <strong>Colin owns 33 TLDs including:</strong><br>
+                    • .aviator, .filipino, .cryptonian, .innovator, .technophile<br>
+                    • .combatsport, .bibliophile, .dreambuilder, and 25 more!<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🏆 Why Own a TLD? (What Colin Gets)</div>
+                        <div class="domain-description">
+                            ✓ <strong>Passive Income</strong> - Earn 50% royalty on every SLD sale!<br>
+                            ✓ <strong>Brand Authority</strong> - Your namespace, your brand<br>
+                            ✓ <strong>No Management Burden</strong> - Buyers own their domains fully<br>
+                            ✓ <strong>Scalable Revenue</strong> - More registrations = more income<br>
+                            ✓ <strong>Investment</strong> - Early TLD ownership = digital real estate
+                        </div>
+                    </div>
+                    <strong>How It Works:</strong> Colin owns .aviator, so when someone buys fredsmith.aviator, Colin earns 50% of the sale! Fred gets full ownership of his domain (it's his blockchain NFT), while Colin earns passive income. Win-win!<br><br>
+                    <div class="domain-card">
+                        <div class="domain-name">🔑 Important: Buyer Ownership</div>
+                        <div class="domain-description">
+                            When you buy an SLD under Colin's TLDs (like yourname.filipino or johndoe.aviator), <strong>YOU own it completely!</strong><br><br>
+                            ✓ It's minted as YOUR blockchain NFT<br>
+                            ✓ You control it 100% (sell, transfer, move blockchains)<br>
+                            ✓ Colin earns royalty from the sale, but has NO control over your domain<br>
+                            ✓ One-time payment, yours forever!
+                        </div>
+                    </div>
+                    <div class="domain-card">
+                        <div class="domain-name">💰 Pricing Guide:</div>
+                        <div class="domain-description">
+                            <strong>Premium Names (Higher Value):</strong><br>
+                            • pilot.aviator - Premium (High demand)<br>
+                            • manila.filipino - $2,500+ (Major city)<br>
+                            • fighter.pilot - Premium (Popular term)<br><br>
+                            <strong>Personal Names (Affordable):</strong><br>
+                            • yourname.filipino - From $10-15<br>
+                            • johndoe.aviator - From $10-15<br>
+                            • familyname.balikbayan - From $10-15<br><br>
+                            <em>Premium generic terms command higher prices, but personal/family names are very affordable!</em>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                        <strong>📚 Learn More About TLDs & Web3:</strong><br>
+                        • <a href="https://freename.com/domains/web3-domains" target="_blank" rel="noopener noreferrer">Web3 Domains Basics (Freename)</a><br>
+                        • <a href="https://unstoppabledomains.com/learn" target="_blank" rel="noopener noreferrer">Blockchain Domains Guide (Unstoppable Domains)</a>
+                    </p>
+                    *Tail wags* Want to explore specific TLDs? Ask about aviation, tech, crypto, or Filipino TLDs!`
+            },
+            buyIntent: function(domainMention) {
+                // domainMention is the specific domain the user typed, or empty string
+                const domainLine = domainMention
+                    ? `<p style="margin-top: 12px; padding: 12px; background: #fff3e0; border-left: 4px solid #FF8C42; border-radius: 5px;">
+                        👀 <strong>You're interested in: ${domainMention}</strong><br>
+                        Great taste! Let's get this sorted for you.
+                      </p>`
+                    : '';
+                return {
+                    action: "*Tail wags excitedly*",
+                    sound: "Woof!",
+                    response: `Brilliant — let's get you sorted!<br><br>
+                        ${domainLine}
+                        <div class="domain-card">
+                            <div class="domain-name">📬 Next Steps</div>
+                            <div class="domain-description">
+                                The quickest way to move forward is to drop Colin a message directly — he handles all enquiries personally and can give you exact pricing and availability on any domain in the portfolio.<br><br>
+                                <strong>📧 Email:</strong><br>
+                                <a href="mailto:info@domainterrier.com?subject=Domain%20Enquiry${domainMention ? '%20-%20' + encodeURIComponent(domainMention) : ''}" style="color: #FF8C42; font-weight: 600;">info@domainterrier.com</a><br><br>
+                                <strong>🌐 Browse the full portfolio:</strong><br>
+                                <a href="https://domainterrier.com" target="_blank" rel="noopener noreferrer" style="color: #FF8C42; font-weight: 600;">domainterrier.com</a>
+                            </div>
+                        </div>
+                        <p style="margin-top: 12px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 14px;">
+                            💡 <strong>Tip:</strong> When you email, just mention the domain name you're interested in and Colin will come back to you with everything you need — pricing, availability, and how to complete the registration. Simple as that!
+                        </p>
+                        *Wags tail* Is there anything else I can help you find in the meantime? 🐕`
+                };
+            }
+        };
+        
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = validateInput(input.value);   // SECURITY: sanitise first
+            if (!message) { input.value = ''; return; }   // nothing left after cleaning
+
+            // SECURITY: rate limit check
+            if (isRateLimited()) {
+                input.value = '';
+                addScoutMessage({
+                    action: "*Sits patiently*",
+                    sound: "",
+                    response: "Woof! Please slow down a little — I need a moment to catch my breath! 🐕"
+                });
+                return;
+            }
+
+            addUserMessage(message);
+            input.value = '';
+            
+            setTimeout(() => {
+                const lowerMessage = message.toLowerCase();
+                let response;
+
+                // ============================================================
+                // DETECTION CHAIN — order is critical. Each block is tested.
+                // ============================================================
+
+                // --- BUY INTENT (tightened) ---
+                // Strong keywords fire unconditionally. Weak keywords only fire
+                // if a domain pattern (word.word) is also present in the message.
+                const strongIntentKW = [
+                    'how do i register', 'how can i register',
+                    'how do i buy', 'how can i buy', 'how to buy',
+                    'i want to buy', 'i\'d like to buy',
+                    'purchase', 'register this', 'register that',
+                    'sign up for', 'sign-up', 'get this domain', 'grab this',
+                    'take this', 'claim this', 'secure this'
+                ];
+                const weakIntentKW = [
+                    'interested in', 'i want', 'i\'d like',
+                    'how much is', 'how much for', 'price of',
+                    'how much'
+                ];
+                const hasDomainPattern = /\b[a-z0-9][-a-z0-9]*\.[a-z]{2,}\b/.test(lowerMessage);
+                const hasStrongIntent = strongIntentKW.some(kw => lowerMessage.includes(kw));
+                const hasWeakIntent = weakIntentKW.some(kw => lowerMessage.includes(kw));
+
+                if (hasStrongIntent || (hasWeakIntent && hasDomainPattern)) {
+                    const domainMatch = message.match(/\b([a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,})\b/);
+                    const domainMention = domainMatch ? domainMatch[1] : '';
+                    response = scoutResponses.buyIntent(domainMention);
+
+                // --- GREETINGS (strict: short greeting only, nothing else) ---
+                } else if (/^(hi|hey|hello|good morning|good afternoon|good evening|morning|afternoon|evening)(\s+(there|everyone|folks|world))?\s*[!.?]?\s*$/.test(lowerMessage.trim())) {
+                    response = scoutResponses.greeting;
+
+                // --- THANKS / SIGN-OFF ---
+                } else if ((/\b(thanks|thank you|cheers|ta)\b/.test(lowerMessage) && !/\b(tell me|show me|what|how|do you)\b/.test(lowerMessage)) ||
+                           /\b(bye|goodbye|see you|see ya|later|take care)\s*[!.?]?\s*$/.test(lowerMessage.trim())) {
+                    response = scoutResponses.thanksOrBye;
+
+                // --- ABOUT THE BUSINESS (specific phrases only — won't catch "tell me about [category]") ---
+                } else if (/\b(who are you|what is domain terrier|about domain terrier|who is colin|who owns this|tell me about yourself|about you)\b/.test(lowerMessage)) {
+                    response = scoutResponses.about;
+
+                // --- WHAT CAN YOU DO (but NOT if asking for category recommendations) ---
+                } else if (/\b(what can you|what do you do|how does this work|what are you|how can you help)\b/.test(lowerMessage) &&
+                           // Don't match if they're asking for recommendations about a specific category
+                           !(/\brecommend\b/.test(lowerMessage) && (lowerMessage.includes('space') || lowerMessage.includes('fitness') || 
+                             lowerMessage.includes('travel') || lowerMessage.includes('crypto') || lowerMessage.includes('martial') || 
+                             lowerMessage.includes('outdoors') || lowerMessage.includes('british') || lowerMessage.includes('geographic') ||
+                             lowerMessage.includes('identity') || lowerMessage.includes('digital identity')))) {
+                    response = scoutResponses.whatCanYouDo;
+
+                // --- WEB3 EDUCATION ---
+                } else if (/\b(what is web3|what is a web3|what is a tld|what is a domain|what does tld mean|what is blockchain|how do web3|difference between web2|explain domains?)\b/.test(lowerMessage)) {
+                    response = scoutResponses.web3Education;
+
+                // --- PRICING GENERAL (no domain pattern = general question, not specific price check) ---
+                } else if (/\b(how much do|are these expensive|cheapest|budget options?|why are some expensive|cost of domain|domain cost|affordable)\b/.test(lowerMessage)) {
+                    response = scoutResponses.pricingGeneral;
+
+                // --- PROCESS / HOW IT WORKS ---
+                } else if (/\b(how does buying work|what happens after|how long does|do i need a wallet|is it safe to buy|what payment|how do i pay|steps to buy)\b/.test(lowerMessage)) {
+                    response = scoutResponses.howItWorks;
+
+                // --- TRUST & SAFETY ---
+                } else if (/\b(is this legit|is this safe|are you trustworthy|trustworthy|any reviews|what makes you different|legitimate|scam|safe to buy from)\b/.test(lowerMessage)) {
+                    response = scoutResponses.trust;
+
+                // --- REFUND ---
+                } else if (/\b(refund|change my mind|money back|cancel my)\b/.test(lowerMessage)) {
+                    response = scoutResponses.refund;
+
+                // --- CONTACT (non-buy) ---
+                } else if (/\b(how do i get in touch|contact you|phone number|where are you based|get in touch|reach you)\b/.test(lowerMessage)) {
+                    response = scoutResponses.contact;
+
+                // --- SPECIFIC DOMAIN CHECK ("do you have X" or "is X available") ---
+                // BUT NOT if asking "do you have anything for [category]" (that should hit categories)
+                } else if ((/\b(do you have)\b/.test(lowerMessage) && !(/\b(anything for|something for)\b/.test(lowerMessage))) || 
+                           (/\bis .+available\b/.test(lowerMessage) && hasDomainPattern)) {
+                    response = scoutResponses.domainCheck(message);
+
+                // ============================================================
+                // CATEGORY KEYWORDS — Complete portfolio coverage
+                // Order matters: specific keywords before broad ones
+                // ============================================================
+
+                // --- NEW CLUSTERS ---
+
+                // GEOGRAPHIC & REGIONAL (british, southeast asia, caribbean, pacific, island, regional)
+                } else if (lowerMessage.includes('british') || lowerMessage.includes('uk') || lowerMessage.includes('ireland') || lowerMessage.includes('isles') || 
+                           lowerMessage.includes('southeast asia') || lowerMessage.includes('south east asia') || lowerMessage.includes('asian') || lowerMessage.includes('asia') ||
+                           lowerMessage.includes('caribbean') || lowerMessage.includes('pacific') || 
+                           lowerMessage.includes('island') || lowerMessage.includes('regional') || lowerMessage.includes('geography')) {
+                    response = scoutResponses.geographic;
+
+                // SPACE & AVIATION (merged: space, aviation, flight, sim)
+                } else if (lowerMessage.includes('space') || lowerMessage.includes('astronaut') || lowerMessage.includes('cosmos') || lowerMessage.includes('rocket') || 
+                           lowerMessage.includes('satellite') || lowerMessage.includes('mars') || lowerMessage.includes('orbit') || lowerMessage.includes('aerospace') ||
+                           lowerMessage.includes('aviation') || lowerMessage.includes('flight') || lowerMessage.includes('pilot') || lowerMessage.includes('aircraft')) {
+                    response = scoutResponses.spaceAviation;
+
+                // TECH & CRYPTO (innovation, tech, crypto, blockchain, developer)
+                } else if (lowerMessage.includes('crypto') || lowerMessage.includes('blockchain') || lowerMessage.includes('bitcoin') || lowerMessage.includes('ethereum') || 
+                           lowerMessage.includes('defi') || lowerMessage.includes('innovation') || lowerMessage.includes('innovator') ||
+                           lowerMessage.includes('tech startup') || lowerMessage.includes('technophile') || lowerMessage.includes('codebreaker') || 
+                           lowerMessage.includes('developer') || lowerMessage.includes('hacker')) {
+                    response = scoutResponses.techCrypto;
+
+                // LIFESTYLE & PASSION (travel, books, film, food, nature, hiking, coach)
+                } else if (lowerMessage.includes('travel') || lowerMessage.includes('bibliophile') || lowerMessage.includes('book') || 
+                           lowerMessage.includes('cinephile') || lowerMessage.includes('film') || lowerMessage.includes('movie') ||
+                           lowerMessage.includes('food lover') || lowerMessage.includes('food') || lowerMessage.includes('foodie') || 
+                           lowerMessage.includes('nature') || lowerMessage.includes('hiking') || lowerMessage.includes('trail') || 
+                           lowerMessage.includes('outdoors') || lowerMessage.includes('outdoor') ||
+                           lowerMessage.includes('dream') || lowerMessage.includes('life coach') || lowerMessage.includes('lifecoach')) {
+                    response = scoutResponses.lifestyle;
+
+                // SPORTS & FITNESS (fitness, combat, fight, racing, athlete, extreme)
+                } else if (lowerMessage.includes('fitness') || lowerMessage.includes('gym') || lowerMessage.includes('workout') || 
+                           lowerMessage.includes('combat') || lowerMessage.includes('mma') || lowerMessage.includes('boxing') || lowerMessage.includes('fight') ||
+                           lowerMessage.includes('martial arts') || lowerMessage.includes('martial art') ||
+                           lowerMessage.includes('racing') || lowerMessage.includes('race') || lowerMessage.includes('motorsport') || 
+                           lowerMessage.includes('driver') || lowerMessage.includes('driving') || lowerMessage.includes('car') ||
+                           lowerMessage.includes('athlete') || lowerMessage.includes('thrillseeker') || lowerMessage.includes('adrenaline') || 
+                           lowerMessage.includes('bonkers') || lowerMessage.includes('extreme sport')) {
+                    response = scoutResponses.sportsFitness;
+
+                // --- EXISTING CATEGORIES ---
+
+                } else if (lowerMessage.includes('filipino') || lowerMessage.includes('pinoy') || lowerMessage.includes('balikbayan') || lowerMessage.includes('manila') || lowerMessage.includes('philippines')) {
+                    response = scoutResponses.filipino;
+                } else if (lowerMessage.includes('rwa') || lowerMessage.includes('real world asset') || lowerMessage.includes('tokenization') || lowerMessage.includes('tokenize')) {
+                    response = scoutResponses.rwa;
+                } else if (lowerMessage.includes('smart glass') || lowerMessage.includes('ar glass') || lowerMessage.includes('vr') || lowerMessage.includes('augmented') || lowerMessage.includes('hud') || lowerMessage.includes('holographic')) {
+                    response = scoutResponses.smartglasses;
+                } else if (lowerMessage.includes('robot') || lowerMessage.includes('amr') || lowerMessage.includes('autonomous') || lowerMessage.includes('automation')) {
+                    response = scoutResponses.robotics;
+                } else if (lowerMessage.includes('gaming') || lowerMessage.includes('game') || lowerMessage.includes('metaverse')) {
+                    response = scoutResponses.gaming;
+                } else if (lowerMessage.includes('privacy') || lowerMessage.includes('monero') || lowerMessage.includes('xmr')) {
+                    response = scoutResponses.privacy;
+                } else if (lowerMessage.includes('zkp') || lowerMessage.includes('zero knowledge') || lowerMessage.includes('proof')) {
+                    response = scoutResponses.zkp;
+                } else if (lowerMessage.includes('freename') || lowerMessage.includes('unstoppable') || lowerMessage.includes('tld') || lowerMessage.includes('namespace') || lowerMessage.includes('own')) {
+                    response = scoutResponses.tlds;
+                } else if (lowerMessage.includes('ai') || lowerMessage.includes('agent') || lowerMessage.includes('agi')) {
+                    response = scoutResponses.ai;
+
+                // --- FALLBACK ---
+                } else {
+                    response = {
+                        action: "*Tilts head*",
+                        sound: "Woof!",
+                        response: `Hmm, I didn't quite catch that one! But don't worry — here's what I <em>can</em> help with:<br><br>
+                            🔍 <strong>Browse domains:</strong> Geographic, Space & Aviation, Tech & Crypto, Lifestyle, Sports & Fitness, Robotics, Smart Glasses, Gaming, Filipino, AI, Privacy, RWA, ZKP<br>
+                            📚 <strong>Learn:</strong> What is Web3? What's a TLD? How does it all work?<br>
+                            💰 <strong>Pricing:</strong> How much do domains cost? What's affordable?<br>
+                            📬 <strong>Connect:</strong> Get in touch with Colin<br><br>
+                            Or just try typing something like <em>"show me fitness domains"</em> or <em>"what is crypto?"</em> — I'll sniff it out! 🐕`
+                    };
+                }
+                
+                addScoutMessage(response);
+            }, 1000);
+        }
+        
+        function quickQuery(topic) {
+            const response = scoutResponses[topic];
+            if (response) {
+                addScoutMessage(response);
+            }
+        }
+        
+        function addUserMessage(text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            
+            // SECURITY: Create elements safely without innerHTML for user input
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            avatarDiv.textContent = '👤';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;  // textContent prevents XSS
+            
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(contentDiv);
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function addScoutMessage(response) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message scout';
+
+            // Avatar - safe static content
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            avatarDiv.textContent = '🐕';
+
+            // Content wrapper
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+
+            // Action line (e.g. "*Tail wags*") — textContent, never innerHTML
+            if (response.action) {
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'message-actions';
+                actionDiv.textContent = response.action;
+                contentDiv.appendChild(actionDiv);
+            }
+
+            // Sound line (e.g. "Woof!") — textContent, never innerHTML
+            if (response.sound) {
+                const soundEl = document.createElement('strong');
+                soundEl.textContent = response.sound;
+                contentDiv.appendChild(soundEl);
+                contentDiv.appendChild(document.createElement('br'));
+                contentDiv.appendChild(document.createElement('br'));
+            }
+
+            // Response body — this is TRUSTED static HTML defined inside
+            // scoutResponses above. It never contains user input.
+            // We use a dedicated container so the boundary is explicit.
+            const responseContainer = document.createElement('div');
+            responseContainer.className = 'scout-response-body';
+            responseContainer.innerHTML = response.response;
+            contentDiv.appendChild(responseContainer);
+
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(contentDiv);
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+    
+    <!-- Privacy Badge -->
+    <div class="privacy-badge">
+        <span class="privacy-badge-icon">🔒</span>
+        <span class="privacy-badge-text">Your Privacy Protected</span>
+        <span class="privacy-badge-details">No data collected • Client-side only • Secure</span>
+    </div>
+</body>
+</html>
