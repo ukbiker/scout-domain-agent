@@ -4,9 +4,17 @@
     {
       "src": "index.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "scout_avatar_icon.jpg",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/scout_avatar_icon.jpg",
+      "dest": "/scout_avatar_icon.jpg"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
