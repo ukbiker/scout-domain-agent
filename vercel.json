@@ -6,7 +6,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "scout_avatar_icon.jpg",
+      "src": "scout_avatar_icon.png",
       "use": "@vercel/static"
     }
   ],
