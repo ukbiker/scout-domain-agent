@@ -646,7 +646,7 @@
                         <div class="message-actions">*Tail wags*</div>
                         <strong>Woof! Welcome to Domain Terrier!</strong>
                         <p style="margin-top: 10px;">
-                            I'm Scout v4.1, your AI domain hunting companion with <strong>smart educational features</strong>!
+                            I'm Scout v4.4, your AI domain hunting companion with <strong>ultimate multi-part intelligence</strong>!
                         </p>
                         
                         <!-- Domain of the Day -->
@@ -661,12 +661,12 @@
                         </div>
                         
                         <p style="margin-top: 10px; padding: 10px; background: #f0f4ff; border-left: 4px solid #4a90d9; border-radius: 5px; font-size: 14px;">
-                            ✨ <strong>What's New in v4.1:</strong><br>
-                            📚 Domain education - Learn about investing!<br>
-                            💰 Payment plans - LTO info available!<br>
-                            🤖 Industry insights - AMR & RWA markets!<br>
-                            🚀 Web3 deep dives - Understand blockchain domains!<br>
-                            🌟 Daily featured domain - New opportunity every day!
+                            ✨ <strong>What's New in v4.4:</strong><br>
+                            🎯 Ultimate multi-part answers - 14 complex patterns solved!<br>
+                            💰 Price + Payment combos - "How much + can I pay installments?"<br>
+                            🛒 Browse + Education - "Show aviation + tell me about industry"<br>
+                            ⚖️ Compare + Advice - "Which is better for branding?"<br>
+                            📚 Complete guides - Buying process, escrow safety, & more!
                         </p>
                         <p style="margin-top: 10px;">
                             What brings you here today?<br>
@@ -1126,6 +1126,34 @@ function getPriceUSD(domain) {
 // ============================================================================
 
 // Intent classification with scoring
+// Detect if message contains multiple questions
+function hasMultipleQuestions(message) {
+    const lower = message.toLowerCase();
+    
+    // Count question marks
+    const questionMarks = (message.match(/\?/g) || []).length;
+    if (questionMarks > 1) return true;
+    
+    // Detect question connectors (and, also, plus)
+    const hasConnector = /\b(and|also|plus|as well as)\b/.test(lower);
+    const hasQuestion = /\b(what|how|why|when|where|who|is|are|do|does|can|will|would|should)\b/.test(lower);
+    
+    // Check for patterns like "What is X? How does Y?" or "Explain A and B"
+    if (hasQuestion && hasConnector) {
+        // Look for multiple question words
+        const questionWords = lower.match(/\b(what|how|why|when|where|who)\b/g) || [];
+        if (questionWords.length > 1) return true;
+        
+        // Or combination like "What is X and Y" with explicit topics
+        if (/what (is|are).*\b(and|also)\b/.test(lower)) return true;
+        if (/how (does|will|would).*\b(and|also)\b/.test(lower)) return true;
+        if (/explain.*\b(and|also)\b/.test(lower)) return true;
+        if (/tell me about.*\b(and|also)\b/.test(lower)) return true;
+    }
+    
+    return false;
+}
+
 function classifyQuery(message) {
     const lower = message.toLowerCase();
     const scores = {
@@ -1184,12 +1212,31 @@ function classifyQuery(message) {
         /\b(good domain|domain investment|invest in domain|domain value|evaluate domain|choose a domain|domain worth|what makes.*domain)\b/.test(lower) ||
         (/\b(branding|brand|domain name|my domain)\b/.test(lower) && /\b(important|why|value|matter|does.*matter)\b/.test(lower)) ||
         /\b(amr|autonomous mobile robot|warehouse robot)\b/.test(lower) ||
-        /\b(rwa|real world asset|tokenization|tokenize)\b/.test(lower)) {
-        scores.learn = 105;  // Higher than BROWSE (98) to win when there's overlap
+        /\b(rwa|real world asset|tokenization|tokenize)\b/.test(lower) ||
+        // Web3 impact questions (will/should/difference between Web3 and Web2)
+        (/\b(web ?3)\b/.test(lower) && /\b(web ?2|affect|impact|change|replace|difference|kill|destroy|transition|shift|future|industry)\b/.test(lower)) ||
+        // Web3 TLD + why buy questions
+        (/\b(web ?3 tlds?|web3 domains?)\b/.test(lower) && /\b(why|should i|benefit)\b/.test(lower))) {
+        scores.learn = 105;  // Higher than BROWSE (98) and BUY (98) to win
+    }
+    
+    // Special boost: "tell me about" + educational topics should be LEARN not BROWSE
+    if (/\b(tell me about|explain)\b/.test(lower) && 
+        /\b(domain investing?|branding|amr|rwa|autonomous|tokenization|real world asset)\b/.test(lower)) {
+        scores.learn = 125;  // Beat BROWSE (98) + domain bonus (20) = 118
+    }
+    
+    // Special boost: payment+escrow and offers+purchase questions are LEARN not BROWSE/BUY
+    if ((/\b(payment|accept|methods)\b/.test(lower) && /\b(escrow|safe|secure|trust)\b/.test(lower)) ||
+        (/\b(offers?|negotiate)\b/.test(lower) && /\b(purchase|buy|process)\b/.test(lower))) {
+        scores.learn = 110;  // Beat BROWSE (98) and BUY (98)
     }
     
     // Special case: TLD comparison questions should be educational, not domain comparisons
-    if (/\b(difference between|compare)\b/.test(lower) && /\.(com|net|org|filipino|aviator|agi|agent|xmr)/i.test(lower)) {
+    // Only trigger when comparing TLD TYPES (e.g. ".com vs .filipino"), not specific domains
+    if (/\b(difference between|compare)\b/.test(lower) && 
+        /\b(difference between|compare)\s+(\.|dot\s)?(com|net|org|filipino|aviator|agi|agent|xmr)\b/i.test(lower) &&
+        !/\b[a-z0-9][-a-z0-9]+\.(com|net|org|filipino|aviator|agi|agent|xmr)\b/i.test(lower)) {
         scores.learn = 105;  // Higher than COMPARE (98) to win
     }
     
@@ -1477,15 +1524,100 @@ function buildCompareResponse(domains) {
 // MAIN MESSAGE HANDLER
 // ============================================================================
 
+// Detect and handle complex multi-part queries
+function handleMultiPartQuery(message, lower, entities, classification) {
+    // Pattern 1: "How much is DOMAIN and PAYMENT_QUESTION?"
+    if (entities.domainNames.length > 0 && /\b(payment plans?|installments?|afford|lease[- ]to[- ]own|lto|pay monthly|can i pay|offer.*payment)\b/.test(lower)) {
+        const domain = searchDomains({ domainName: entities.domainNames[0] })[0];
+        if (domain) {
+            const detailResponse = `<div class='domain-card'><div class='domain-name'>${domain.name}</div><div class='domain-description'>${formatPrice(domain)}<br><br>${domain.description || ''}<br><br><strong>Type:</strong> ${domain.type.toUpperCase()}<br><strong>Categories:</strong> ${domain.categories.join(', ')}<br>${domain.lto ? '✅ <strong>Lease-to-Own Available</strong>' : ''}<br><br>📧 <strong>Want this domain?</strong> Email Colin</div></div>`;
+            
+            return {
+                action: "*Tail wags helpfully*",
+                sound: "Woof!",
+                response: `Found it! Here's ${domain.name} 🎯<br><br>` + detailResponse + 
+                    "<br><br><div class='domain-card'><div class='domain-name'>💰 Payment Options Available!</div><div class='domain-description'><strong>Lease-to-Own (LTO):</strong><br>• Spread over 12-24 months<br>• Low monthly installments<br>• Example: $18,000 = ~$1,500/month<br><br><strong>This domain " + (domain.lto ? "✅ QUALIFIES" : "may qualify") + " for LTO!</strong><br><br>📧 Contact Colin for payment plans: <a href='mailto:info@domainterrier.com'>info@domainterrier.com</a></div></div>"
+            };
+        }
+    }
+    
+    // Pattern 2: "Show me PRICE_FILTER and PAYMENT_INFO"
+    if (entities.priceLimit && /\b(lease[- ]to[- ]own|lto|payment plans?|financing)\b/.test(lower)) {
+        const domains = searchDomains({ maxPrice: entities.priceLimit });
+        return {
+            action: "*Sniffs around excitedly*",
+            sound: "Woof!",
+            response: generateBrowseResponse(domains, `under $${entities.priceLimit.toLocaleString()}`) +
+                "<br><br><div class='domain-card'><div class='domain-name'>💰 About Lease-to-Own (LTO)</div><div class='domain-description'><strong>Available through Dynadot & Atom:</strong><br>• Spread payments over 12-24 months<br>• Low monthly installments<br>• Own the domain at the end!<br><br>Domains marked ✅ <strong>Lease-to-Own Available</strong> qualify!<br><br>📧 Ask about payment plans: info@domainterrier.com</div></div>"
+        };
+    }
+    
+    // Pattern 3: "Show me CATEGORY and tell me about INDUSTRY"
+    if (entities.categories.length > 0 && (/\b(tell me about|what is|explain)\b/.test(lower) && 
+        (/\b(industry|market|amr|rwa|aviation|robotics)\b/.test(lower)))) {
+        const domains = searchDomains({ categories: entities.categories });
+        let industryInfo = "";
+        
+        // Add relevant industry education
+        if (/\b(amr|robotics|autonomous)\b/.test(lower)) {
+            industryInfo = "<br><br><div class='domain-card'><div class='domain-name'>🤖 About the AMR Industry</div><div class='domain-description'><strong>$5.5B (2024) → $15B+ (2030)</strong><br>18% annual growth! Warehouse automation, hospital logistics, manufacturing. Major players: Amazon, DHL, FedEx adopting rapidly.</div></div>";
+        } else if (/\b(rwa|real world asset|tokenization)\b/.test(lower)) {
+            industryInfo = "<br><br><div class='domain-card'><div class='domain-name'>🏛️ About RWA Tokenization</div><div class='domain-description'><strong>$300 Billion by 2030!</strong><br>Taking physical assets (real estate, commodities) onto blockchain. BlackRock, JP Morgan entering. Enables fractional ownership!</div></div>";
+        } else if (/\b(aviation)\b/.test(lower)) {
+            industryInfo = "<br><br><div class='domain-card'><div class='domain-name'>✈️ About the Aviation Industry</div><div class='domain-description'>Massive transformation with autonomous systems, drones, and aviation tech. Growing demand for professional aviation brands and aviation robotics domains.</div></div>";
+        }
+        
+        return {
+            action: "*Sniffs around excitedly*",
+            sound: "Woof!",
+            response: generateBrowseResponse(domains, entities.categories.join(' + ')) + industryInfo
+        };
+    }
+    
+    // Pattern 4: "CATEGORY domains and what is TLD?"
+    if (entities.categories.length > 0 && /\b(what is|explain|tell me about)\b/.test(lower) && 
+        /\b(\.(filipino|aviator|innovator|agi)|tld)\b/.test(lower)) {
+        const domains = searchDomains({ categories: entities.categories });
+        const tldMatch = lower.match(/\.(filipino|aviator|innovator|agi|agent|fittest)/);
+        const tldName = tldMatch ? tldMatch[1] : entities.categories.includes('filipino') ? 'filipino' : null;
+        
+        let tldInfo = "";
+        if (tldName) {
+            tldInfo = `<br><br><div class='domain-card'><div class='domain-name'>🚀 About .${tldName} TLD</div><div class='domain-description'><strong>Web3 blockchain domain - you OWN it forever!</strong><br>• No renewal fees (pay once, own forever)<br>• Colin owns this TLD and earns royalties<br>• True ownership as NFT on blockchain<br>• Early positioning in Web3 economy<br><br>Perfect for ${tldName === 'filipino' ? 'Filipino pride & identity!' : tldName === 'aviator' ? 'pilots & aviation professionals!' : 'innovators & entrepreneurs!'}</div></div>`;
+        }
+        
+        return {
+            action: "*Sniffs around excitedly*",
+            sound: "Woof!",
+            response: generateBrowseResponse(domains, entities.categories.join(' + ')) + tldInfo
+        };
+    }
+    
+    // Pattern 5: "Compare X and Y and ADVICE?"
+    if (classification.intent === 'compare' && /\b(which|better|best|recommend|should i)\b/.test(lower)) {
+        // This will be handled in COMPARE case with enhanced logic
+        return null; // Let it flow to COMPARE case
+    }
+    
+    return null; // No multi-part pattern matched
+}
+
 function handleMessage(message) {
     // Classify intent
     const classification = classifyQuery(message);
     const entities = extractEntities(message);
     
-    console.log('Intent:', classification.intent, 'Entities:', entities); // Debug
+    // Check if multi-question
+    const isMultiQ = hasMultipleQuestions(message);
+    
+    console.log('Intent:', classification.intent, 'Entities:', entities, 'MultiQ:', isMultiQ); // Debug
     
     // Check for special queries FIRST (before intent routing)
     const lower = message.toLowerCase();
+    
+    // Check for complex multi-part queries (PRICE+PAYMENT, BROWSE+EDUCATION, etc.)
+    const multiPartResponse = handleMultiPartQuery(message, lower, entities, classification);
+    if (multiPartResponse) return multiPartResponse;
     
     // "Who is Scout?" / "What dog breed are you?"
     if (/who (is|are you) scout|what (dog |)breed (are you|of dog)|tell me about (yourself|scout)|what kind of dog/i.test(lower)) {
@@ -1627,10 +1759,46 @@ function handleMessage(message) {
                 const domains = entities.domainNames.map(name => 
                     searchDomains({ domainName: name })[0]
                 ).filter(d => d);
+                
+                let compareResponse = buildCompareResponse(domains);
+                
+                // Add branding recommendation if asked "which is better"
+                if (/\b(which|better|best|recommend|should i|branding)\b/.test(lower) && domains.length >= 2) {
+                    const d1 = domains[0];
+                    const d2 = domains[1];
+                    
+                    let recommendation = "<br><br><div class='domain-card'><div class='domain-name'>🎯 Branding Recommendation</div><div class='domain-description'>";
+                    
+                    // Compare by length
+                    if (d1.name.length < d2.name.length) {
+                        recommendation += `<strong>For pure branding:</strong> ${d1.name}<br>• Shorter (${d1.name.length} vs ${d2.name.length} characters)<br>• Easier to remember and share<br>• More premium feel<br><br>`;
+                    } else if (d2.name.length < d1.name.length) {
+                        recommendation += `<strong>For pure branding:</strong> ${d2.name}<br>• Shorter (${d2.name.length} vs ${d1.name.length} characters)<br>• Easier to remember and share<br>• More premium feel<br><br>`;
+                    }
+                    
+                    // Compare by price/tier
+                    if (d1.tier === 'crown-jewel' && d2.tier !== 'crown-jewel') {
+                        recommendation += `<strong>Premium positioning:</strong> ${d1.name} (Crown Jewel tier)<br><br>`;
+                    } else if (d2.tier === 'crown-jewel' && d1.tier !== 'crown-jewel') {
+                        recommendation += `<strong>Premium positioning:</strong> ${d2.name} (Crown Jewel tier)<br><br>`;
+                    }
+                    
+                    // Compare by keywords
+                    if (d1.keywords.length > d2.keywords.length) {
+                        recommendation += `<strong>For SEO/keywords:</strong> ${d1.name}<br>• More descriptive keywords<br>• Better for search visibility<br><br>`;
+                    } else if (d2.keywords.length > d1.keywords.length) {
+                        recommendation += `<strong>For SEO/keywords:</strong> ${d2.name}<br>• More descriptive keywords<br>• Better for search visibility<br><br>`;
+                    }
+                    
+                    recommendation += `<strong>💡 Bottom Line:</strong><br>Shorter = better branding & memorability<br>More keywords = better SEO & clarity<br>Both have value — choose based on your priority!</div></div>`;
+                    
+                    compareResponse += recommendation;
+                }
+                
                 return {
                     action: "*Analyzes carefully*",
                     sound: "Woof!",
-                    response: buildCompareResponse(domains)
+                    response: compareResponse
                 };
             }
             return {
@@ -1674,7 +1842,25 @@ function handleMessage(message) {
                     response: "<strong>What's a TLD? (Top-Level Domain)</strong><br><br>A TLD is the extension at the end of a domain name — like <em>.com</em>, <em>.org</em>, <em>.filipino</em>, or <em>.aviator</em>!<br><br><div class='domain-card'><div class='domain-name'>🌐 Web2 TLDs (Traditional)</div><div class='domain-description'><strong>.com, .org, .net, .uk</strong> etc.<br>• Controlled by ICANN (central organization)<br>• You pay annual renewal fees<br>• You don't truly own them — it's a license</div></div><div class='domain-card'><div class='domain-name'>🚀 Web3 TLDs (Blockchain)</div><div class='domain-description'><strong>.filipino, .aviator, .agi, .innovator</strong> etc.<br>• Stored on blockchain<br>• You OWN them forever (no renewals!)<br>• Colin owns 33 Web3 TLDs<br>• When someone buys yourname.filipino, Colin earns royalty!</div></div><strong>Why Colin Owns TLDs:</strong><br>💰 Passive income from every domain sale<br>🎯 Brand authority in his namespace<br>🚀 Early Web3 positioning<br><br>Want to learn more? Ask: \"How do TLDs work?\" or \"Show me aviation domains!\" 🐕"
                 };
             }
-            // Check if asking about Web3
+            // Check if asking about Web3 IMPACT on Web2 (multi-part question)
+            if (/\b(web ?3)\b/.test(lower) && /\b(web ?2|affect|impact|change|replace|difference|kill|destroy|transition|shift|future)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>Web3 & Its Impact on Web2</strong><br><br>Great multi-part question! Let me cover both: 🐕<br><br><div class='domain-card'><div class='domain-name'>🌐 What is Web3?</div><div class='domain-description'><strong>Quick Recap:</strong><br>Web3 domains live on the <strong>blockchain</strong> — you truly OWN them forever (no renewals!). Examples: .filipino, .aviator, .innovator<br><br>Web2 domains (.com, .org) are controlled by ICANN — you're renting/licensing them with annual fees.</div></div><div class='domain-card'><div class='domain-name'>💥 How Web3 Will Affect Web2</div><div class='domain-description'><strong>🔄 Coexistence, NOT Replacement</strong><br>Web3 won't \"kill\" Web2 — they'll coexist for decades!<br>Think: Mobile didn't kill desktop computers. Email didn't kill postal mail.<br><br><strong>📊 Key Changes Coming:</strong><br><br><strong>OWNERSHIP MODEL</strong><br>• Web2: Annual licensing (rent forever)<br>• Web3: True ownership (buy once, own forever)<br>• Impact: Shift from rental to asset ownership<br><br><strong>CONTROL & CENTRALIZATION</strong><br>• Web2: ICANN/corporations control everything<br>• Web3: Users control their domains/data<br>• Impact: Less platform dependency, more freedom<br><br><strong>BUSINESS ECONOMICS</strong><br>• Web2: Platforms take 30-50% cuts, recurring fees<br>• Web3: Creators earn directly, one-time cost<br>• Impact: More creator-friendly economy<br><br><strong>TRUST & VERIFICATION</strong><br>• Web2: Trust the registrar/corporation<br>• Web3: Trust the blockchain (transparent, immutable)<br>• Impact: Provable ownership, no disputes</div></div><div class='domain-card'><div class='domain-name'>🎯 For Domain Investors (Like You!)</div><div class='domain-description'><strong>The Smart Strategy: Own BOTH!</strong><br><br>✅ <strong>Keep Premium .com</strong> — Trusted & valuable TODAY<br>• Established credibility<br>• Universal recognition<br>• Proven track record<br>• Example: velocair.com ($17,995)<br><br>✅ <strong>Add Web3 TLDs</strong> — Future positioning<br>• Early adopter advantage (like .com in 1995!)<br>• True ownership forever<br>• No renewal fees<br>• Example: pilot.aviator (own forever!)<br><br><strong>💡 Colin's Actual Strategy:</strong><br>He owns 200+ premium .com domains AND 33 Web3 TLDs!<br>Why? Diversification + covering both present AND future!</div></div><div class='domain-card'><div class='domain-name'>📅 Timeline Prediction</div><div class='domain-description'><strong>Next 5-10 Years:</strong><br>• Web2 remains dominant for business<br>• Web3 grows rapidly among tech-savvy users<br>• Both coexist peacefully<br><br><strong>10-20 Years:</strong><br>• Web3 becomes mainstream<br>• Web2 still widely used (like desktop computers today)<br>• Major brands have both .com AND Web3 domains<br><br><strong>The Opportunity:</strong> Get Web3 domains NOW while affordable!<br>FirstnameLastname.innovator = very reasonable<br>Premium names (Tech.aviator) = still available but won't be forever!</div></div><div class='domain-card'><div class='domain-name'>⚠️ Important Perspective</div><div class='domain-description'><strong>Web3 is still emerging technology.</strong><br>Benefits are real, but it's evolving. Always research!<br><br><strong>Don't Fear Web2 \"Death\":</strong><br>• .com won't disappear in your lifetime<br>• Your .com investments remain valuable<br>• Web3 is an ADDITION, not a replacement<br><br><strong>Think of it like:</strong><br>• Email didn't kill postal mail (both exist)<br>• Digital photos didn't kill film (both exist)<br>• Web3 won't kill Web2 (both will exist!)</div></div>Want to explore both? Try: \"Show me premium .com domains\" or \"Show me Web3 TLDs\" 🐕"
+                };
+            }
+            
+            // Check if asking about Web3 AND crypto wallet (multi-part)
+            if (/\b(web ?3)\b/.test(lower) && /\b(crypto wallet|wallet|metamask|need)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively*",
+                    sound: "Woof!",
+                    response: "<strong>Web3 Domains & Crypto Wallets</strong><br><br>Great two-part question! Let me explain both: 🐕<br><br><div class='domain-card'><div class='domain-name'>🌐 What are Web3 Domains?</div><div class='domain-description'><strong>Blockchain-based domains you TRULY OWN!</strong><br><br>• Pay once, own forever (no renewals)<br>• Stored as NFTs on blockchain<br>• Examples: .filipino, .aviator, .innovator<br>• Decentralized (no ICANN control)<br>• Colin owns 33 Web3 TLDs!</div></div><div class='domain-card'><div class='domain-name'>💰 Do You Need a Crypto Wallet?</div><div class='domain-description'><strong>For purchasing: NO</strong> (initially)<br>• You can buy with credit card, PayPal, etc.<br>• Standard payment methods work fine!<br><br><strong>For managing: YES</strong> (eventually)<br>• To receive the domain NFT<br>• To transfer ownership later<br>• To connect to Web3 services<br><br><strong>💡 Don't worry — it's easier than it sounds!</strong><br>• MetaMask wallet = free browser extension<br>• Takes 5 minutes to set up<br>• Colin can guide you through it!</div></div><div class='domain-card'><div class='domain-name'>🎯 The Process</div><div class='domain-description'><strong>Step 1:</strong> Buy domain (credit card works!)<br><strong>Step 2:</strong> Set up wallet (free, easy)<br><strong>Step 3:</strong> Receive domain NFT<br><strong>Step 4:</strong> You own it forever!<br><br>Most buyers set up wallet AFTER purchasing — no rush!</div></div><div class='domain-card'><div class='domain-name'>⚠️ Quick Reminder</div><div class='domain-description'><strong>Web3 is emerging tech</strong> — but the wallet setup is simpler than online banking! Millions use MetaMask daily.<br><br>Need help? Colin walks you through everything! 📧 info@domainterrier.com</div></div>Want to see Web3 domains? Try: \"Show me Web3 TLDs\" 🐕"
+                };
+            }
+            
+            // Check if asking about Web3 (general)
             if (/\b(web3|web 3)\b/.test(lower)) {
                 return {
                     action: "*Tilts head curiously*",
@@ -1683,7 +1869,17 @@ function handleMessage(message) {
                 };
             }
             
-            // Check if asking about domain investment / what makes a good domain
+            // Check if asking about BOTH domain investing AND branding (multi-topic)
+            if ((/\b(domain invest(ing)?|invest in domain|domain value)\b/.test(lower) || /\b(good domain|what makes.*domain)\b/.test(lower)) && 
+                /\b(branding|brand|marketing)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>📚 Domain Investing & Branding - Complete Guide</strong><br><br>Great multi-part question! Let me cover both the investment strategy AND branding importance! 🐕<br><br><div class='domain-card'><div class='domain-name'>💰 DOMAIN INVESTING - The 5-Factor Framework</div><div class='domain-description'><strong>What makes domains valuable:</strong><br><br><strong>1. SHORT & MEMORABLE</strong> - velocair.com (9 letters) > longcompanyname.com<br><strong>2. BRANDABLE</strong> - Sounds professional, easy to say/spell<br><strong>3. KEYWORD-RICH</strong> - SEO benefits, describes what you do<br><strong>4. RIGHT TLD</strong> - .com = trusted, Web3 = true ownership<br><strong>5. CLEAN HISTORY</strong> - No hyphens, numbers, spam history<br><br><strong>💎 Investment Returns:</strong><br>• Pizza.com sold for $2.6M<br>• Voice.com sold for $30M<br>• Domains appreciate like real estate!<br>• Colin's velocair.com appraised at $22,000</div></div><div class='domain-card'><div class='domain-name'>🎯 BRANDING - Why Your Domain IS Your Business</div><div class='domain-description'><strong>First Impressions (0.05 seconds!):</strong><br>• Premium domain = instant credibility<br>• 75% judge company legitimacy by domain<br>• TechStartup2024.biz vs innovator.tech - huge difference!<br><br><strong>Business Impact:</strong><br>✓ <strong>Memorability:</strong> velocair.com sticks, randomsite123.com doesn't<br>✓ <strong>Word of Mouth:</strong> Easy to share \"Check out innovator.tech\"<br>✓ <strong>SEO:</strong> Exact-match domains rank better<br>✓ <strong>Marketing:</strong> Premium = less ad spend needed<br><br><strong>💼 Your Domain = Your Digital Real Estate</strong><br>It's your 24/7 storefront, brand identity, competitive advantage, AND appreciating asset!</div></div><div class='domain-card'><div class='domain-name'>🚀 Colin's Investment + Branding Strategy</div><div class='domain-description'><strong>How Colin Chooses Domains:</strong><br><br>1. <strong>Growing Industry</strong> - Robotics, Web3, RWA (future demand)<br>2. <strong>Strong Branding</strong> - Short, memorable, professional<br>3. <strong>Clear Use Case</strong> - Target market obvious<br>4. <strong>Investment Value</strong> - Will appreciate over time<br><br><strong>Example: RWAManhattan.com ($9,995)</strong><br>✓ Hot industry (tokenization)<br>✓ Premium branding (Manhattan = prestige)<br>✓ Clear target (NYC real estate)<br>✓ Investment potential (early Web3 + prime location)<br><br><strong>💡 The Best Domains Do BOTH:</strong><br>Great for business TODAY (branding) AND appreciate in value (investment)!</div></div><div class='domain-card'><div class='domain-name'>📋 Quick Checklist</div><div class='domain-description'><strong>Before buying any domain, ask:</strong><br><br>✅ Is it short & memorable?<br>✅ Does it sound professional?<br>✅ Is it easy to spell/pronounce?<br>✅ Does it describe my business?<br>✅ Will people remember it?<br>✅ Can I brand around it?<br>✅ Is the industry growing?<br>✅ Will it appreciate in value?<br><br>If you answer YES to most → it's a good investment!</div></div><strong>🎯 Ready to invest smart?</strong> Try: \"Show me premium domains\" or \"Compare velocair.com and AutonoAir.com\" 🐕"
+                };
+            }
+            
+            // Check if asking about domain investment / what makes a good domain (single topic)
             if (/\b(good domain|domain investment|invest in domain|value|evaluate|choose a domain|domain worth)\b/.test(lower)) {
                 return {
                     action: "*Sits attentively like a professor*",
@@ -1701,7 +1897,16 @@ function handleMessage(message) {
                 };
             }
             
-            // Check if asking about AMR robotics
+            // Check if asking about BOTH AMR and RWA (multi-topic)
+            if (/\b(amr|autonomous (mobile )?robot)\b/.test(lower) && /\b(rwa|real world asset|tokenization)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>Two Booming Industries! 🚀</strong><br><br>Great question - let me cover both AMR Robotics AND RWA Tokenization! 🐕<br><br><div class='domain-card'><div class='domain-name'>🤖 AMR ROBOTICS (Autonomous Mobile Robots)</div><div class='domain-description'><strong>Market Explosion:</strong> $5.5B (2024) → $15B+ (2030)<br>• 18% annual growth!<br>• Warehouse automation, hospital logistics, manufacturing<br>• Major players: Amazon, DHL, FedEx adopting rapidly<br><br><strong>Why Domains Matter:</strong><br>AMR companies need credibility fast. Premium domains = instant authority<br><br><strong>Top Domains:</strong><br>• ammrobotics.com ($9,995) - Category leader<br>• amrexpo.com ($9,995) - Trade show/conference<br>• amrdynamics.com ($8,995) - Tech branding</div></div><div class='domain-card'><div class='domain-name'>🏛️ RWA TOKENIZATION (Real World Assets)</div><div class='domain-description'><strong>Market Explosion:</strong> Projected $300 Billion by 2030!<br>• Taking physical assets (real estate, commodities, art) onto blockchain<br>• BlackRock, JP Morgan, HSBC entering this space<br>• Enables fractional ownership (own 1% of a $10M building!)<br><br><strong>Why Domains Matter:</strong><br>Early Web3 positioning = .com in 1995. Lock in premium names NOW<br><br><strong>Top Domains:</strong><br>• RWAManhattan.com ($9,995) - NYC premium real estate<br>• nuclearrwa.com ($9,995) - Energy tokenization<br>• MetalRWA.io ($8,995) - Commodities market</div></div><div class='domain-card'><div class='domain-name'>🎯 Why BOTH Industries Are Hot Right Now</div><div class='domain-description'><strong>Common Theme: AUTOMATION + DIGITIZATION</strong><br><br>• <strong>AMR:</strong> Automating physical world (robots moving things)<br>• <strong>RWA:</strong> Digitizing physical world (blockchain ownership)<br>• Both solving inefficiency in traditional systems<br>• Both experiencing massive institutional investment<br>• Both need premium domains for credibility<br><br><strong>💡 Colin's Strategy:</strong> He owns domains in BOTH spaces!<br>Why? Diversification across two mega-trends!</div></div><strong>🚀 Want to explore?</strong><br>• AMR domains: \"Show me robotics domains\"<br>• RWA domains: \"Show me RWA domains\"<br>• Or ask about either industry specifically! 🐕"
+                };
+            }
+            
+            // Check if asking about AMR robotics (single topic)
             if (/\b(amr|autonomous mobile robot|warehouse robot)\b/.test(lower)) {
                 return {
                     action: "*Perks up excitedly*",
@@ -1716,6 +1921,52 @@ function handleMessage(message) {
                     action: "*Ears perk up*",
                     sound: "Woof!",
                     response: "<strong>🏛️ RWA (Real World Assets) - Industry Deep Dive</strong><br><br>Tokenization is the NEXT BIG THING in finance! Here's the opportunity:<br><br><div class='domain-card'><div class='domain-name'>💰 What is RWA Tokenization?</div><div class='domain-description'><strong>Simple Explanation:</strong><br>Taking physical assets (real estate, art, commodities) and turning them into blockchain tokens you can buy/sell/trade.<br><br><strong>Why It Matters:</strong><br>• Fractional ownership: Own 1% of a $10M building!<br>• 24/7 trading: No waiting for business hours<br>• Global access: Anyone, anywhere can invest<br>• Transparency: Blockchain records everything<br><br><strong>Example:</strong> Instead of needing $1M to buy a Manhattan apartment, you could buy a $10,000 token representing 1% ownership!</div></div><div class='domain-card'><div class='domain-name'>📈 Market Explosion</div><div class='domain-description'><strong>$300 Billion by 2030</strong> (Boston Consulting Group)<br><br><strong>What's Being Tokenized:</strong><br>• Real Estate (biggest category)<br>• Precious Metals (gold, silver, uranium)<br>• Art & Collectibles<br>• Carbon Credits<br>• Private Equity<br>• Commodities (oil, grain, etc.)<br><br><strong>Major Players:</strong> BlackRock, JP Morgan, HSBC are ALL entering this space!</div></div><div class='domain-card'><div class='domain-name'>💎 Domain Terrier's RWA Portfolio</div><div class='domain-description'><strong>Geographic RWA Domains:</strong><br>• <strong>RWAManhattan.com</strong> ($9,995) - NYC premium real estate<br>• <strong>RWAParis.com</strong> ($9,995) - European markets<br>• <strong>RWAShanghai.com</strong> ($9,995) - Asian expansion<br><br><strong>Industry-Specific RWA:</strong><br>• <strong>nuclearrwa.com</strong> ($9,995) - Energy tokenization<br>• <strong>MetalRWA.io</strong> ($8,995) - Commodities<br>• <strong>factoryrwa.com</strong> ($8,995) - Industrial assets<br><br>These domains position companies as RWA leaders!</div></div><strong>🚀 Want RWA domains?</strong> Try: \"Show me RWA domains\" or \"Compare RWA domains\" 🐕"
+                };
+            }
+            
+            // Check if asking about buying process AND transfer time (multi-part)
+            if (/\b(how do i buy|purchase|buying)\b/.test(lower) && /\b(transfer|how long|timeline)\b/.test(lower)) {
+                return {
+                    action: "*Tail wags helpfully*",
+                    sound: "Woof!",
+                    response: "<strong>🛒 How to Buy & Transfer Timeline</strong><br><br>Great questions! Let me walk you through both: 🐕<br><br><div class='domain-card'><div class='domain-name'>📋 Purchase Process (4 Easy Steps)</div><div class='domain-description'><strong>1. Browse & Choose</strong><br>• Explore domains here or email Colin<br>• Ask questions, get details<br><br><strong>2. Agree on Price</strong><br>• Listed price or make an offer (domains $2,995+)<br>• Colin responds within 24 hours<br><br><strong>3. Secure Payment via Escrow.com</strong><br>• 100% safe & secure<br>• Protects both buyer and seller<br>• Handles $5+ billion in transactions<br><br><strong>4. Domain Transfer</strong><br>• Colin unlocks domain<br>• Transfer initiated same day<br>• You receive domain!</div></div><div class='domain-card'><div class='domain-name'>⏱️ How Long Does It Take?</div><div class='domain-description'><strong>Payment cleared:</strong> 1-2 business days (Escrow.com)<br><strong>Transfer initiated:</strong> Same day<br><strong>Transfer complete:</strong> 1-3 business days<br><br><strong>Total timeline: 2-5 business days</strong> from payment to ownership!<br><br><strong>Web3 domains (.filipino, .aviator):</strong> Transfer INSTANTLY once payment clears! 🚀</div></div><div class='domain-card'><div class='domain-name'>💰 Payment Methods Accepted</div><div class='domain-description'>All major methods via Escrow.com:<br>• Credit/Debit Cards<br>• Wire Transfer<br>• PayPal<br>• Cryptocurrency (Bitcoin, Ethereum)<br>• Lease-to-Own plans (Dynadot, Atom)</div></div>📧 <strong>Ready to start?</strong> Email Colin: info@domainterrier.com 🐕"
+                };
+            }
+            
+            // Check if asking about payment methods AND escrow safety (multi-part)
+            if (/\b(payment|accept|methods)\b/.test(lower) && /\b(escrow|safe|secure|trust)\b/.test(lower)) {
+                return {
+                    action: "*Tail wags confidently*",
+                    sound: "Woof!",
+                    response: "<strong>💳 Payment Methods & Escrow Safety</strong><br><br>Great questions! Security matters! 🐕<br><br><div class='domain-card'><div class='domain-name'>💰 Payment Methods Accepted</div><div class='domain-description'><strong>All major methods via Escrow.com:</strong><br><br>• Credit/Debit Cards (Visa, Mastercard, Amex)<br>• Wire Transfer<br>• PayPal<br>• Cryptocurrency (Bitcoin, Ethereum)<br><br><strong>Plus: Lease-to-Own Plans!</strong><br>Available through Dynadot & Atom for qualified domains</div></div><div class='domain-card'><div class='domain-name'>🔒 Is Escrow.com Safe? ABSOLUTELY!</div><div class='domain-description'><strong>Why Escrow.com is the Gold Standard:</strong><br><br>✅ Licensed & regulated in all 50 US states<br>✅ Used by GoDaddy, Sedo, major marketplaces<br>✅ Handles $5+ BILLION in transactions<br>✅ A+ BBB rating<br>✅ Protects BOTH buyer and seller<br><br><strong>How It Protects You:</strong><br>1. You pay Escrow (Colin doesn't get money yet)<br>2. Colin transfers domain to you<br>3. You verify you received it<br>4. THEN Escrow releases payment to Colin<br><br><strong>You're 100% protected!</strong> If you don't get the domain, you get your money back. Period.</div></div><div class='domain-card'><div class='domain-name'>🎯 Why Colin Uses Escrow</div><div class='domain-description'>Safety for EVERYONE!<br>• Buyers protected from scams<br>• Sellers protected from chargebacks<br>• Professional, trusted process<br>• Industry standard for premium domains<br><br>It's literally how all serious domain sales happen!</div></div>📧 <strong>Questions about payment?</strong> info@domainterrier.com 🐕"
+                };
+            }
+            
+            // Check if asking about offers AND purchase process (multi-part)
+            if (/\b(offers?|negotiate)\b/.test(lower) && /\b(purchase|buy|process)\b/.test(lower)) {
+                return {
+                    action: "*Tail wags encouragingly*",
+                    sound: "Woof!",
+                    response: "<strong>💼 Making Offers & Purchase Process</strong><br><br>Great questions! Let me explain both: 🐕<br><br><div class='domain-card'><div class='domain-name'>💰 Do We Accept Offers? YES!</div><div class='domain-description'><strong>For domains priced OVER $2,995</strong>, Colin welcomes reasonable offers!<br><br><strong>How to Make an Offer:</strong><br>• Email Colin: info@domainterrier.com<br>• Use \"Make Offer\" on Atom/Dynadot listings<br>• Be specific about which domain & your offer<br><br><strong>Response time:</strong> Usually within 24 hours!<br><br>Colin is reasonable and wants win-win deals! 🤝</div></div><div class='domain-card'><div class='domain-name'>🛒 Purchase Process (Once Price Agreed)</div><div class='domain-description'><strong>1. Agreement:</strong> Price confirmed via email<br><strong>2. Escrow Setup:</strong> Colin sends Escrow.com link<br><strong>3. Your Payment:</strong> Pay via Escrow (100% safe)<br><strong>4. Transfer:</strong> Colin initiates domain transfer<br><strong>5. Verification:</strong> You confirm receipt<br><strong>6. Complete:</strong> Escrow releases payment to Colin<br><br><strong>Timeline:</strong> 2-5 business days total!<br><strong>Web3 domains:</strong> Instant transfer!</div></div><div class='domain-card'><div class='domain-name'>🎯 What Makes a Good Offer?</div><div class='domain-description'><strong>Colin considers:</strong><br>• Market value of similar domains<br>• Domain's keywords & branding potential<br>• Your use case & timeline<br>• Current market conditions<br><br><strong>💡 Pro tip:</strong> Explain WHY you want the domain! Colin loves seeing his domains go to great projects!</div></div>📧 <strong>Ready to make an offer?</strong> info@domainterrier.com 🐕"
+                };
+            }
+            
+            // Check if asking "what makes valuable" AND "how prices work" (multi-part)
+            if ((/\b(what makes|domain valuable|value)\b/.test(lower) && /\b(price|pricing|cost|work)\b/.test(lower)) ||
+                (/\b(valuable)\b/.test(lower) && /\b(how.*prices? work)\b/.test(lower))) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>📚 Domain Value & Pricing Explained</strong><br><br>Great two-part question! Let me break it down: 🐕<br><br><div class='domain-card'><div class='domain-name'>💎 What Makes a Domain Valuable? (The 5 Factors)</div><div class='domain-description'><strong>1. LENGTH</strong><br>• Shorter = more valuable<br>• velocair.com (9 letters) > longcompanyname.com<br>• Sweet spot: 6-12 characters<br><br><strong>2. BRANDABILITY</strong><br>• Professional sound<br>• Easy to pronounce & spell<br>• autonosurgeon.com = unique + memorable<br><br><strong>3. KEYWORDS</strong><br>• Industry-relevant terms<br>• SEO benefits<br>• AVRInstruments.com = aviation + instruments<br><br><strong>4. TLD</strong><br>• .com = most trusted (premium pricing)<br>• Web3 TLDs = true ownership, emerging value<br><br><strong>5. CLEAN HISTORY</strong><br>• No hyphens or numbers (usually)<br>• Not used for spam<br>• Professional appearance</div></div><div class='domain-card'><div class='domain-name'>💰 How Domain Pricing Works</div><div class='domain-description'><strong>Colin's Tiering System:</strong><br><br>👑 <strong>Crown Jewels</strong> ($12K-$18K)<br>• velocair.com, autonosurgeon.com<br>• Ultra-premium: short, brandable, .com<br>• Appraised at $20K+<br><br>💎 <strong>Premium</strong> ($5K-$12K)<br>• Strong keywords, good length<br>• Growing industries (AMR, RWA, aviation)<br>• Professional positioning<br><br>⭐ <strong>Quality</strong> ($2K-$5K)<br>• Solid domains, niche markets<br>• Great value for startups<br>• Web3 TLDs in this range<br><br>💚 <strong>Affordable</strong> (Under $2K)<br>• Web3 personal domains<br>• Emerging categories<br>• FirstnameLastname.innovator</div></div><div class='domain-card'><div class='domain-name'>📊 Real-World Comparisons</div><div class='domain-description'><strong>Why velocair.com is $17,995:</strong><br>• 9 letters (short!)<br>• Premium .com<br>• Aviation keyword<br>• Crown Jewel tier<br>• Appraised at $22,000<br><br><strong>Why autonovan.com is $6,995:</strong><br>• 10 letters (good)<br>• .com TLD<br>• Autonomous vehicle market<br>• Quality tier<br><br><strong>Domain prices = Digital real estate!</strong><br>Like houses: location (TLD), size (length), condition (keywords) matter!</div></div>🎯 <strong>Want examples?</strong> Try: \"Show me premium domains\" or \"Compare velocair.com and AutonoAir.com\" 🐕"
+                };
+            }
+            
+            // Check if asking about Web3 TLDs AND why buy them (multi-part)
+            if (/\b(web ?3 tlds?|web3 domains?)\b/.test(lower) && /\b(why|should i|benefit|buy)\b/.test(lower)) {
+                return {
+                    action: "*Perks up excitedly*",
+                    sound: "Woof!",
+                    response: "<strong>🚀 Web3 TLDs & Why You Should Buy Them</strong><br><br>Excellent question! Let me explain both: 🐕<br><br><div class='domain-card'><div class='domain-name'>🌐 What are Web3 TLDs?</div><div class='domain-description'><strong>Blockchain-based domain extensions you TRULY OWN!</strong><br><br>Examples: .filipino, .aviator, .innovator, .agi, .fittest<br><br>• Stored on blockchain (not ICANN)<br>• You own them as NFTs<br>• Pay ONCE, own FOREVER<br>• No annual renewal fees!<br><br>Colin owns 33 Web3 TLDs and earns royalties when you buy!</div></div><div class='domain-card'><div class='domain-name'>💡 Why Buy Web3 TLDs? (7 Reasons)</div><div class='domain-description'><strong>1. TRUE OWNERSHIP</strong><br>It's yours forever, like owning land vs renting<br><br><strong>2. NO RENEWALS</strong><br>Pay once = done! No annual $15-$50 fees<br><br><strong>3. EARLY ADOPTER ADVANTAGE</strong><br>Like buying .com in 1995! Get in NOW while available<br><br><strong>4. IDENTITY & BRANDING</strong><br>yourname.innovator = instant positioning as innovator!<br>pilot.aviator = clear professional identity<br><br><strong>5. FUTURE-PROOF</strong><br>Web3 is growing. Position yourself early!<br><br><strong>6. AFFORDABLE ENTRY</strong><br>FirstnameLastname.innovator = very reasonable<br>Much cheaper than premium .com names<br><br><strong>7. INVESTMENT POTENTIAL</strong><br>Early domains in emerging TLDs appreciate<br>Premium Web3 names will increase in value</div></div><div class='domain-card'><div class='domain-name'>🎯 Colin's Favorite Web3 TLDs</div><div class='domain-description'><strong>.innovator</strong> — Entrepreneurs, startups, thought leaders<br><strong>.aviator</strong> — Aviation professionals, pilots<br><strong>.fittest</strong> — Fitness industry, wellness<br><strong>.filipino</strong> — Filipino pride & identity<br><strong>.agi</strong> — AI companies, tech innovators<br><br>Each serves a specific community with built-in branding!</div></div><div class='domain-card'><div class='domain-name'>⚠️ Important Balance</div><div class='domain-description'><strong>Web3 is still emerging</strong> — not everyone knows about it yet. But that's the opportunity!<br><br><strong>Smart strategy:</strong> Own BOTH<br>• .com for current business credibility<br>• Web3 for future positioning & true ownership<br><br>Colin does exactly this: 200+ .com AND 33 Web3 TLDs!</div></div>🌟 <strong>Ready to explore?</strong> Try: \"Show me Web3 TLDs\" or \"Show me Filipino domains\" 🐕"
                 };
             }
             
