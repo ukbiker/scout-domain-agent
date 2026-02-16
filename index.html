@@ -327,7 +327,7 @@
             font-size: 12px;
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .container {
                 grid-template-columns: 1fr;
                 padding-bottom: 50px;
@@ -584,7 +584,7 @@
                                 3. <strong>Keywords:</strong> Industry-relevant terms (aviation, robotics, RWA)<br>
                                 4. <strong>TLD:</strong> .com is most trusted (and expensive)<br>
                                 5. <strong>Market Demand:</strong> Growing industries = higher value<br><br>
-                                <strong>Example:</strong> velocair.com = short, memorable, aviation keyword, .com TLD → Crown Jewel tier!<br><br>
+                                <strong>Example:</strong> velocair.com = short, memorable, aviation keyword, .com TLD → Flagship tier!<br><br>
                                 💡 <strong>Ask Scout:</strong> "What makes a good domain?" for detailed guide!
                             </div>
                         </div>
@@ -682,11 +682,17 @@
             </div>
             
             <div class="chat-input">
+                <!-- How to Ask Scout Tooltip -->
+                <div style="font-size: 12px; color: #666; margin-bottom: 10px; padding: 8px 12px; background: #f8f9fa; border-left: 3px solid #FF8C42; border-radius: 4px;">
+                    ℹ️ <strong>How to ask Scout:</strong>
+                    <span style="margin-left: 8px; color: #888;">Keep questions short • One topic at a time • Use buttons for common questions</span>
+                </div>
+                
                 <div class="input-group">
                     <input 
                         type="text" 
                         id="userInput" 
-                        placeholder="Ask Scout about domains, Web3, privacy crypto, TLDs..."
+                        placeholder="Ask me: 'How much is velocair.com?' or 'Show me aviation domains'"
                         maxlength="200"
                         autocomplete="off"
                         onkeypress="if(event.key==='Enter') sendMessage()"
@@ -709,7 +715,7 @@
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                         <div class="quick-action" onclick="quickQuery('Show me Web3 domains')">🚀 Web3 TLDs</div>
                         <div class="quick-action" onclick="quickQuery('Show me premium com domains')">💎 Premium .com</div>
-                        <div class="quick-action" onclick="quickQuery('Show me crown jewel domains')">👑 Crown Jewels</div>
+                        <div class="quick-action" onclick="quickQuery('Show me flagship domains')">🏆 Flagship</div>
                     </div>
                     
                     <!-- Section 3: Education -->
@@ -754,7 +760,9 @@ let lastMessageTime = 0;
 
 const DOMAIN_DB = [
     // ============= AVIATION - Premium Collection =============
-    { name: "velocair.com", price: 17995, currency: "USD", categories: ["aviation", "premium"], type: "com", tier: "crown-jewel", description: "Premium aviation brand - Crown Jewel!", keywords: ["velocity", "air", "aviation", "airline", "aerospace"], lto: true },
+    { name: "velocair.com", price: 17995, currency: "USD", categories: ["aviation", "premium"], type: "com", tier: "flagship", description: "Premium aviation brand - Flagship!", keywords: ["velocity", "air", "aviation", "airline", "aerospace"], lto: true },
+    { name: "QuantumQIP.com", price: 16995, currency: "USD", categories: ["quantum", "computing", "tech"], type: "com", tier: "flagship", description: "Quantum computing powerhouse - QIPS or 'Quantum Chips'!", keywords: ["quantum", "qip", "computing", "processor", "chips"], lto: true },
+    { name: "AutonoPilot.com", price: 15995, currency: "USD", categories: ["aviation", "robotics", "autonomous"], type: "com", tier: "flagship", description: "Autopilot revolution - Aviation + autonomous vehicles!", keywords: ["autonomous", "autopilot", "aviation", "self-driving"], lto: true },
     { name: "AVRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "instruments"], type: "com", tier: "premium", description: "Aviation instruments", keywords: ["avr", "aviation", "instruments", "avionics"], lto: true },
     { name: "AVRRobotics.com", price: 9995, currency: "USD", categories: ["aviation", "robotics"], type: "com", tier: "premium", description: "Aviation robotics", keywords: ["avr", "aviation", "robotics", "drones"], lto: true },
     { name: "EMRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "emergency"], type: "com", tier: "premium", description: "Emergency instruments", keywords: ["emr", "emergency", "instruments"], lto: true },
@@ -783,13 +791,14 @@ const DOMAIN_DB = [
     { name: "overseasfilipino.balikbayan", price: 1200, currency: "USD", categories: ["filipino"], type: "web3", tier: "mid", description: "OFW identity", keywords: ["overseas", "filipino", "ofw"], lto: false },
     
     // ============= ROBOTICS - Premium Collection =============
-    { name: "autonosurgeon.com", price: 12995, currency: "USD", categories: ["robotics", "medical"], type: "com", tier: "crown-jewel", description: "Surgical robotics premium!", keywords: ["autonomous", "surgeon", "medical", "robotics"], lto: true },
-    { name: "AutonoAir.com", price: 12995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "premium", description: "Autonomous aviation!", keywords: ["autonomous", "aviation", "drones"], lto: true },
-    { name: "autonosentry.com", price: 11995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "premium", description: "Security robotics", keywords: ["autonomous", "sentry", "security"], lto: true },
+    { name: "autonosurgeon.com", price: 13995, currency: "USD", categories: ["robotics", "medical"], type: "com", tier: "flagship", description: "Surgical robotics premium!", keywords: ["autonomous", "surgeon", "medical", "robotics"], lto: true },
+    { name: "AutonoPilot.com", price: 14995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "flagship", description: "Autopilot revolution - Aviation + autonomous vehicles!", keywords: ["autonomous", "pilot", "autopilot"], lto: true },
+    { name: "autonosentry.com", price: 11995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "premium", description: "Security robotics - Tactical/military", keywords: ["autonomous", "sentry", "security"], lto: true },
+    { name: "AutonoAir.com", price: 10995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "premium", description: "Autonomous aviation!", keywords: ["autonomous", "aviation", "drones"], lto: true },
     { name: "AutonoCargo.com", price: 9995, currency: "USD", categories: ["robotics", "logistics"], type: "com", tier: "premium", description: "Cargo automation", keywords: ["autonomous", "cargo", "logistics"], lto: true },
-    { name: "AutonoNav.com", price: 9995, currency: "USD", categories: ["robotics", "navigation"], type: "com", tier: "premium", description: "Navigation systems", keywords: ["autonomous", "navigation"], lto: true },
-    { name: "AutonoPilot.com", price: 9995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "premium", description: "Autopilot market", keywords: ["autonomous", "pilot", "autopilot"], lto: true },
-    { name: "AutonoHaul.com", price: 8995, currency: "USD", categories: ["robotics", "logistics"], type: "com", tier: "premium", description: "Autonomous trucking", keywords: ["autonomous", "haul", "trucking"], lto: true },
+    { name: "AutonoNav.com", price: 8995, currency: "USD", categories: ["robotics", "navigation"], type: "com", tier: "premium", description: "Navigation systems", keywords: ["autonomous", "navigation"], lto: true },
+    { name: "AutonoChef.com", price: 7995, currency: "USD", categories: ["robotics", "culinary"], type: "com", tier: "mid", description: "Culinary automation - Rolls off the tongue!", keywords: ["autonomous", "chef", "cooking", "culinary"], lto: true },
+    { name: "AutonoGuard.com", price: 6995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "mid", description: "Security/protection automation", keywords: ["autonomous", "guard", "security"], lto: true },
     { name: "ammrobotics.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR focus!", keywords: ["amr", "robotics", "autonomous"], lto: true },
     { name: "amrexpo.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR expo", keywords: ["amr", "expo", "robotics"], lto: true },
     { name: "rimrobotics.com", price: 10995, currency: "USD", categories: ["robotics"], type: "com", tier: "premium", description: "RIM Robotics brand", keywords: ["rim", "robotics"], lto: true },
@@ -1058,7 +1067,7 @@ function searchDomains(filters = {}) {
         });
     } else {
         // Default: sort by tier priority, then price desc
-        const tierOrder = { 'crown-jewel': 0, 'premium': 1, 'mid': 2, 'affordable': 3 };
+        const tierOrder = { 'flagship': 0, 'premium': 1, 'mid': 2, 'affordable': 3 };
         results.sort((a, b) => {
             const tierDiff = tierOrder[a.tier] - tierOrder[b.tier];
             if (tierDiff !== 0) return tierDiff;
@@ -1074,7 +1083,7 @@ function searchDomains(filters = {}) {
 // Helper: Group domains by tier
 function groupByTier(domains) {
     const groups = {
-        'crown-jewel': [],
+        'flagship': [],
         'premium': [],
         'mid': [],
         'affordable': []
@@ -1322,9 +1331,9 @@ function extractEntities(message) {
         }
     }
     
-    // Extract tier (crown jewel, premium, etc.)
-    if (/\b(crown jewel|crown-jewel|top tier|flagship)\b/.test(lower)) {
-        entities.tier = 'crown-jewel';
+    // Extract tier (flagship, premium, etc.)
+    if (/\b(flagship|top tier)\b/.test(lower)) {
+        entities.tier = 'flagship';
     } else if (/\b(premium|high-end|luxury)\b/.test(lower)) {
         entities.tier = 'premium';
     }
@@ -1421,11 +1430,11 @@ function generateBrowseResponse(domains, category = null) {
         html += `<p style="margin-bottom: 15px;"><strong>Found ${domains.length} domains!</strong> 🎯</p>`;
     }
     
-    // Crown Jewels
-    if (grouped['crown-jewel'].length > 0) {
+    // Flagship Domains
+    if (grouped['flagship'].length > 0) {
         html += `<div class="domain-card">
-            <div class="domain-name">👑 Crown Jewels</div>`;
-        grouped['crown-jewel'].forEach(d => {
+            <div class="domain-name">🏆 Flagship Domains</div>`;
+        grouped['flagship'].forEach(d => {
             html += `<div style="margin: 10px 0;">
                 <strong>${d.name}</strong> - ${formatPrice(d)}<br>
                 <span style="font-size: 13px; color: #666;">${d.description}</span>
@@ -1603,6 +1612,18 @@ function handleMultiPartQuery(message, lower, entities, classification) {
 }
 
 function handleMessage(message) {
+    // Prompt Length Detection - guide users who write very long queries
+    const wordCount = message.trim().split(/\s+/).length;
+    const charCount = message.length;
+    
+    if (charCount > 250 || wordCount > 40) {
+        return {
+            action: "*Tilts head thoughtfully*",
+            sound: "Woof?",
+            response: "<strong>That's a lot to unpack! 🐕</strong><br><br>I work best with <strong>short, specific questions</strong>. Could you break that down into one question at a time?<br><br><strong>Examples:</strong><br>• \"How much is velocair.com?\"<br>• \"Do you offer payment plans?\"<br>• \"Show me aviation domains\"<br>• \"What is Web3?\"<br><br>What would you like to know first? 🎯"
+        };
+    }
+    
     // Classify intent
     const classification = classifyQuery(message);
     const entities = extractEntities(message);
@@ -1698,7 +1719,7 @@ function handleMessage(message) {
                 const mostExpensive = getMostExpensive(allDomains);
                 if (mostExpensive) {
                     return {
-                        action: "*Presents crown jewel*",
+                        action: "*Presents flagship domain*",
                         sound: "Woof!",
                         response: `Here's the most expensive domain${entities.categories.length > 0 ? ' in ' + entities.categories.join(' + ') : ''}! 👑<br><br>` + buildDomainDetailResponse(mostExpensive)
                     };
@@ -1777,10 +1798,10 @@ function handleMessage(message) {
                     }
                     
                     // Compare by price/tier
-                    if (d1.tier === 'crown-jewel' && d2.tier !== 'crown-jewel') {
-                        recommendation += `<strong>Premium positioning:</strong> ${d1.name} (Crown Jewel tier)<br><br>`;
-                    } else if (d2.tier === 'crown-jewel' && d1.tier !== 'crown-jewel') {
-                        recommendation += `<strong>Premium positioning:</strong> ${d2.name} (Crown Jewel tier)<br><br>`;
+                    if (d1.tier === 'flagship' && d2.tier !== 'flagship') {
+                        recommendation += `<strong>Premium positioning:</strong> ${d1.name} (Flagship tier)<br><br>`;
+                    } else if (d2.tier === 'flagship' && d1.tier !== 'flagship') {
+                        recommendation += `<strong>Premium positioning:</strong> ${d2.name} (Flagship tier)<br><br>`;
                     }
                     
                     // Compare by keywords
@@ -1957,7 +1978,7 @@ function handleMessage(message) {
                 return {
                     action: "*Sits attentively like a professor*",
                     sound: "Woof!",
-                    response: "<strong>📚 Domain Value & Pricing Explained</strong><br><br>Great two-part question! Let me break it down: 🐕<br><br><div class='domain-card'><div class='domain-name'>💎 What Makes a Domain Valuable? (The 5 Factors)</div><div class='domain-description'><strong>1. LENGTH</strong><br>• Shorter = more valuable<br>• velocair.com (9 letters) > longcompanyname.com<br>• Sweet spot: 6-12 characters<br><br><strong>2. BRANDABILITY</strong><br>• Professional sound<br>• Easy to pronounce & spell<br>• autonosurgeon.com = unique + memorable<br><br><strong>3. KEYWORDS</strong><br>• Industry-relevant terms<br>• SEO benefits<br>• AVRInstruments.com = aviation + instruments<br><br><strong>4. TLD</strong><br>• .com = most trusted (premium pricing)<br>• Web3 TLDs = true ownership, emerging value<br><br><strong>5. CLEAN HISTORY</strong><br>• No hyphens or numbers (usually)<br>• Not used for spam<br>• Professional appearance</div></div><div class='domain-card'><div class='domain-name'>💰 How Domain Pricing Works</div><div class='domain-description'><strong>Colin's Tiering System:</strong><br><br>👑 <strong>Crown Jewels</strong> ($12K-$18K)<br>• velocair.com, autonosurgeon.com<br>• Ultra-premium: short, brandable, .com<br>• Appraised at $20K+<br><br>💎 <strong>Premium</strong> ($5K-$12K)<br>• Strong keywords, good length<br>• Growing industries (AMR, RWA, aviation)<br>• Professional positioning<br><br>⭐ <strong>Quality</strong> ($2K-$5K)<br>• Solid domains, niche markets<br>• Great value for startups<br>• Web3 TLDs in this range<br><br>💚 <strong>Affordable</strong> (Under $2K)<br>• Web3 personal domains<br>• Emerging categories<br>• FirstnameLastname.innovator</div></div><div class='domain-card'><div class='domain-name'>📊 Real-World Comparisons</div><div class='domain-description'><strong>Why velocair.com is $17,995:</strong><br>• 9 letters (short!)<br>• Premium .com<br>• Aviation keyword<br>• Crown Jewel tier<br>• Appraised at $22,000<br><br><strong>Why autonovan.com is $6,995:</strong><br>• 10 letters (good)<br>• .com TLD<br>• Autonomous vehicle market<br>• Quality tier<br><br><strong>Domain prices = Digital real estate!</strong><br>Like houses: location (TLD), size (length), condition (keywords) matter!</div></div>🎯 <strong>Want examples?</strong> Try: \"Show me premium domains\" or \"Compare velocair.com and AutonoAir.com\" 🐕"
+                    response: "<strong>📚 Domain Value & Pricing Explained</strong><br><br>Great two-part question! Let me break it down: 🐕<br><br><div class='domain-card'><div class='domain-name'>💎 What Makes a Domain Valuable? (The 5 Factors)</div><div class='domain-description'><strong>1. LENGTH</strong><br>• Shorter = more valuable<br>• velocair.com (9 letters) > longcompanyname.com<br>• Sweet spot: 6-12 characters<br><br><strong>2. BRANDABILITY</strong><br>• Professional sound<br>• Easy to pronounce & spell<br>• autonosurgeon.com = unique + memorable<br><br><strong>3. KEYWORDS</strong><br>• Industry-relevant terms<br>• SEO benefits<br>• AVRInstruments.com = aviation + instruments<br><br><strong>4. TLD</strong><br>• .com = most trusted (premium pricing)<br>• Web3 TLDs = true ownership, emerging value<br><br><strong>5. CLEAN HISTORY</strong><br>• No hyphens or numbers (usually)<br>• Not used for spam<br>• Professional appearance</div></div><div class='domain-card'><div class='domain-name'>💰 How Domain Pricing Works</div><div class='domain-description'><strong>Colin's Tiering System:</strong><br><br>🏆 <strong>Flagship Domains</strong> ($12K-$18K)<br>• velocair.com, autonosurgeon.com<br>• Ultra-premium: short, brandable, .com<br>• Appraised at $20K+<br><br>💎 <strong>Premium</strong> ($5K-$12K)<br>• Strong keywords, good length<br>• Growing industries (AMR, RWA, aviation)<br>• Professional positioning<br><br>⭐ <strong>Quality</strong> ($2K-$5K)<br>• Solid domains, niche markets<br>• Great value for startups<br>• Web3 TLDs in this range<br><br>💚 <strong>Affordable</strong> (Under $2K)<br>• Web3 personal domains<br>• Emerging categories<br>• FirstnameLastname.innovator</div></div><div class='domain-card'><div class='domain-name'>📊 Real-World Comparisons</div><div class='domain-description'><strong>Why velocair.com is $17,995:</strong><br>• 9 letters (short!)<br>• Premium .com<br>• Aviation keyword<br>• Flagship tier<br>• Appraised at $22,000<br><br><strong>Why autonovan.com is $6,995:</strong><br>• 10 letters (good)<br>• .com TLD<br>• Autonomous vehicle market<br>• Quality tier<br><br><strong>Domain prices = Digital real estate!</strong><br>Like houses: location (TLD), size (length), condition (keywords) matter!</div></div>🎯 <strong>Want examples?</strong> Try: \"Show me premium domains\" or \"Compare velocair.com and AutonoAir.com\" 🐕"
                 };
             }
             
