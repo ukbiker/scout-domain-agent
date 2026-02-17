@@ -714,7 +714,7 @@
                     <div style="margin-bottom: 8px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px;">By Type</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                         <div class="quick-action" onclick="quickQuery('Show me Web3 domains')">🚀 Web3 TLDs</div>
-                        <div class="quick-action" onclick="quickQuery('Show me premium com domains')">💎 Premium .com</div>
+                        <div class="quick-action" onclick="quickQuery('Show me brandable domains')">💎 Brandable</div>
                         <div class="quick-action" onclick="quickQuery('Show me flagship domains')">🏆 Flagship</div>
                     </div>
                     
@@ -763,12 +763,12 @@ const DOMAIN_DB = [
     { name: "velocair.com", price: 17995, currency: "USD", categories: ["aviation", "premium"], type: "com", tier: "flagship", description: "Premium aviation brand - Flagship!", keywords: ["velocity", "air", "aviation", "airline", "aerospace"], lto: true },
     { name: "QuantumQIP.com", price: 16995, currency: "USD", categories: ["quantum", "computing", "tech"], type: "com", tier: "flagship", description: "Quantum computing powerhouse - QIPS or 'Quantum Chips'!", keywords: ["quantum", "qip", "computing", "processor", "chips"], lto: true },
     { name: "AutonoPilot.com", price: 15995, currency: "USD", categories: ["aviation", "robotics", "autonomous"], type: "com", tier: "flagship", description: "Autopilot revolution - Aviation + autonomous vehicles!", keywords: ["autonomous", "autopilot", "aviation", "self-driving"], lto: true },
-    { name: "AVRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "instruments"], type: "com", tier: "premium", description: "Aviation instruments", keywords: ["avr", "aviation", "instruments", "avionics"], lto: true },
-    { name: "AVRRobotics.com", price: 9995, currency: "USD", categories: ["aviation", "robotics"], type: "com", tier: "premium", description: "Aviation robotics", keywords: ["avr", "aviation", "robotics", "drones"], lto: true },
-    { name: "EMRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "emergency"], type: "com", tier: "premium", description: "Emergency instruments", keywords: ["emr", "emergency", "instruments"], lto: true },
-    { name: "AviationRWA.com", price: 8995, currency: "USD", categories: ["aviation", "rwa"], type: "com", tier: "premium", description: "Aviation tokenization", keywords: ["aviation", "rwa", "tokenization"], lto: true },
-    { name: "RotorRobotics.com", price: 6995, currency: "USD", categories: ["aviation", "robotics"], type: "com", tier: "premium", description: "Rotor systems", keywords: ["rotor", "robotics", "drones"], lto: true },
-    { name: "UBXInstruments.com", price: 7495, currency: "USD", categories: ["aviation", "instruments"], type: "com", tier: "premium", description: "UBX systems", keywords: ["ubx", "instruments"], lto: true },
+    { name: "AVRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "instruments"], type: "com", tier: "brandable", description: "Aviation instruments", keywords: ["avr", "aviation", "instruments", "avionics"], lto: true },
+    { name: "AVRRobotics.com", price: 9995, currency: "USD", categories: ["aviation", "robotics"], type: "com", tier: "brandable", description: "Aviation robotics", keywords: ["avr", "aviation", "robotics", "drones"], lto: true },
+    { name: "EMRInstruments.com", price: 9995, currency: "USD", categories: ["aviation", "emergency"], type: "com", tier: "brandable", description: "Emergency instruments", keywords: ["emr", "emergency", "instruments"], lto: true },
+    { name: "AviationRWA.com", price: 8995, currency: "USD", categories: ["aviation", "rwa"], type: "com", tier: "brandable", description: "Aviation tokenization", keywords: ["aviation", "rwa", "tokenization"], lto: true },
+    { name: "RotorRobotics.com", price: 6995, currency: "USD", categories: ["aviation", "robotics"], type: "com", tier: "brandable", description: "Rotor systems", keywords: ["rotor", "robotics", "drones"], lto: true },
+    { name: "UBXInstruments.com", price: 7495, currency: "USD", categories: ["aviation", "instruments"], type: "com", tier: "brandable", description: "UBX systems", keywords: ["ubx", "instruments"], lto: true },
     { name: "avilyft.com", price: 4995, currency: "USD", categories: ["aviation"], type: "com", tier: "mid", description: "Aviation lift", keywords: ["aviation", "lift"], lto: true },
     { name: "flightsteer.com", price: 4699, currency: "USD", categories: ["aviation"], type: "com", tier: "mid", description: "Flight control", keywords: ["flight", "steer", "control"], lto: true },
     { name: "dronesteer.com", price: 4595, currency: "USD", categories: ["aviation", "drones"], type: "com", tier: "mid", description: "Drone navigation", keywords: ["drone", "steer", "navigation"], lto: true },
@@ -776,8 +776,8 @@ const DOMAIN_DB = [
     { name: "DroidRental.com", price: 4995, currency: "USD", categories: ["aviation", "drones"], type: "com", tier: "mid", description: "Drone rental", keywords: ["droid", "rental", "drone"], lto: true },
     
     // AVIATION - Web3 TLDs
-    { name: "f14tomcat.aviator", price: 2500, currency: "USD", categories: ["aviation"], type: "web3", tier: "premium", description: "Top Gun nostalgia!", keywords: ["f14", "tomcat", "fighter", "topgun"], lto: false },
-    { name: "f35raptor.aviator", price: 2000, currency: "USD", categories: ["aviation"], type: "web3", tier: "premium", description: "5th gen stealth", keywords: ["f35", "raptor", "stealth"], lto: false },
+    { name: "f14tomcat.aviator", price: 2500, currency: "USD", categories: ["aviation"], type: "web3", tier: "brandable", description: "Top Gun nostalgia!", keywords: ["f14", "tomcat", "fighter", "topgun"], lto: false },
+    { name: "f35raptor.aviator", price: 2000, currency: "USD", categories: ["aviation"], type: "web3", tier: "brandable", description: "5th gen stealth", keywords: ["f35", "raptor", "stealth"], lto: false },
     { name: "fa18hornet.aviator", price: 1800, currency: "USD", categories: ["aviation"], type: "web3", tier: "mid", description: "Navy Super Hornet", keywords: ["fa18", "hornet", "navy"], lto: false },
     { name: "f16viper.aviator", price: 1800, currency: "USD", categories: ["aviation"], type: "web3", tier: "mid", description: "Fighting Falcon", keywords: ["f16", "viper", "falcon"], lto: false },
     { name: "f15eagle.aviator", price: 1800, currency: "USD", categories: ["aviation"], type: "web3", tier: "mid", description: "Air superiority", keywords: ["f15", "eagle", "fighter"], lto: false },
@@ -785,28 +785,28 @@ const DOMAIN_DB = [
     { name: "topgun.aviator", price: 1500, currency: "USD", categories: ["aviation"], type: "web3", tier: "mid", description: "Iconic!", keywords: ["topgun", "fighter", "pilot"], lto: false },
     
     // ============= FILIPINO - Identity Domains =============
-    { name: "manila.filipino", price: 2500, currency: "USD", categories: ["filipino", "geographic"], type: "web3", tier: "premium", description: "Premium city name", keywords: ["manila", "philippines", "capital"], lto: false },
-    { name: "filipino.balikbayan", price: 2500, currency: "USD", categories: ["filipino"], type: "web3", tier: "premium", description: "Cultural pride", keywords: ["filipino", "balikbayan", "identity"], lto: false },
-    { name: "pinoy.balikbayan", price: 2500, currency: "USD", categories: ["filipino"], type: "web3", tier: "premium", description: "Filipino pride", keywords: ["pinoy", "filipino", "identity"], lto: false },
+    { name: "manila.filipino", price: 2500, currency: "USD", categories: ["filipino", "geographic"], type: "web3", tier: "brandable", description: "Premium city name", keywords: ["manila", "philippines", "capital"], lto: false },
+    { name: "filipino.balikbayan", price: 2500, currency: "USD", categories: ["filipino"], type: "web3", tier: "brandable", description: "Cultural pride", keywords: ["filipino", "balikbayan", "identity"], lto: false },
+    { name: "pinoy.balikbayan", price: 2500, currency: "USD", categories: ["filipino"], type: "web3", tier: "brandable", description: "Filipino pride", keywords: ["pinoy", "filipino", "identity"], lto: false },
     { name: "overseasfilipino.balikbayan", price: 1200, currency: "USD", categories: ["filipino"], type: "web3", tier: "mid", description: "OFW identity", keywords: ["overseas", "filipino", "ofw"], lto: false },
     
     // ============= ROBOTICS - Premium Collection =============
     { name: "autonosurgeon.com", price: 13995, currency: "USD", categories: ["robotics", "medical"], type: "com", tier: "flagship", description: "Surgical robotics premium!", keywords: ["autonomous", "surgeon", "medical", "robotics"], lto: true },
     { name: "AutonoPilot.com", price: 14995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "flagship", description: "Autopilot revolution - Aviation + autonomous vehicles!", keywords: ["autonomous", "pilot", "autopilot"], lto: true },
-    { name: "autonosentry.com", price: 11995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "premium", description: "Security robotics - Tactical/military", keywords: ["autonomous", "sentry", "security"], lto: true },
-    { name: "AutonoAir.com", price: 10995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "premium", description: "Autonomous aviation!", keywords: ["autonomous", "aviation", "drones"], lto: true },
-    { name: "AutonoCargo.com", price: 9995, currency: "USD", categories: ["robotics", "logistics"], type: "com", tier: "premium", description: "Cargo automation", keywords: ["autonomous", "cargo", "logistics"], lto: true },
-    { name: "AutonoNav.com", price: 8995, currency: "USD", categories: ["robotics", "navigation"], type: "com", tier: "premium", description: "Navigation systems", keywords: ["autonomous", "navigation"], lto: true },
+    { name: "autonosentry.com", price: 11995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "brandable", description: "Security robotics - Tactical/military", keywords: ["autonomous", "sentry", "security"], lto: true },
+    { name: "AutonoAir.com", price: 10995, currency: "USD", categories: ["robotics", "aviation"], type: "com", tier: "brandable", description: "Autonomous aviation!", keywords: ["autonomous", "aviation", "drones"], lto: true },
+    { name: "AutonoCargo.com", price: 9995, currency: "USD", categories: ["robotics", "logistics"], type: "com", tier: "brandable", description: "Cargo automation", keywords: ["autonomous", "cargo", "logistics"], lto: true },
+    { name: "AutonoNav.com", price: 8995, currency: "USD", categories: ["robotics", "navigation"], type: "com", tier: "brandable", description: "Navigation systems", keywords: ["autonomous", "navigation"], lto: true },
     { name: "AutonoChef.com", price: 7995, currency: "USD", categories: ["robotics", "culinary"], type: "com", tier: "mid", description: "Culinary automation - Rolls off the tongue!", keywords: ["autonomous", "chef", "cooking", "culinary"], lto: true },
     { name: "AutonoGuard.com", price: 6995, currency: "USD", categories: ["robotics", "security"], type: "com", tier: "mid", description: "Security/protection automation", keywords: ["autonomous", "guard", "security"], lto: true },
-    { name: "ammrobotics.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR focus!", keywords: ["amr", "robotics", "autonomous"], lto: true },
-    { name: "amrexpo.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR expo", keywords: ["amr", "expo", "robotics"], lto: true },
-    { name: "rimrobotics.com", price: 10995, currency: "USD", categories: ["robotics"], type: "com", tier: "premium", description: "RIM Robotics brand", keywords: ["rim", "robotics"], lto: true },
-    { name: "amrdynamics.com", price: 8995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR dynamics", keywords: ["amr", "dynamics", "robotics"], lto: true },
-    { name: "amrmobility.com", price: 8995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "premium", description: "AMR mobility", keywords: ["amr", "mobility"], lto: true },
-    { name: "apxrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "premium", description: "APX brand", keywords: ["apx", "robotics"], lto: true },
-    { name: "ravrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "premium", description: "RAV brand", keywords: ["rav", "robotics"], lto: true },
-    { name: "reedrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "premium", description: "Reed Robotics", keywords: ["reed", "robotics"], lto: true },
+    { name: "ammrobotics.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "brandable", description: "AMR focus!", keywords: ["amr", "robotics", "autonomous"], lto: true },
+    { name: "amrexpo.com", price: 9995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "brandable", description: "AMR expo", keywords: ["amr", "expo", "robotics"], lto: true },
+    { name: "rimrobotics.com", price: 10995, currency: "USD", categories: ["robotics"], type: "com", tier: "brandable", description: "RIM Robotics brand", keywords: ["rim", "robotics"], lto: true },
+    { name: "amrdynamics.com", price: 8995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "brandable", description: "AMR dynamics", keywords: ["amr", "dynamics", "robotics"], lto: true },
+    { name: "amrmobility.com", price: 8995, currency: "USD", categories: ["robotics", "amr"], type: "com", tier: "brandable", description: "AMR mobility", keywords: ["amr", "mobility"], lto: true },
+    { name: "apxrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "brandable", description: "APX brand", keywords: ["apx", "robotics"], lto: true },
+    { name: "ravrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "brandable", description: "RAV brand", keywords: ["rav", "robotics"], lto: true },
+    { name: "reedrobotics.com", price: 8995, currency: "USD", categories: ["robotics"], type: "com", tier: "brandable", description: "Reed Robotics", keywords: ["reed", "robotics"], lto: true },
     { name: "ixrrobotics.com", price: 6995, currency: "USD", categories: ["robotics"], type: "com", tier: "mid", description: "IXR brand", keywords: ["ixr", "robotics"], lto: true },
     { name: "vlamrobotics.com", price: 6995, currency: "USD", categories: ["robotics"], type: "com", tier: "mid", description: "VLAM brand", keywords: ["vlam", "robotics"], lto: true },
     { name: "vertrobotics.com", price: 5995, currency: "USD", categories: ["robotics"], type: "com", tier: "mid", description: "Vertical robotics", keywords: ["vert", "vertical", "robotics"], lto: true },
@@ -819,50 +819,50 @@ const DOMAIN_DB = [
     { name: "RoboticsLingo.com", price: 3995, currency: "USD", categories: ["robotics"], type: "com", tier: "mid", description: "Industry terminology", keywords: ["robotics", "lingo", "terminology"], lto: true },
     
     // TELEMETRY
-    { name: "icutelemetry.com", price: 9995, currency: "USD", categories: ["robotics", "medical", "telemetry"], type: "com", tier: "premium", description: "ICU telemetry", keywords: ["icu", "telemetry", "medical"], lto: true },
-    { name: "emrtelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "emergency", "telemetry"], type: "com", tier: "premium", description: "Emergency medical", keywords: ["emr", "telemetry", "emergency"], lto: true },
-    { name: "evotelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "premium", description: "Evolution brand", keywords: ["evo", "telemetry"], lto: true },
-    { name: "sattelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "premium", description: "Satellite data", keywords: ["sat", "satellite", "telemetry"], lto: true },
-    { name: "sgntelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "premium", description: "Signal processing", keywords: ["sgn", "signal", "telemetry"], lto: true },
-    { name: "avrtelemetry.com", price: 7995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "premium", description: "AVR systems", keywords: ["avr", "telemetry"], lto: true },
+    { name: "icutelemetry.com", price: 9995, currency: "USD", categories: ["robotics", "medical", "telemetry"], type: "com", tier: "brandable", description: "ICU telemetry", keywords: ["icu", "telemetry", "medical"], lto: true },
+    { name: "emrtelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "emergency", "telemetry"], type: "com", tier: "brandable", description: "Emergency medical", keywords: ["emr", "telemetry", "emergency"], lto: true },
+    { name: "evotelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "brandable", description: "Evolution brand", keywords: ["evo", "telemetry"], lto: true },
+    { name: "sattelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "brandable", description: "Satellite data", keywords: ["sat", "satellite", "telemetry"], lto: true },
+    { name: "sgntelemetry.com", price: 8995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "brandable", description: "Signal processing", keywords: ["sgn", "signal", "telemetry"], lto: true },
+    { name: "avrtelemetry.com", price: 7995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "brandable", description: "AVR systems", keywords: ["avr", "telemetry"], lto: true },
     { name: "orbtelemetry.com", price: 6995, currency: "USD", categories: ["robotics", "telemetry"], type: "com", tier: "mid", description: "Orbital tracking", keywords: ["orb", "orbital", "telemetry"], lto: true },
     
     // ============= RWA - Real World Assets =============
-    { name: "RWAManhattan.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "NYC real estate!", keywords: ["rwa", "manhattan", "real estate"], lto: true },
-    { name: "LandRWA.io", price: 9995, currency: "USD", categories: ["rwa", "real-estate"], type: "io", tier: "premium", description: "Real estate RWA", keywords: ["land", "rwa", "real estate"], lto: true },
-    { name: "RWAUniverse.com", price: 9995, currency: "USD", categories: ["rwa"], type: "com", tier: "premium", description: "RWA ecosystem", keywords: ["rwa", "universe", "ecosystem"], lto: true },
-    { name: "SealRWA.com", price: 9995, currency: "USD", categories: ["rwa", "marine"], type: "com", tier: "premium", description: "Marine RWA", keywords: ["seal", "rwa", "marine"], lto: true },
-    { name: "RWAParis.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Paris real estate", keywords: ["rwa", "paris", "real estate"], lto: true },
-    { name: "RWALondon.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "London assets", keywords: ["rwa", "london", "real estate"], lto: true },
-    { name: "RWAShanghai.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Shanghai assets", keywords: ["rwa", "shanghai", "real estate"], lto: true },
-    { name: "RWATaipei.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Taipei tokenization", keywords: ["rwa", "taipei", "real estate"], lto: true },
-    { name: "RWAWashington.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "DC markets", keywords: ["rwa", "washington", "real estate"], lto: true },
-    { name: "RWAZurich.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Swiss finance", keywords: ["rwa", "zurich", "switzerland"], lto: true },
-    { name: "RWAMumbai.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "India growth", keywords: ["rwa", "mumbai", "india"], lto: true },
-    { name: "RWAPlaza.com", price: 9995, currency: "USD", categories: ["rwa"], type: "com", tier: "premium", description: "Marketplace brand", keywords: ["rwa", "plaza", "marketplace"], lto: true },
-    { name: "RWAMarine.com", price: 8995, currency: "USD", categories: ["rwa", "marine"], type: "com", tier: "premium", description: "Maritime/shipping", keywords: ["rwa", "marine", "shipping"], lto: true },
-    { name: "MetalRWA.io", price: 8995, currency: "USD", categories: ["rwa", "commodities"], type: "io", tier: "premium", description: "Metals tokenization", keywords: ["metal", "rwa", "commodities"], lto: true },
-    { name: "nuclearrwa.com", price: 9995, currency: "USD", categories: ["rwa", "energy"], type: "com", tier: "premium", description: "Energy assets", keywords: ["nuclear", "rwa", "energy"], lto: true },
-    { name: "factoryrwa.com", price: 8995, currency: "USD", categories: ["rwa", "industrial"], type: "com", tier: "premium", description: "Industrial assets", keywords: ["factory", "rwa", "industrial"], lto: true },
-    { name: "shippingrwa.com", price: 8995, currency: "USD", categories: ["rwa", "logistics"], type: "com", tier: "premium", description: "Logistics", keywords: ["shipping", "rwa", "logistics"], lto: true },
-    { name: "technologyrwa.com", price: 8995, currency: "USD", categories: ["rwa", "tech"], type: "com", tier: "premium", description: "Tech IP", keywords: ["technology", "rwa", "ip"], lto: true },
-    { name: "UraniumRWA.com", price: 7995, currency: "USD", categories: ["rwa", "commodities"], type: "com", tier: "premium", description: "Nuclear energy", keywords: ["uranium", "rwa", "nuclear"], lto: true },
-    { name: "MunichRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "German assets", keywords: ["munich", "rwa", "germany"], lto: true },
-    { name: "GenevaRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Swiss banking", keywords: ["geneva", "rwa", "switzerland"], lto: true },
-    { name: "KualaLumpurRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Malaysia", keywords: ["kuala lumpur", "rwa", "malaysia"], lto: true },
-    { name: "CaliforniaRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "premium", description: "Major state", keywords: ["california", "rwa", "real estate"], lto: true },
-    { name: "RealWorldMint.com", price: 7995, currency: "USD", categories: ["rwa", "minting"], type: "com", tier: "premium", description: "RWA minting", keywords: ["real world", "mint", "rwa"], lto: true },
-    { name: "WorldOnchain.io", price: 7995, currency: "USD", categories: ["rwa", "onchain"], type: "io", tier: "premium", description: "Global positioning", keywords: ["world", "onchain", "blockchain"], lto: true },
+    { name: "RWAManhattan.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "NYC real estate!", keywords: ["rwa", "manhattan", "real estate"], lto: true },
+    { name: "LandRWA.io", price: 9995, currency: "USD", categories: ["rwa", "real-estate"], type: "io", tier: "brandable", description: "Real estate RWA", keywords: ["land", "rwa", "real estate"], lto: true },
+    { name: "RWAUniverse.com", price: 9995, currency: "USD", categories: ["rwa"], type: "com", tier: "brandable", description: "RWA ecosystem", keywords: ["rwa", "universe", "ecosystem"], lto: true },
+    { name: "SealRWA.com", price: 9995, currency: "USD", categories: ["rwa", "marine"], type: "com", tier: "brandable", description: "Marine RWA", keywords: ["seal", "rwa", "marine"], lto: true },
+    { name: "RWAParis.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Paris real estate", keywords: ["rwa", "paris", "real estate"], lto: true },
+    { name: "RWALondon.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "London assets", keywords: ["rwa", "london", "real estate"], lto: true },
+    { name: "RWAShanghai.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Shanghai assets", keywords: ["rwa", "shanghai", "real estate"], lto: true },
+    { name: "RWATaipei.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Taipei tokenization", keywords: ["rwa", "taipei", "real estate"], lto: true },
+    { name: "RWAWashington.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "DC markets", keywords: ["rwa", "washington", "real estate"], lto: true },
+    { name: "RWAZurich.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Swiss finance", keywords: ["rwa", "zurich", "switzerland"], lto: true },
+    { name: "RWAMumbai.com", price: 9995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "India growth", keywords: ["rwa", "mumbai", "india"], lto: true },
+    { name: "RWAPlaza.com", price: 9995, currency: "USD", categories: ["rwa"], type: "com", tier: "brandable", description: "Marketplace brand", keywords: ["rwa", "plaza", "marketplace"], lto: true },
+    { name: "RWAMarine.com", price: 8995, currency: "USD", categories: ["rwa", "marine"], type: "com", tier: "brandable", description: "Maritime/shipping", keywords: ["rwa", "marine", "shipping"], lto: true },
+    { name: "MetalRWA.io", price: 8995, currency: "USD", categories: ["rwa", "commodities"], type: "io", tier: "brandable", description: "Metals tokenization", keywords: ["metal", "rwa", "commodities"], lto: true },
+    { name: "nuclearrwa.com", price: 9995, currency: "USD", categories: ["rwa", "energy"], type: "com", tier: "brandable", description: "Energy assets", keywords: ["nuclear", "rwa", "energy"], lto: true },
+    { name: "factoryrwa.com", price: 8995, currency: "USD", categories: ["rwa", "industrial"], type: "com", tier: "brandable", description: "Industrial assets", keywords: ["factory", "rwa", "industrial"], lto: true },
+    { name: "shippingrwa.com", price: 8995, currency: "USD", categories: ["rwa", "logistics"], type: "com", tier: "brandable", description: "Logistics", keywords: ["shipping", "rwa", "logistics"], lto: true },
+    { name: "technologyrwa.com", price: 8995, currency: "USD", categories: ["rwa", "tech"], type: "com", tier: "brandable", description: "Tech IP", keywords: ["technology", "rwa", "ip"], lto: true },
+    { name: "UraniumRWA.com", price: 7995, currency: "USD", categories: ["rwa", "commodities"], type: "com", tier: "brandable", description: "Nuclear energy", keywords: ["uranium", "rwa", "nuclear"], lto: true },
+    { name: "MunichRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "German assets", keywords: ["munich", "rwa", "germany"], lto: true },
+    { name: "GenevaRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Swiss banking", keywords: ["geneva", "rwa", "switzerland"], lto: true },
+    { name: "KualaLumpurRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Malaysia", keywords: ["kuala lumpur", "rwa", "malaysia"], lto: true },
+    { name: "CaliforniaRWA.com", price: 7995, currency: "USD", categories: ["rwa", "geographic"], type: "com", tier: "brandable", description: "Major state", keywords: ["california", "rwa", "real estate"], lto: true },
+    { name: "RealWorldMint.com", price: 7995, currency: "USD", categories: ["rwa", "minting"], type: "com", tier: "brandable", description: "RWA minting", keywords: ["real world", "mint", "rwa"], lto: true },
+    { name: "WorldOnchain.io", price: 7995, currency: "USD", categories: ["rwa", "onchain"], type: "io", tier: "brandable", description: "Global positioning", keywords: ["world", "onchain", "blockchain"], lto: true },
     
     // ============= SMART GLASSES & AR/VR =============
-    { name: "ARVRExpo.com", price: 12995, currency: "USD", categories: ["smartglasses", "ar", "vr"], type: "com", tier: "premium", description: "AR/VR expo - perfect timing!", keywords: ["ar", "vr", "expo", "conference"], lto: true },
-    { name: "TekSpex.com", price: 8995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "premium", description: "Smart glasses tech", keywords: ["tech", "specs", "glasses"], lto: true },
-    { name: "ARSpex.com", price: 6995, currency: "USD", categories: ["smartglasses", "ar"], type: "com", tier: "premium", description: "AR glasses market", keywords: ["ar", "specs", "glasses"], lto: true },
-    { name: "AugVis.com", price: 6995, currency: "USD", categories: ["smartglasses", "ar"], type: "com", tier: "premium", description: "Augmented vision", keywords: ["augmented", "vision", "ar"], lto: true },
-    { name: "EyeGates.com", price: 6495, currency: "USD", categories: ["smartglasses"], type: "com", tier: "premium", description: "Eye tech gateway", keywords: ["eye", "gates", "vision"], lto: true },
-    { name: "RetinaGate.com", price: 5995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "premium", description: "Retina technology", keywords: ["retina", "gate", "vision"], lto: true },
-    { name: "VisScan.com", price: 5995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "premium", description: "Vision scanning", keywords: ["vis", "scan", "vision"], lto: true },
-    { name: "OpticRealms.com", price: 5495, currency: "USD", categories: ["smartglasses", "vr"], type: "com", tier: "premium", description: "VR optics", keywords: ["optic", "realms", "vr"], lto: true },
+    { name: "ARVRExpo.com", price: 12995, currency: "USD", categories: ["smartglasses", "ar", "vr"], type: "com", tier: "brandable", description: "AR/VR expo - perfect timing!", keywords: ["ar", "vr", "expo", "conference"], lto: true },
+    { name: "TekSpex.com", price: 8995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "brandable", description: "Smart glasses tech", keywords: ["tech", "specs", "glasses"], lto: true },
+    { name: "ARSpex.com", price: 6995, currency: "USD", categories: ["smartglasses", "ar"], type: "com", tier: "brandable", description: "AR glasses market", keywords: ["ar", "specs", "glasses"], lto: true },
+    { name: "AugVis.com", price: 6995, currency: "USD", categories: ["smartglasses", "ar"], type: "com", tier: "brandable", description: "Augmented vision", keywords: ["augmented", "vision", "ar"], lto: true },
+    { name: "EyeGates.com", price: 6495, currency: "USD", categories: ["smartglasses"], type: "com", tier: "brandable", description: "Eye tech gateway", keywords: ["eye", "gates", "vision"], lto: true },
+    { name: "RetinaGate.com", price: 5995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "brandable", description: "Retina technology", keywords: ["retina", "gate", "vision"], lto: true },
+    { name: "VisScan.com", price: 5995, currency: "USD", categories: ["smartglasses"], type: "com", tier: "brandable", description: "Vision scanning", keywords: ["vis", "scan", "vision"], lto: true },
+    { name: "OpticRealms.com", price: 5495, currency: "USD", categories: ["smartglasses", "vr"], type: "com", tier: "brandable", description: "VR optics", keywords: ["optic", "realms", "vr"], lto: true },
     { name: "smarthuds.com", price: 4995, currency: "USD", categories: ["smartglasses", "hud"], type: "com", tier: "mid", description: "Smart HUD displays", keywords: ["smart", "hud", "displays"], lto: true },
     { name: "hudspecs.com", price: 4995, currency: "USD", categories: ["smartglasses", "hud"], type: "com", tier: "mid", description: "HUD smart glasses", keywords: ["hud", "specs", "glasses"], lto: true },
     { name: "HoloScream.com", price: 5495, currency: "USD", categories: ["smartglasses", "holographic"], type: "com", tier: "mid", description: "Holographic entertainment", keywords: ["holo", "scream", "entertainment"], lto: true },
@@ -874,27 +874,27 @@ const DOMAIN_DB = [
     { name: "EyeChi.com", price: 4295, currency: "USD", categories: ["smartglasses", "wellness"], type: "com", tier: "mid", description: "Eye wellness tech", keywords: ["eye", "chi", "wellness"], lto: true },
     
     // ============= PRIVACY CRYPTO - Monero .xmr =============
-    { name: "privatecoin.xmr", price: 3000, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "BEST .xmr domain!", keywords: ["private", "coin", "monero"], lto: false },
-    { name: "sendmonero.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Payment action", keywords: ["send", "monero", "payment"], lto: false },
-    { name: "sendxmr.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Send XMR", keywords: ["send", "xmr", "monero"], lto: false },
-    { name: "wiremonero.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Wire Monero", keywords: ["wire", "monero", "payment"], lto: false },
-    { name: "untrackable.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Core value", keywords: ["untrackable", "privacy", "monero"], lto: false },
-    { name: "nontraceable.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Monero essence", keywords: ["nontraceable", "privacy", "monero"], lto: false },
-    { name: "privatetoken.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Private token", keywords: ["private", "token", "monero"], lto: false },
-    { name: "privatecash.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Private cash", keywords: ["private", "cash", "monero"], lto: false },
-    { name: "privatemoney.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Private money", keywords: ["private", "money", "monero"], lto: false },
-    { name: "privacytoken.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Privacy token", keywords: ["privacy", "token", "monero"], lto: false },
-    { name: "privatesend.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "premium", description: "Monero feature!", keywords: ["private", "send", "monero"], lto: false },
+    { name: "privatecoin.xmr", price: 3000, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "BEST .xmr domain!", keywords: ["private", "coin", "monero"], lto: false },
+    { name: "sendmonero.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Payment action", keywords: ["send", "monero", "payment"], lto: false },
+    { name: "sendxmr.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Send XMR", keywords: ["send", "xmr", "monero"], lto: false },
+    { name: "wiremonero.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Wire Monero", keywords: ["wire", "monero", "payment"], lto: false },
+    { name: "untrackable.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Core value", keywords: ["untrackable", "privacy", "monero"], lto: false },
+    { name: "nontraceable.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Monero essence", keywords: ["nontraceable", "privacy", "monero"], lto: false },
+    { name: "privatetoken.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Private token", keywords: ["private", "token", "monero"], lto: false },
+    { name: "privatecash.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Private cash", keywords: ["private", "cash", "monero"], lto: false },
+    { name: "privatemoney.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Private money", keywords: ["private", "money", "monero"], lto: false },
+    { name: "privacytoken.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Privacy token", keywords: ["privacy", "token", "monero"], lto: false },
+    { name: "privatesend.xmr", price: 2500, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "brandable", description: "Monero feature!", keywords: ["private", "send", "monero"], lto: false },
     { name: "securemoney.xmr", price: 2000, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "mid", description: "Secure money", keywords: ["secure", "money", "monero"], lto: false },
     { name: "wirexmr.xmr", price: 2000, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "mid", description: "Wire XMR", keywords: ["wire", "xmr", "monero"], lto: false },
     { name: "sendcrypto.xmr", price: 2000, currency: "USD", categories: ["privacy", "crypto", "monero"], type: "web3", tier: "mid", description: "Send crypto", keywords: ["send", "crypto", "payment"], lto: false },
     
     // ============= AI AGENTS =============
-    { name: "supermind.agi", price: 5000, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "premium", description: "Ultimate AI intelligence!", keywords: ["super", "mind", "agi"], lto: false },
-    { name: "supermind.agent", price: 3000, currency: "USD", categories: ["ai", "agent"], type: "web3", tier: "premium", description: "AI agent brand", keywords: ["super", "mind", "agent"], lto: false },
-    { name: "k9.agi", price: 2500, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "premium", description: "K9 robot dog!", keywords: ["k9", "robot", "dog"], lto: false },
-    { name: "alfred.agi", price: 2500, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "premium", description: "Batman's AI butler", keywords: ["alfred", "butler", "ai"], lto: false },
-    { name: "innovator.agent", price: 2500, currency: "USD", categories: ["ai", "agent"], type: "web3", tier: "premium", description: "Innovation agent", keywords: ["innovator", "agent", "ai"], lto: false },
+    { name: "supermind.agi", price: 5000, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "brandable", description: "Ultimate AI intelligence!", keywords: ["super", "mind", "agi"], lto: false },
+    { name: "supermind.agent", price: 3000, currency: "USD", categories: ["ai", "agent"], type: "web3", tier: "brandable", description: "AI agent brand", keywords: ["super", "mind", "agent"], lto: false },
+    { name: "k9.agi", price: 2500, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "brandable", description: "K9 robot dog!", keywords: ["k9", "robot", "dog"], lto: false },
+    { name: "alfred.agi", price: 2500, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "brandable", description: "Batman's AI butler", keywords: ["alfred", "butler", "ai"], lto: false },
+    { name: "innovator.agent", price: 2500, currency: "USD", categories: ["ai", "agent"], type: "web3", tier: "brandable", description: "Innovation agent", keywords: ["innovator", "agent", "ai"], lto: false },
     { name: "k2.agi", price: 2000, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "mid", description: "Mountain metaphor", keywords: ["k2", "mountain", "agi"], lto: false },
     { name: "magi.agi", price: 2000, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "mid", description: "Wise AI", keywords: ["magi", "wise", "agi"], lto: false },
     { name: "phobos.agi", price: 1800, currency: "USD", categories: ["ai", "agi"], type: "web3", tier: "mid", description: "Mars moon", keywords: ["phobos", "mars", "agi"], lto: false },
@@ -907,19 +907,19 @@ const DOMAIN_DB = [
     { name: "wildcat.agent", price: 1500, currency: "USD", categories: ["ai", "agent"], type: "web3", tier: "mid", description: "Wild agent", keywords: ["wild", "cat", "agent"], lto: false },
     
     // ============= PETS & FASHION =============
-    { name: "weardogs.com", price: 5995, currency: "USD", categories: ["pets", "fashion"], type: "com", tier: "premium", description: "Dog apparel/fashion!", keywords: ["wear", "dogs", "fashion", "apparel"], lto: true },
-    { name: "wearcats.com", price: 5995, currency: "USD", categories: ["pets", "fashion"], type: "com", tier: "premium", description: "Cat fashion", keywords: ["wear", "cats", "fashion"], lto: true },
-    { name: "Dogs.pw", price: 10995, currency: "USD", categories: ["pets"], type: "pw", tier: "premium", description: "Premium short domain!", keywords: ["dogs", "pets"], lto: true },
+    { name: "weardogs.com", price: 5995, currency: "USD", categories: ["pets", "fashion"], type: "com", tier: "brandable", description: "Dog apparel/fashion!", keywords: ["wear", "dogs", "fashion", "apparel"], lto: true },
+    { name: "wearcats.com", price: 5995, currency: "USD", categories: ["pets", "fashion"], type: "com", tier: "brandable", description: "Cat fashion", keywords: ["wear", "cats", "fashion"], lto: true },
+    { name: "Dogs.pw", price: 10995, currency: "USD", categories: ["pets"], type: "pw", tier: "brandable", description: "Premium short domain!", keywords: ["dogs", "pets"], lto: true },
     
     // ============= FOOD & CULINARY =============
-    { name: "TeaAffinity.com", price: 5888, currency: "USD", categories: ["food", "tea"], type: "com", tier: "premium", description: "Tea enthusiasts!", keywords: ["tea", "affinity", "enthusiast"], lto: true },
-    { name: "AFineTea.com", price: 5888, currency: "USD", categories: ["food", "tea"], type: "com", tier: "premium", description: "Premium tea brand", keywords: ["fine", "tea", "premium"], lto: true },
-    { name: "autonochef.com", price: 6995, currency: "USD", categories: ["food", "ai"], type: "com", tier: "premium", description: "Automated cooking/AI chef!", keywords: ["autonomous", "chef", "cooking"], lto: true },
-    { name: "EliteBaristas.com", price: 4995, currency: "USD", categories: ["food", "coffee"], type: "com", tier: "premium", description: "Coffee professionals", keywords: ["elite", "barista", "coffee"], lto: true },
+    { name: "TeaAffinity.com", price: 5888, currency: "USD", categories: ["food", "tea"], type: "com", tier: "brandable", description: "Tea enthusiasts!", keywords: ["tea", "affinity", "enthusiast"], lto: true },
+    { name: "AFineTea.com", price: 5888, currency: "USD", categories: ["food", "tea"], type: "com", tier: "brandable", description: "Premium tea brand", keywords: ["fine", "tea", "premium"], lto: true },
+    { name: "autonochef.com", price: 6995, currency: "USD", categories: ["food", "ai"], type: "com", tier: "brandable", description: "Automated cooking/AI chef!", keywords: ["autonomous", "chef", "cooking"], lto: true },
+    { name: "EliteBaristas.com", price: 4995, currency: "USD", categories: ["food", "coffee"], type: "com", tier: "brandable", description: "Coffee professionals", keywords: ["elite", "barista", "coffee"], lto: true },
     { name: "realdealmeat.com", price: 2995, currency: "USD", categories: ["food"], type: "com", tier: "mid", description: "Authentic meat products", keywords: ["real", "deal", "meat"], lto: true },
     
     // ============= SKINCARE =============
-    { name: "qiropody.com", price: 4995, currency: "USD", categories: ["skincare", "medical"], type: "com", tier: "premium", description: "Podiatry/foot care", keywords: ["podiatry", "foot", "care"], lto: true },
+    { name: "qiropody.com", price: 4995, currency: "USD", categories: ["skincare", "medical"], type: "com", tier: "brandable", description: "Podiatry/foot care", keywords: ["podiatry", "foot", "care"], lto: true },
     { name: "kskingirl.com", price: 2995, currency: "USD", categories: ["skincare", "beauty"], type: "com", tier: "mid", description: "Female skincare market", keywords: ["skin", "girl", "beauty"], lto: true },
     { name: "kskingurus.com", price: 2995, currency: "USD", categories: ["skincare", "beauty"], type: "com", tier: "mid", description: "Expert positioning", keywords: ["skin", "gurus", "expert"], lto: true },
     { name: "kskinmagic.com", price: 2995, currency: "USD", categories: ["skincare", "beauty"], type: "com", tier: "mid", description: "Transformation brand", keywords: ["skin", "magic", "transformation"], lto: true },
@@ -936,18 +936,18 @@ const DOMAIN_DB = [
     { name: "Phytara.com", price: 2995, currency: "USD", categories: ["brandable", "biotech"], type: "com", tier: "mid", description: "Biotech/wellness - plant-based", keywords: ["brandable", "biotech", "wellness"], lto: true },
     { name: "Wyvara.com", price: 2995, currency: "USD", categories: ["brandable", "premium"], type: "com", tier: "mid", description: "Unique brandable name", keywords: ["brandable", "unique", "premium"], lto: true },
     { name: "TwoTalon.com", price: 2995, currency: "USD", categories: ["brandable", "unique"], type: "com", tier: "mid", description: "Memorable brandable - strong imagery", keywords: ["brandable", "talon", "memorable"], lto: true },
-    { name: "HeadPoise.com", price: 5995, currency: "USD", categories: ["brandable", "wellness"], type: "com", tier: "premium", description: "Wellness/meditation - balance & mindfulness", keywords: ["wellness", "meditation", "balance"], lto: true },
+    { name: "HeadPoise.com", price: 5995, currency: "USD", categories: ["brandable", "wellness"], type: "com", tier: "brandable", description: "Wellness/meditation - balance & mindfulness", keywords: ["wellness", "meditation", "balance"], lto: true },
     
     // ============= RETRO/NOSTALGIA =============
-    { name: "ClassicAnalog.com", price: 6995, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "premium", description: "Vinyl, film, analog tech!", keywords: ["classic", "analog", "vintage"], lto: true },
-    { name: "OfflineEra.com", price: 5995, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "premium", description: "Pre-digital nostalgia", keywords: ["offline", "nostalgia", "vintage"], lto: true },
-    { name: "TangibleTimes.com", price: 5495, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "premium", description: "Physical media, real experiences", keywords: ["tangible", "physical", "vintage"], lto: true },
+    { name: "ClassicAnalog.com", price: 6995, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "brandable", description: "Vinyl, film, analog tech!", keywords: ["classic", "analog", "vintage"], lto: true },
+    { name: "OfflineEra.com", price: 5995, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "brandable", description: "Pre-digital nostalgia", keywords: ["offline", "nostalgia", "vintage"], lto: true },
+    { name: "TangibleTimes.com", price: 5495, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "brandable", description: "Physical media, real experiences", keywords: ["tangible", "physical", "vintage"], lto: true },
     { name: "RetroImprint.com", price: 4995, currency: "USD", categories: ["retro", "nostalgia"], type: "com", tier: "mid", description: "Vintage branding & design", keywords: ["retro", "imprint", "vintage"], lto: true },
     
     // ============= CRYPTO/DEFI =============
-    { name: "DefiDingo.com", price: 4995, currency: "USD", categories: ["crypto", "defi"], type: "com", tier: "premium", description: "Aussie DeFi brand", keywords: ["defi", "dingo", "crypto"], lto: true },
-    { name: "WireCoin.net", price: 4995, currency: "USD", categories: ["crypto"], type: "net", tier: "premium", description: "Wire transfers/crypto", keywords: ["wire", "coin", "crypto"], lto: true },
-    { name: "defifinancial.xyz", price: 4995, currency: "USD", categories: ["crypto", "defi"], type: "xyz", tier: "premium", description: "DeFi finance", keywords: ["defi", "financial", "finance"], lto: true },
+    { name: "DefiDingo.com", price: 4995, currency: "USD", categories: ["crypto", "defi"], type: "com", tier: "brandable", description: "Aussie DeFi brand", keywords: ["defi", "dingo", "crypto"], lto: true },
+    { name: "WireCoin.net", price: 4995, currency: "USD", categories: ["crypto"], type: "net", tier: "brandable", description: "Wire transfers/crypto", keywords: ["wire", "coin", "crypto"], lto: true },
+    { name: "defifinancial.xyz", price: 4995, currency: "USD", categories: ["crypto", "defi"], type: "xyz", tier: "brandable", description: "DeFi finance", keywords: ["defi", "financial", "finance"], lto: true },
     { name: "CryptoDraken.com", price: 3995, currency: "USD", categories: ["crypto", "defi"], type: "com", tier: "mid", description: "Crypto dragon brand!", keywords: ["crypto", "draken", "dragon"], lto: true },
     { name: "DefiDraken.com", price: 3995, currency: "USD", categories: ["crypto", "defi"], type: "com", tier: "mid", description: "DeFi dragon", keywords: ["defi", "draken", "dragon"], lto: true },
     { name: "DefiCitadel.com", price: 3995, currency: "USD", categories: ["crypto", "defi"], type: "com", tier: "mid", description: "DeFi fortress", keywords: ["defi", "citadel", "fortress"], lto: true },
@@ -960,10 +960,10 @@ const DOMAIN_DB = [
     { name: "CoinTheory.xyz", price: 2495, currency: "USD", categories: ["crypto", "theory"], type: "xyz", tier: "affordable", description: "Theory brand", keywords: ["coin", "theory", "crypto"], lto: true },
     
     // ============= ONCHAIN/WEB3 =============
-    { name: "RealWorldMint.com", price: 5995, currency: "USD", categories: ["onchain", "rwa"], type: "com", tier: "premium", description: "RWA minting!", keywords: ["real world", "mint", "rwa"], lto: true },
-    { name: "WorldOnchain.io", price: 5995, currency: "USD", categories: ["onchain", "web3"], type: "io", tier: "premium", description: "Global blockchain", keywords: ["world", "onchain", "blockchain"], lto: true },
-    { name: "realmsync.com", price: 5495, currency: "USD", categories: ["onchain", "web3"], type: "com", tier: "premium", description: "Realm synchronization", keywords: ["realm", "sync", "blockchain"], lto: true },
-    { name: "realmmesh.com", price: 5495, currency: "USD", categories: ["onchain", "web3"], type: "com", tier: "premium", description: "Interconnected realms", keywords: ["realm", "mesh", "network"], lto: true },
+    { name: "RealWorldMint.com", price: 5995, currency: "USD", categories: ["onchain", "rwa"], type: "com", tier: "brandable", description: "RWA minting!", keywords: ["real world", "mint", "rwa"], lto: true },
+    { name: "WorldOnchain.io", price: 5995, currency: "USD", categories: ["onchain", "web3"], type: "io", tier: "brandable", description: "Global blockchain", keywords: ["world", "onchain", "blockchain"], lto: true },
+    { name: "realmsync.com", price: 5495, currency: "USD", categories: ["onchain", "web3"], type: "com", tier: "brandable", description: "Realm synchronization", keywords: ["realm", "sync", "blockchain"], lto: true },
+    { name: "realmmesh.com", price: 5495, currency: "USD", categories: ["onchain", "web3"], type: "com", tier: "brandable", description: "Interconnected realms", keywords: ["realm", "mesh", "network"], lto: true },
     { name: "onchainpromo.com", price: 4995, currency: "USD", categories: ["onchain", "marketing"], type: "com", tier: "mid", description: "Blockchain marketing", keywords: ["onchain", "promo", "marketing"], lto: true },
     { name: "onchainrealms.com", price: 4995, currency: "USD", categories: ["onchain", "web3"], type: "com", tier: "mid", description: "Digital worlds", keywords: ["onchain", "realms", "digital"], lto: true },
     { name: "onchaintheater.com", price: 4995, currency: "USD", categories: ["onchain", "entertainment"], type: "com", tier: "mid", description: "NFT entertainment", keywords: ["onchain", "theater", "entertainment"], lto: true },
@@ -973,7 +973,7 @@ const DOMAIN_DB = [
     { name: "onchainprint.com", price: 2995, currency: "USD", categories: ["onchain"], type: "com", tier: "mid", description: "Blockchain printing/NFTs", keywords: ["onchain", "print", "nft"], lto: true },
     
     // ============= BRANDING/MARKETING =============
-    { name: "BrandBrit.com", price: 5995, currency: "USD", categories: ["branding", "marketing"], type: "com", tier: "premium", description: "British branding!", keywords: ["brand", "british", "marketing"], lto: true },
+    { name: "BrandBrit.com", price: 5995, currency: "USD", categories: ["branding", "marketing"], type: "com", tier: "brandable", description: "British branding!", keywords: ["brand", "british", "marketing"], lto: true },
     { name: "brandgrowl.com", price: 4995, currency: "USD", categories: ["branding"], type: "com", tier: "mid", description: "Fierce brand voice", keywords: ["brand", "growl", "fierce"], lto: true },
     { name: "brandpurr.com", price: 4995, currency: "USD", categories: ["branding"], type: "com", tier: "mid", description: "Smooth branding", keywords: ["brand", "purr", "smooth"], lto: true },
     { name: "domainhounds.com", price: 4995, currency: "USD", categories: ["branding", "domains"], type: "com", tier: "mid", description: "Domain specialists", keywords: ["domain", "hounds", "specialists"], lto: true },
@@ -1067,7 +1067,7 @@ function searchDomains(filters = {}) {
         });
     } else {
         // Default: sort by tier priority, then price desc
-        const tierOrder = { 'flagship': 0, 'premium': 1, 'mid': 2, 'affordable': 3 };
+        const tierOrder = { 'flagship': 0, 'brandable': 1, 'mid': 2, 'affordable': 3 };
         results.sort((a, b) => {
             const tierDiff = tierOrder[a.tier] - tierOrder[b.tier];
             if (tierDiff !== 0) return tierDiff;
@@ -1084,7 +1084,7 @@ function searchDomains(filters = {}) {
 function groupByTier(domains) {
     const groups = {
         'flagship': [],
-        'premium': [],
+        'brandable': [],
         'mid': [],
         'affordable': []
     };
@@ -1214,10 +1214,10 @@ function classifyQuery(message) {
         scores.buy = 98;
     }
     
-    // LEARN patterns (expanded for TLD, Web3, and domain investment education)
-    if ((/\b(what is|explain|how does|how do i|tell me about|understand|teach me|learn about|learning)\b/.test(lower) && 
-        /\b(web ?3|blockchain|tld|domains?|nft|top level domain)\b/.test(lower)) ||
-        /\b(what's a tld|whats a tld|what is tld|explain tld)\b/.test(lower) ||
+    // LEARN patterns (expanded for TLD, Web3, domain investment, and domain fundamentals education)
+    if ((/\b(what is|what are|explain|how does|how do i|tell me about|understand|teach me|learn about|learning)\b/.test(lower) && 
+        /\b(web ?3|blockchain|tlds?|domains?|nft|top level domains?|dns|domain name system|ai agent|domain parking|escrow|domain transfer|icann|premium domain)\b/.test(lower)) ||
+        /\b(what's a tld|whats a tld|what is tld|what are tlds|explain tlds?)\b/.test(lower) ||
         /\b(good domain|domain investment|invest in domain|domain value|evaluate domain|choose a domain|domain worth|what makes.*domain)\b/.test(lower) ||
         (/\b(branding|brand|domain name|my domain)\b/.test(lower) && /\b(important|why|value|matter|does.*matter)\b/.test(lower)) ||
         /\b(amr|autonomous mobile robot|warehouse robot)\b/.test(lower) ||
@@ -1225,7 +1225,15 @@ function classifyQuery(message) {
         // Web3 impact questions (will/should/difference between Web3 and Web2)
         (/\b(web ?3)\b/.test(lower) && /\b(web ?2|affect|impact|change|replace|difference|kill|destroy|transition|shift|future|industry)\b/.test(lower)) ||
         // Web3 TLD + why buy questions
-        (/\b(web ?3 tlds?|web3 domains?)\b/.test(lower) && /\b(why|should i|benefit)\b/.test(lower))) {
+        (/\b(web ?3 tlds?|web3 domains?)\b/.test(lower) && /\b(why|should i|benefit)\b/.test(lower)) ||
+        // DNS questions
+        /\b(what is dns|domain name system|how does dns work)\b/.test(lower) ||
+        // AI agent questions
+        /\b(what is an? ai agent|are you an? ai|what kind of bot|are you a bot)\b/.test(lower) ||
+        // Domain fundamentals
+        /\b(domain parking|domain escrow|what is icann|premium domains?)\b/.test(lower) ||
+        // Purchase/buying process questions
+        /\b(how to.{0,30}(buy|purchase)|buying.{0,10}process|purchase.{0,10}process|complete.{0,10}purchase|how do i buy)\b/.test(lower)) {
         scores.learn = 105;  // Higher than BROWSE (98) and BUY (98) to win
     }
     
@@ -1314,7 +1322,7 @@ function extractEntities(message) {
         pets: ['pet', 'dog', 'cat', 'animal'],
         food: ['food', 'tea', 'coffee', 'culinary', 'chef'],
         skincare: ['skincare', 'beauty', 'cosmetic'],
-        brandable: ['brandable', 'brand name', 'invented name'],
+        brandable: ['brand name', 'invented name'],
         retro: ['retro', 'vintage', 'nostalgia', 'analog'],
         crypto: ['crypto', 'defi', 'blockchain', 'bitcoin']
     };
@@ -1331,17 +1339,17 @@ function extractEntities(message) {
         }
     }
     
-    // Extract tier (flagship, premium, etc.)
+    // Extract tier (flagship, brandable, etc.)
     if (/\b(flagship|top tier)\b/.test(lower)) {
         entities.tier = 'flagship';
-    } else if (/\b(premium|high-end|luxury)\b/.test(lower)) {
-        entities.tier = 'premium';
+    } else if (/\b(brandable|investment.grade|high-end|luxury)\b/.test(lower)) {
+        entities.tier = 'brandable';
     }
     
     // Extract type (web3, .com, etc.)
     if (/\b(web3|web 3|blockchain|on-chain|onchain)\b/.test(lower)) {
         entities.type = 'web3';
-    } else if (/\b(\.com|dot com|premium com)\b/.test(lower)) {
+    } else if (/\b(\.com|dot com|brandable com)\b/.test(lower)) {
         entities.type = 'com';
     }
     
@@ -1443,18 +1451,18 @@ function generateBrowseResponse(domains, category = null) {
         html += `</div>`;
     }
     
-    // Premium
-    if (grouped['premium'].length > 0) {
+    // Brandable
+    if (grouped['brandable'].length > 0) {
         html += `<div class="domain-card">
-            <div class="domain-name">💎 Premium Domains</div>`;
-        grouped['premium'].slice(0, 8).forEach(d => {
+            <div class="domain-name">💎 Brandable Domains</div>`;
+        grouped['brandable'].slice(0, 8).forEach(d => {
             html += `<div style="margin: 8px 0;">
                 <strong>${d.name}</strong> - ${formatPrice(d)}<br>
                 <span style="font-size: 13px; color: #666;">${d.description}</span>
             </div>`;
         });
-        if (grouped['premium'].length > 8) {
-            html += `<p style="margin-top: 10px; font-size: 13px; color: #666;"><em>+ ${grouped['premium'].length - 8} more premium domains</em></p>`;
+        if (grouped['brandable'].length > 8) {
+            html += `<p style="margin-top: 10px; font-size: 13px; color: #666;"><em>+ ${grouped['brandable'].length - 8} more brandable domains</em></p>`;
         }
         html += `</div>`;
     }
@@ -1855,12 +1863,84 @@ function handleMessage(message) {
                 };
             }
             
-            // Check if asking about TLD specifically
-            if (/\b(tld|top level domain)\b/.test(lower)) {
+            // Check if asking about TLD specifically (fixed to include plural)
+            if (/\b(tlds?|top level domains?)\b/.test(lower)) {
                 return {
                     action: "*Sits attentively*",
                     sound: "Woof!",
                     response: "<strong>What's a TLD? (Top-Level Domain)</strong><br><br>A TLD is the extension at the end of a domain name — like <em>.com</em>, <em>.org</em>, <em>.filipino</em>, or <em>.aviator</em>!<br><br><div class='domain-card'><div class='domain-name'>🌐 Web2 TLDs (Traditional)</div><div class='domain-description'><strong>.com, .org, .net, .uk</strong> etc.<br>• Controlled by ICANN (central organization)<br>• You pay annual renewal fees<br>• You don't truly own them — it's a license</div></div><div class='domain-card'><div class='domain-name'>🚀 Web3 TLDs (Blockchain)</div><div class='domain-description'><strong>.filipino, .aviator, .agi, .innovator</strong> etc.<br>• Stored on blockchain<br>• You OWN them forever (no renewals!)<br>• Colin owns 33 Web3 TLDs<br>• When someone buys yourname.filipino, Colin earns royalty!</div></div><strong>Why Colin Owns TLDs:</strong><br>💰 Passive income from every domain sale<br>🎯 Brand authority in his namespace<br>🚀 Early Web3 positioning<br><br>Want to learn more? Ask: \"How do TLDs work?\" or \"Show me aviation domains!\" 🐕"
+                };
+            }
+            
+            // Check if asking about DNS / Domain Name System
+            if (/\b(what is dns|domain name system|how does dns work)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>🌐 What is DNS (Domain Name System)?</strong><br><br>Think of DNS as the internet's phone book! 📞<br><br><div class='domain-card'><div class='domain-name'>How DNS Works</div><div class='domain-description'>When you type <strong>\"domainterrier.com\"</strong> in your browser:<br><br>1️⃣ Your computer asks DNS: \"Where is domainterrier.com?\"<br>2️⃣ DNS responds: \"It's at IP address 123.45.67.89\"<br>3️⃣ Your browser connects to that IP address<br>4️⃣ You see the website!<br><br><strong>💡 Simple Translation:</strong><br>• <strong>Domain</strong> = Human-friendly name (domainterrier.com)<br>• <strong>IP Address</strong> = Computer-friendly number (123.45.67.89)<br>• <strong>DNS</strong> = The translator between them</div></div><div class='domain-card'><div class='domain-name'>Why DNS Matters</div><div class='domain-description'>Without DNS, we'd have to memorize:<br>❌ 142.250.185.46 (Google)<br>❌ 157.240.241.35 (Facebook)<br>❌ 104.16.123.96 (Twitter)<br><br>✅ Instead we just type: google.com, facebook.com, twitter.com!<br><br>That's why domains are so valuable!</div></div><div class='domain-card'><div class='domain-name'>🎯 Why Premium Domains Are Valuable</div><div class='domain-description'>• <strong>Short, memorable names</strong> (velocair.com)<br>• <strong>Easy to type</strong>, hard to forget<br>• <strong>DNS makes them work seamlessly</strong><br>• <strong>Your brand = instant recognition!</strong><br><br>Compare:<br>• velocair.com (9 letters, memorable) ✅<br>• myadventureaviationcompanywebsite.com (too long!) ❌<br><br>DNS connects both to websites, but which would YOU remember? 🐕</div></div>🚀 <strong>Want to own a premium domain?</strong> Ask me: \"Show me flagship domains\" 🎯"
+                };
+            }
+            
+            // Check if asking "Are you an AI agent?" or about AI agents
+            if (/\b(scout.{0,10}(are you|you are)|are you.{0,10}ai|what.{0,10}ai agent|kind of bot)\b/.test(lower)) {
+                return {
+                    action: "*Tail wags proudly*",
+                    sound: "Woof woof!",
+                    response: "<strong>Yes! I'm Scout, and I'm an AI agent! 🤖🐕</strong><br><br><div class='domain-card'><div class='domain-name'>What That Means</div><div class='domain-description'>• I'm powered by <strong>AI (artificial intelligence)</strong><br>• I understand your questions about domains<br>• I can search Colin's entire portfolio instantly<br>• I learn from our conversations<br>• I'm available <strong>24/7</strong> (even when Colin's sleeping!)</div></div><div class='domain-card'><div class='domain-name'>🎯 My Job</div><div class='domain-description'>🔍 Help you find the perfect domain<br>📚 Educate you about Web3, TLDs, domain investing<br>💰 Show you pricing and payment options<br>🎯 Match you with domains that fit your needs<br>🐕 Wag my virtual tail enthusiastically!</div></div><div class='domain-card'><div class='domain-name'>What I Can't Do</div><div class='domain-description'>❌ Process payments (email Colin for that!)<br>❌ Give legal advice<br>❌ Fetch actual tennis balls (I'm digital! 🎾)<br>❌ Sleep or take breaks</div></div><div class='domain-card'><div class='domain-name'>But I CAN</div><div class='domain-description'>✅ Answer domain questions 24/7<br>✅ Compare domains side-by-side<br>✅ Explain Web3, RWA, AMR markets<br>✅ Show you Colin's flagship collection<br>✅ Help you understand domain investing<br>✅ Never get tired of questions!</div></div><strong>💡 Fun fact:</strong> I'm named after Colin's real-life Cairn Terrier, Dusty!<br><br>Ready to hunt for domains together? 🐕🎯"
+                };
+            }
+            
+            // Check if asking about AI agents generally
+            if (/\b(what is an? ai agent|what are ai agents|explain ai agent)\b/.test(lower)) {
+                return {
+                    action: "*Perks up proudly*",
+                    sound: "Woof!",
+                    response: "<strong>🤖 What is an AI Agent?</strong><br><br>An AI agent is software that can:<br><br>✅ Understand what you want<br>✅ Take actions to help you<br>✅ Learn and improve over time<br>✅ Work autonomously (on its own)<br><br><div class='domain-card'><div class='domain-name'>Examples of AI Agents</div><div class='domain-description'>• <strong>Me! (Scout)</strong> - I help you find domains!<br>• <strong>ChatGPT</strong> - Answers questions<br>• <strong>Virtual assistants</strong> - Siri, Alexa<br>• <strong>Customer service bots</strong> - Help on websites<br>• <strong>Autonomous vehicles</strong> - Self-driving cars</div></div><div class='domain-card'><div class='domain-name'>🐕 How I Work as an AI Agent</div><div class='domain-description'>1. 💬 <strong>You ask</strong> about domains<br>2. 🧠 <strong>I understand</strong> your question<br>3. 🔍 <strong>I search</strong> Colin's portfolio<br>4. 🎯 <strong>I show</strong> you perfect matches!<br>5. 📚 <strong>I educate</strong> you along the way!</div></div><div class='domain-card'><div class='domain-name'>Why AI Agents Matter</div><div class='domain-description'>• <strong>24/7 availability</strong> (I never sleep!)<br>• <strong>Instant responses</strong><br>• <strong>Handle multiple customers</strong> at once<br>• <strong>Never forget</strong> information<br>• <strong>Always friendly!</strong> 🐕<br>• <strong>Constantly learning</strong> to serve you better</div></div><strong>🚀 Interesting tidbit:</strong> Colin has AI agent domains for sale!<br>Try: \"Show me AI agent domains\" 🤖"
+                };
+            }
+            
+            // Check if asking about domain parking
+            if (/\b(domain parking|what is parking|parked domain)\b/.test(lower)) {
+                return {
+                    action: "*Tilts head curiously*",
+                    sound: "Woof!",
+                    response: "<strong>🅿️ What is Domain Parking?</strong><br><br>Domain parking is like putting your domain in a \"holding pattern\" while you decide what to do with it!<br><br><div class='domain-card'><div class='domain-name'>How It Works</div><div class='domain-description'>When you <strong>park a domain</strong>:<br><br>1️⃣ You own the domain name<br>2️⃣ But don't have a website yet<br>3️⃣ Your registrar shows a simple \"parked\" page<br>4️⃣ The domain is reserved for you<br><br><strong>Think of it like:</strong> Buying land but not building on it yet! 🏗️</div></div><div class='domain-card'><div class='domain-name'>Why People Park Domains</div><div class='domain-description'><strong>Investment:</strong><br>• Buy premium names early<br>• Wait for value to increase<br>• Sell later for profit<br><br><strong>Future Projects:</strong><br>• Reserve name for upcoming business<br>• Protect brand variations<br>• Prevent competitors from taking it<br><br><strong>Monetization:</strong><br>• Some parking services show ads<br>• Earn small income while deciding</div></div><div class='domain-card'><div class='domain-name'>🎯 Colin's Approach</div><div class='domain-description'>Colin parks premium domains like:<br>• <strong>velocair.com</strong> ($17,995)<br>• <strong>QuantumQIP.com</strong> ($16,995)<br>• <strong>AutonoPilot.com</strong> ($14,995)<br><br>While waiting for the <strong>perfect buyer</strong> who sees their full value!<br><br>Not rushed to sell = better prices! 💎</div></div><strong>💡 Key Point:</strong> Parking ≠ Abandonment. It's strategic waiting!<br><br>Want to see parked premium domains? Try: \"Show me flagship domains\" 🐕"
+                };
+            }
+            
+            // Check if asking about domain escrow
+            if (/\b(domain escrow|what is escrow|how does escrow work|escrow service)\b/.test(lower)) {
+                return {
+                    action: "*Tail wags confidently*",
+                    sound: "Woof!",
+                    response: "<strong>🔒 What is Domain Escrow?</strong><br><br>Domain escrow is like having a trusted referee for domain sales! It protects BOTH buyer and seller. 🛡️<br><br><div class='domain-card'><div class='domain-name'>How Escrow Works (Simple!)</div><div class='domain-description'><strong>Step 1:</strong> Buyer pays <strong>Escrow.com</strong> (NOT the seller yet!)<br><strong>Step 2:</strong> Escrow confirms payment received<br><strong>Step 3:</strong> Seller transfers domain to buyer<br><strong>Step 4:</strong> Buyer confirms they received domain<br><strong>Step 5:</strong> Escrow releases payment to seller<br><br>🎯 <strong>Everyone is protected!</strong></div></div><div class='domain-card'><div class='domain-name'>Why Escrow is Critical</div><div class='domain-description'><strong>Without Escrow:</strong><br>❌ Buyer sends money, seller keeps domain (scam!)<br>❌ Seller transfers domain, buyer doesn't pay (scam!)<br>❌ No proof, no protection, no recourse<br><br><strong>With Escrow:</strong><br>✅ Buyer's money is safe until domain received<br>✅ Seller guaranteed payment when domain transferred<br>✅ Neutral third party = no disputes<br>✅ Legal protection for both sides</div></div><div class='domain-card'><div class='domain-name'>🏆 Escrow.com - The Gold Standard</div><div class='domain-description'><strong>Why Colin (and everyone) uses Escrow.com:</strong><br><br>✅ Licensed & regulated in all 50 US states<br>✅ Used by GoDaddy, Sedo, all major marketplaces<br>✅ Handles <strong>$5+ BILLION</strong> in transactions<br>✅ A+ BBB rating<br>✅ Industry standard for 25+ years<br><br><strong>Timeline:</strong> Typical escrow = 2-5 business days total</div></div><div class='domain-card'><div class='domain-name'>💰 Cost</div><div class='domain-description'>• Usually <strong>buyer pays escrow fee</strong> (2-3%)<br>• For $15,000 domain = ~$300-450 escrow fee<br>• Small price for complete peace of mind!<br>• Colin may cover fees for premium sales</div></div><strong>🎯 Bottom Line:</strong> Never buy/sell domains without escrow!<br><br>Want to see domains worth protecting with escrow? Try: \"Show me flagship domains\" 🐕"
+                };
+            }
+            
+            // Check if asking about domain purchase process / how to buy
+            if (/\b(how to.{0,20}(buy|purchase)|buying.{0,10}process|purchase.{0,10}(process|steps)|complete.{0,10}purchase|how do i buy)/.test(lower)) {
+                return {
+                    action: "*Tail wags helpfully*",
+                    sound: "Woof!",
+                    response: "<strong>🛒 How to Complete a Domain Purchase</strong><br><br>Great question! Buying a domain from Colin is EASY - the marketplaces handle everything! 🐕<br><br><div class='domain-card'><div class='domain-name'>📋 The Complete Process</div><div class='domain-description'><strong>Step 1: Choose Your Domain</strong><br>• Browse Colin's portfolio here with me!<br>• Found the perfect domain? Note the name<br><br><strong>Step 2: Contact Colin</strong><br>📧 Email: <strong>info@domainterrier.com</strong><br>• Tell Colin which domain you want<br>• Ask any questions<br>• Discuss payment options<br><br><strong>Step 3: Colin Sends You the Link</strong><br>Colin will send you a direct purchase link through:<br>• <strong>Atom</strong> (most .com domains - LTO available!)<br>• <strong>Unstoppable Domains</strong> (UD - LTO available!)<br>• <strong>Dynadot</strong> (select domains)<br><br><strong>Step 4: Complete Purchase on Marketplace</strong><br>🔒 <strong>THEY HANDLE EVERYTHING:</strong><br>• Secure payment processing<br>• Escrow protection automatically<br>• Domain transfer handled for you<br>• You receive confirmation email<br><br><strong>Step 5: Domain Transferred to You</strong><br>⚡ Web3 domains: <strong>INSTANT</strong> transfer!<br>🌐 .com domains: 2-5 business days<br><br>You're done! No technical knowledge needed!</div></div><div class='domain-card'><div class='domain-name'>💳 Payment Options</div><div class='domain-description'><strong>Full Payment:</strong><br>✅ Credit/Debit Cards<br>✅ Wire Transfer<br>✅ PayPal<br>✅ Cryptocurrency (Web3 domains)<br><br><strong>💰 LEASE-TO-OWN (Most Domains!)</strong><br>• Available through <strong>Atom & Unstoppable Domains</strong><br>• Spread payments over time<br>• Own the domain while you pay<br>• Most of Colin's portfolio qualifies!<br>• Ask Colin: info@domainterrier.com</div></div><div class='domain-card'><div class='domain-name'>🛡️ Buyer Protection</div><div class='domain-description'>✅ Marketplace escrow (automatic)<br>✅ Money-back guarantee if domain not delivered<br>✅ Professional platforms (Atom, UD, Dynadot)<br>✅ Colin's reputation (200+ domains, established seller)</div></div><div class='domain-card'><div class='domain-name'>⏱️ Timeline</div><div class='domain-description'><strong>Same Day:</strong> Colin sends purchase link<br><strong>1-3 Days:</strong> Payment processed<br><strong>2-5 Days:</strong> .com domain transferred to you<br><strong>Instant:</strong> Web3 domains transferred!<br><br><strong>Total: Usually complete within 1 week!</strong></div></div><div class='domain-card'><div class='domain-name'>🎯 Why It's Easy</div><div class='domain-description'><strong>❌ No dealing with:</strong><br>• Authorization codes<br>• Domain unlocking<br>• Registrar transfers<br>• Technical setup<br><br><strong>✅ Marketplaces handle:</strong><br>• Payment security<br>• Escrow protection<br>• Transfer process<br>• Documentation<br>• Support<br><br><strong>You just:</strong><br>1. Email Colin<br>2. Click the link he sends<br>3. Pay on secure marketplace<br>4. Receive domain!</div></div>📧 <strong>Ready to Buy?</strong> Email Colin: info@domainterrier.com<br><br>Or ask me:<br>• \"Show me flagship domains\"<br>• \"What domains are under $10,000?\"<br>• \"Tell me about Lease-to-Own\"<br><br>Let's find your perfect domain! 🐕🎯"
+                };
+            }
+            
+            // Check if asking about ICANN
+            if (/\b(what is icann|who is icann|explain icann)\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively like a professor*",
+                    sound: "Woof!",
+                    response: "<strong>🌐 What is ICANN?</strong><br><br>ICANN = <strong>Internet Corporation for Assigned Names and Numbers</strong><br><br>Think of them as the \"internet's rulebook keeper\" for domain names! 📖<br><br><div class='domain-card'><div class='domain-name'>What ICANN Does</div><div class='domain-description'><strong>Main Jobs:</strong><br><br>1️⃣ <strong>Manages domain names globally</strong><br>• Decides which TLDs exist (.com, .org, .uk, etc.)<br>• Sets rules for domain registration<br>• Coordinates DNS system<br><br>2️⃣ <strong>Controls IP addresses</strong><br>• Assigns IP addresses worldwide<br>• Prevents conflicts/duplicates<br><br>3️⃣ <strong>Sets policies & standards</strong><br>• Transfer rules (60-day locks)<br>• WHOIS privacy policies<br>• Dispute resolution processes</div></div><div class='domain-card'><div class='domain-name'>🏛️ How ICANN Works</div><div class='domain-description'><strong>Structure:</strong><br>• Non-profit organization (based in California)<br>• Founded in 1998<br>• Coordinates with governments worldwide<br>• Community-driven policies<br><br><strong>Your Registrar → ICANN:</strong><br>• You register domain with GoDaddy/Dynadot/etc.<br>• They're \"accredited\" by ICANN<br>• They follow ICANN's rules<br>• ICANN oversees everything</div></div><div class='domain-card'><div class='domain-name'>Why This Matters for Domain Owners</div><div class='domain-description'><strong>ICANN Rules Affect You:</strong><br><br>✅ <strong>60-day transfer lock</strong> after registration<br>✅ <strong>Annual renewals</strong> required for .com/.org/etc.<br>✅ <strong>WHOIS database</strong> (domain ownership records)<br>✅ <strong>Dispute resolution</strong> if someone claims your domain<br>✅ <strong>Grace periods</strong> if you forget to renew<br><br><strong>💡 Key Point:</strong> You don't \"own\" .com domains — you LICENSE them from ICANN!<br>• Must renew annually<br>• Follow ICANN rules<br>• Can lose domain if rules broken</div></div><div class='domain-card'><div class='domain-name'>🚀 Web3 Alternative</div><div class='domain-description'><strong>Why Colin also invests in Web3 TLDs:</strong><br><br>• <strong>NOT controlled by ICANN!</strong><br>• Blockchain-based = true ownership<br>• No annual renewals<br>• No central authority<br>• Decentralized control<br><br>Examples: .filipino, .aviator, .innovator<br><br>This is why Web3 domains are revolutionary! 🎯</div></div><strong>Want to bypass ICANN?</strong> Try: \"Show me Web3 domains\"<br><strong>Prefer traditional?</strong> Try: \"Show me premium .com domains\"<br><br>Both have value! 🐕"
+                };
+            }
+            
+            // Check if asking about premium/brandable domains
+            if (/\b(premium domains?|brandable domains?|what is.{0,10}(premium|brandable) domain|what makes.{0,10}(premium|brandable))\b/.test(lower)) {
+                return {
+                    action: "*Sits attentively*",
+                    sound: "Woof!",
+                    response: "<strong>💎 Domain Categories - An Honest Guide</strong><br><br>Great question! Let me give you an honest overview of how domains are categorised in the industry: 🐕<br><br><div class='domain-card'><div class='domain-name'>🏆 OG \"True Premium\" Domains</div><div class='domain-description'>In the domain investing world, the original pros (the OGs!) reserve the word <strong>\"Premium\"</strong> for a very specific category:<br><br>• <strong>Single-word .coms</strong> (cars.com, fly.com, pilot.com)<br>• <strong>20+ years old</strong> — aged like fine wine 🍷<br>• <strong>Dictionary words</strong> — universally understood<br>• <strong>Price range:</strong> $100K → $30M+<br>• <strong>Examples:</strong> Voice.com ($30M), Insurance.com ($35.6M)<br><br>These are the undisputed kings of the domain world. Respect! 👑</div></div><div class='domain-card'><div class='domain-name'>💎 Colin's Portfolio — Investment-Grade Brandables</div><div class='domain-description'>Colin's domains are a different (and exciting!) category:<br><br>• <strong>Coined brandable names</strong> — purpose-built for emerging industries<br>• <strong>Investment-grade quality</strong> — short, memorable, professional<br>• <strong>Emerging tech sectors</strong> — robotics, quantum, aviation, RWA<br>• <strong>Price range:</strong> $7K → $18K<br>• <strong>Examples:</strong> velocair.com, QuantumQIP.com, AutonoPilot.com<br><br>Not \"Premium\" in the OG sense — but genuinely valuable, investment-grade brandable assets! 🎯</div></div><div class='domain-card'><div class='domain-name'>🎯 What Makes a Great Brandable Domain?</div><div class='domain-description'><strong>The 5 Key Factors:</strong><br><br>1️⃣ <strong>SHORT & MEMORABLE</strong><br>• velocair.com (9 letters) ✅<br>• Sweet spot: 6-12 characters<br><br>2️⃣ <strong>BRANDABLE</strong><br>• Sounds professional<br>• Easy to pronounce and spell<br>• QuantumQIP.com = \"Quantum Chips\" 💡<br><br>3️⃣ <strong>KEYWORD-RICH</strong><br>• Industry-relevant terms<br>• SEO benefits<br>• AutonoPilot.com = instantly understood<br><br>4️⃣ <strong>.COM TLD</strong><br>• Most trusted extension<br>• Universal recognition<br><br>5️⃣ <strong>INDUSTRY TIMING</strong><br>• Growing markets = growing value<br>• Get in early!</div></div><div class='domain-card'><div class='domain-name'>🚀 Why Investment-Grade Brandables?</div><div class='domain-description'><strong>For startups & businesses they offer:</strong><br><br>✅ Instant credibility in their sector<br>✅ Memorable branding from day one<br>✅ Significant value vs registering random names<br>✅ Appraised investment-grade quality<br>✅ Lease-to-Own available (Atom & UD)<br><br><strong>Example:</strong> velocair.com ($17,995) appraised at $22,000!<br><br>Not a single-word OG domain — but a serious, brandable asset with real investment value! 💎</div></div><strong>🎯 Browse Colin's Brandable Collection:</strong><br>• \"Show me flagship domains\" (top tier)<br>• \"Show me aviation domains\"<br>• \"Show me robotics domains\"<br>• \"Show me RWA domains\"<br><br>Investment-grade brandables for tomorrow's industry leaders! 🐕"
                 };
             }
             // Check if asking about Web3 IMPACT on Web2 (multi-part question)
