@@ -719,9 +719,48 @@ const CATEGORY_MAP = {
   'keyword':        'Premium Keywords',
   'eye':            'Eye/Vision Tech',
   'vision':         'Eye/Vision Tech',
+  'optic tech':     'Eye/Vision Tech',
   'beauty':         'Beauty',
   'specialty':      'Specialty/Niche',
   'niche':          'Specialty/Niche',
+  // Robotics extras
+  'robots':          'Robotics',
+  // Aviation extras
+  'aerospace':       'Aviation',
+  'aircraft':        'Aviation',
+  // Korean Beauty extras
+  'k-skin':          'Korean Beauty',
+  'k skin':          'Korean Beauty',
+  'korean cosmetic': 'Korean Beauty',
+  'korean skincare': 'Korean Beauty',
+  'skincare':        'Korean Beauty',
+  'cosmetics':       'Korean Beauty',
+  // Martial Arts / Fitness extras
+  'combat sports':   'Martial Arts/Fitness',
+  'mma':             'Martial Arts/Fitness',
+  'mixed martial':   'Martial Arts/Fitness',
+  'fighter':         'Martial Arts/Fitness',
+  'workout':         'Martial Arts/Fitness',
+  'defence':         'Martial Arts/Fitness',
+  // Wearables / Smart Glasses → Eye/Vision Tech or AR/VR/XR
+  'smart glasses':   'Eye/Vision Tech',
+  'smartglasses':    'Eye/Vision Tech',
+  'smart glass':     'Eye/Vision Tech',
+  'smart specs':     'Eye/Vision Tech',
+  'tech specs':      'Eye/Vision Tech',
+  'hudspecs':        'Eye/Vision Tech',
+  'ar glasses':      'AR/VR/XR',
+  'vr glasses':      'AR/VR/XR',
+  'xr glasses':      'AR/VR/XR',
+  'wearable':        'Eye/Vision Tech',
+  // Pets / Animals
+  'dogs':            'Specialty/Niche',
+  'pets':            'Specialty/Niche',
+  'animals':         'Specialty/Niche',
+  // AI/Tech extras
+  'ai tech':         'AI/Tech Services',
+  'tech tools':      'AI/Tech Services',
+  'technology serv': 'AI/Tech Services',
 };
 
 // ============================================================
@@ -860,110 +899,210 @@ Domains in this portfolio are priced based on:<br><br>
 • <em>Brandable ($3,995–$9,995):</em> High-quality brand-building names<br>
 • <em>Quality ($2,995–$7,995):</em> Strong keyword/sector domains<br>
 • <em>Affordable (under $3,995):</em> Entry-level investment-grade names<br><br>
-POA (Price on Application) domains are negotiated directly.`
+POA (Price on Application) domains are negotiated directly.`,
+
+  transfer: `<strong>Domain Transfer Process 🔄</strong><br><br>
+Purchasing a domain from our portfolio is straightforward:<br><br>
+<strong>Step 1 — Find your domain</strong><br>
+Use Scout to search by category, keyword, or price range.<br><br>
+<strong>Step 2 — Contact us</strong><br>
+Email Colin at <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> with the domain name.<br><br>
+<strong>Step 3 — Secure payment via trusted registrar</strong><br>
+• <strong>Atom.com</strong> — Secure escrow transfers<br>
+• <strong>Dynadot.com</strong> — Fast checkout<br>
+• <strong>Freename.io</strong> — Web3 domains<br>
+• <strong>Unstoppable Domains</strong> — Blockchain domains<br><br>
+<strong>Step 4 — Transfer complete</strong><br>
+• <strong>Web2 domains:</strong> Pushed to your account within 24–48 hours<br>
+• <strong>Web3 domains:</strong> Near-instant transfer to your wallet<br><br>
+📧 Questions? <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`,
+
+  lto: `<strong>Lease-to-Own (LTO) 💳</strong><br><br>
+Can't pay the full price upfront? No problem — LTO is available on qualifying domains!<br><br>
+<strong>How it works:</strong><br>
+1. Choose your domain and agree a monthly payment plan<br>
+2. Make monthly payments over the agreed term<br>
+3. <strong>Use the domain immediately</strong> during the lease period<br>
+4. Full ownership transfers to you once all payments are complete<br><br>
+<strong>Benefits:</strong><br>
+• Spread the cost over months<br>
+• Start using your domain straight away<br>
+• Secure the name before someone else does<br>
+• No large upfront investment required<br><br>
+📧 To enquire about LTO on a specific domain, contact Colin:<br>
+<a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
 };
+
+// ============================================================
+// QUERY NORMALISATION
+// ============================================================
+function normalize(input) {
+  return input
+    .toLowerCase()
+    .replace(/web\s*3/g,      'web3')
+    .replace(/web\s*2/g,      'web2')
+    .replace(/k[\s-]skin/g,   'kskin')
+    .replace(/k[\s-]beauty/g, 'k-beauty')
+    .replace(/\bdefense\b/g,  'defence')       // US → UK
+    .replace(/\bcolor\b/g,    'colour')
+    .replace(/\borganize\b/g, 'organise')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 // ============================================================
 // INTENT CLASSIFICATION
 // ============================================================
 function classify(input) {
   const raw = input;
-  const q   = input.toLowerCase().trim();
+  const q   = normalize(input);
 
-  // Education queries
+  // Fix 4: TLD-only comparison (.com vs .io) → TLD education before comparison check
+  if (/(\.[a-z]{2,6})\s+(?:vs?\.?|or|versus)\s+(\.[a-z]{2,6})/i.test(q))
+    return {type:'edu', key:'tld'};
+
+  // Cat 5: Comparison intent (actual domain names, not TLD extensions)
+  const cmpM = q.match(/compare\s+(.+?)\s+(?:vs?\.?|and|versus)\s+(.+)/i) ||
+               q.match(/(.+?)\s+vs\.?\s+(.+)/i) ||
+               q.match(/what(?:'s| is) better[,:]?\s+(.+?)\s+or\s+(.+)/i);
+  if (cmpM) return {type:'compare', a: cmpM[1].trim(), b: cmpM[2].trim()};
+
+  // Fix 1: Search-first guard — "[X] domains" without educational phrasing → skip to search
+  const hasDomainsWord  = /\bdomains?\b/i.test(q);
+  const hasEduPhrasing  = /^(?:what is|explain|tell me about|why are|how does|what makes|what are|how do)/i.test(q);
+  const skipEdu = hasDomainsWord && !hasEduPhrasing;
+
+  // Education queries (Cats 6–10, 12–13)
   const eduPatterns = [
-    {re:/what is rwa|explain rwa|how does.*tokeniz|rwa tokeniz|what does rwa mean/i, key:'rwa'},
-    {re:/what is defi|explain defi|decentralized finance/i,                          key:'defi'},
-    {re:/what is web\s*3|explain web\s*3|tell me about web\s*3|web\s*2 vs web\s*3|web\s*2.*web\s*3|difference.*web\s*2.*web\s*3/i, key:'web3'},
-    {re:/what is a? web\s*3 domain|explain.*web\s*3 domain|web\s*3 domains?\?|blockchain domain/i, key:'web3domain'},
-    {re:/what makes.*domain.*valuable|domain.*value|how.*domain.*pric/i,             key:'domains'},
-    {re:/what makes.*great domain|what makes.*good domain|how.*value.*domain|domain.*invest.*tip|great domain|good domain/i, key:'domainvalue'},
-    {re:/what is.*\btld\b|explain.*\btld\b|\btld\b.*mean|\bwhat.*tld\b|tld meaning/i, key:'tld'},
-    {re:/\.com vs \.io|\.com vs \.xyz|which tld is best|best tld/i,                  key:'tld'},
-    {re:/web\s*2 vs web\s*3 domain|web3 domain.*vs|vs.*web3 domain/i,                key:'web3domain'},
-    {re:/brandable|keyword domain|types of domain/i,                                 key:'brandable'},
-    {re:/how.*pric|what.*pric|pricing/i,                                              key:'pricing'},
+    // Cat 6: What makes a great domain + FAQ pricing questions (Fix 3)
+    {re:/what makes.*(?:great|good|valuable|best)\s+domain|domain.*valuat|how.*value.*domain|domain.*invest.*(?:tip|advice)|why.*domains.*valuable|why.*domains.*expensive|what makes.*domain.*expensive|why do domains cost|how.*domain.*pric.*work/i, key:'domainvalue'},
+    {re:/what makes.*domain.*valuable|domain.*value/i,                                key:'domains'},
+    // Cat 7: TLD
+    {re:/what is.*\btld\b|explain.*\btld\b|\btld\b.*mean|tld meaning|domain extensions?|which tld is best|best tld/i, key:'tld'},
+    // Cat 8: Web3 — educational phrasing only; "[X] domains" handled by search
+    {re:/what is web3|explain web3|tell me about web3|web2 vs web3/i,                 key:'web3'},
+    {re:/what is.*web3 domain|explain.*web3 domain|web3 domains?\?/i,                 key:'web3domain'},
+    // Cat 9: RWA
+    {re:/what is rwa|explain rwa|rwa meaning|rwa tokeniz|what does rwa mean|real world assets?\??|tokenizat/i, key:'rwa'},
+    // Cat 10: DeFi
+    {re:/what is defi|explain defi|defi meaning|decentralized finance/i,              key:'defi'},
+    // Other education
+    {re:/brandable|keyword domain|types of domain/i,                                  key:'brandable'},
+    {re:/how.*pric|what.*pric|pricing/i,                                               key:'pricing'},
+    // Cat 12: Domain transfer
+    {re:/how.*transfer|domain transfer|transfer process|when will i get|how long.*(?:get|transfer)/i, key:'transfer'},
+    // Cat 13: LTO details
+    {re:/how does lto work|explain lto|lto process|lto details|what is lto/i,         key:'lto'},
   ];
-  for (const p of eduPatterns) {
-    if (p.re.test(q)) return {type:'edu', key:p.key};
+  if (!skipEdu) {
+    for (const p of eduPatterns) {
+      if (p.re.test(q)) return {type:'edu', key:p.key};
+    }
   }
 
-  // Specific domain lookup
+  // Cat 14: Specific domain lookup
   const domainMatch = DOMAINS.find(d => q.includes(d.name.toLowerCase()));
   if (domainMatch) return {type:'domain', domain:domainMatch};
 
-  // Price range
-  const priceResult = parsePrice(q);
-  if (priceResult) return {type:'search', ...priceResult};
+  // Cat 15: Recommendations
+  if (/recommend|suggest.*domain|best domain for|what.*(?:should|would).*buy|good domain for/i.test(q))
+    return {type:'recommend', query: q};
 
-  // Tier
-  const tier = parseTier(q);
-
-  // Category
-  const cats = parseCategories(q);
-
-  // Keyword fallback
-  const kw = parseKeyword(q, raw);
-
-  // Browse all
-  if (/show all|browse all|all domain|list all|everything/i.test(q))
+  // Cat 16: Browse all
+  if (/show all|browse all|all domain|list all|everything|what do you have/i.test(q))
     return {type:'all'};
 
-  if (cats.length || tier || kw)
-    return {type:'search', categories: cats, tier, keyword: (cats.length || tier) ? null : kw};
+  // Price range, tier, category — combined for multi-intent (Cat 4 + 17 + 2)
+  const priceResult = parsePrice(q);
+  const tier        = parseTier(q);
+  const cats        = parseCategories(q);
+  const kw          = parseKeyword(q, raw);
+
+  if (cats.length || tier || priceResult || kw)
+    return {type:'search', categories: cats, tier,
+            keyword: (cats.length || tier || priceResult) ? null : kw,
+            ...(priceResult || {})};
 
   return {type:'unknown'};
 }
 
 function parseTier(q) {
-  if (/flagship|best.*domain|top.*domain|highest/i.test(q)) return 'Flagship';
+  if (/flagship|best.*domain|top.*domain|highest|\bpremium\b|most expensive/i.test(q)) return 'Flagship';
   if (/brandable/i.test(q)) return 'Brandable';
-  if (/affordable|cheap|budget|entry.level|under \$3|under \$2|under \$1/i.test(q)) return 'Affordable';
+  if (/affordable|cheap|budget|entry.level|inexpensive|low.cost|under \$3|under \$2|under \$1/i.test(q)) return 'Affordable';
   if (/quality/i.test(q)) return 'Quality';
   return null;
 }
 
+// Levenshtein distance for fuzzy category matching (Fix 7)
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = [];
+  for (let i = 0; i <= m; i++) { dp[i] = [i]; }
+  for (let j = 0; j <= n; j++) { dp[0][j] = j; }
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]);
+  return dp[m][n];
+}
+
 function parseCategories(q) {
   const found = new Set();
+  // Exact substring match
   for (const [kw, cat] of Object.entries(CATEGORY_MAP)) {
     if (q.includes(kw)) found.add(cat);
+  }
+  // Fuzzy match on individual words (only if no exact match found)
+  if (!found.size) {
+    const words = q.split(/\s+/);
+    for (const word of words) {
+      if (word.length < 4) continue;
+      for (const [kw, cat] of Object.entries(CATEGORY_MAP)) {
+        if (kw.includes(' ') || kw.length < 4) continue; // skip multi-word and short keys
+        const maxDist = kw.length <= 6 ? 1 : 2;
+        if (levenshtein(word, kw) <= maxDist) found.add(cat);
+      }
+    }
   }
   return [...found];
 }
 
 function parsePrice(q) {
-  // "under $X" / "less than $X" / "below $X"
-  const underM = q.match(/(?:under|less than|below|cheaper than|max|at most)\s*\$?([\d,]+)k?/i);
+  // "under $X" / "less than $X" / "below $X" — capture optional trailing k
+  const underM = q.match(/(?:under|less than|below|cheaper than|max|at most)\s*\$?([\d,]+)(k)?/i);
   if (underM) {
     let max = parseInt(underM[1].replace(/,/g,''));
-    if (q.includes('k')) max *= 1000;
+    if (underM[2]) max *= 1000;
     return {maxPrice: max};
   }
   // "over $X" / "more than $X" / "above $X"
-  const overM = q.match(/(?:over|more than|above|at least|min)\s*\$?([\d,]+)k?/i);
+  const overM = q.match(/(?:over|more than|above|at least|min)\s*\$?([\d,]+)(k)?/i);
   if (overM) {
     let min = parseInt(overM[1].replace(/,/g,''));
-    if (q.includes('k')) min *= 1000;
+    if (overM[2]) min *= 1000;
     return {minPrice: min};
   }
   // "between $X and $Y"
-  const betM = q.match(/between\s*\$?([\d,]+)k?\s*(?:and|to|-)\s*\$?([\d,]+)k?/i);
+  const betM = q.match(/between\s*\$?([\d,]+)(k)?\s*(?:and|to|-)\s*\$?([\d,]+)(k)?/i);
   if (betM) {
-    return {
-      minPrice: parseInt(betM[1].replace(/,/g,'')),
-      maxPrice: parseInt(betM[2].replace(/,/g,''))
-    };
+    let min = parseInt(betM[1].replace(/,/g,''));
+    let max = parseInt(betM[3].replace(/,/g,''));
+    if (betM[2]) min *= 1000;
+    if (betM[4]) max *= 1000;
+    return {minPrice: min, maxPrice: max};
   }
   return null;
 }
 
 function parseKeyword(q, raw) {
-  // Strip common query words
+  // Strip common query words — longer phrases BEFORE shorter ones to avoid partial matches
   const stripped = q
-    .replace(/show me|show|find|search|domains?|investment.grade|that are|which are|about|any|i want|looking for|do you have/gi,'')
-    .replace(/[?!.]/g,'')
+    .replace(/domains? containing|domains? that have|domains? with|anything with|show me|tell me about|help with|looking for|do you have|got any|i want|i need|display|browse|search|find|show|got|need|about|that are|which are|investment.grade/gi,'')
+    .replace(/domains?|names?/gi,'')
+    .replace(/[?!.,]/g,'')
     .trim();
-  if (stripped.length >= 3 && stripped.length < 40) return stripped;
+  if (stripped.length >= 2 && stripped.length < 40) return stripped;
   return null;
 }
 
@@ -1048,10 +1187,24 @@ function escHtml(str) {
 // RESPONSE GENERATOR
 // ============================================================
 function generateResponse(input) {
-  const q = input.toLowerCase().trim();
+  const q = normalize(input);
 
-  // Greetings — checked before classify() so keywords don't intercept
-  if (/^\s*scout[!?.]?\s*$|hello|hi\b|hey\b|good morning|good afternoon|howdy|what'?s up/i.test(q)) {
+  // Cat 1: Greetings (Fix 9 — strip prefix and check for trailing search intent)
+  const greetingPrefixRe = /^\s*(?:hey|hello|hi|howdy|hiya|yo|greetings)\b[,\s!]*(?:scout[,\s!?]*)?|^\s*scout[,\s!?]*/i;
+  const pureGreetingRe   = /^\s*(?:scout[!?.]?\s*|(?:hello|hi|hey|yo|hiya|greetings)[!?.]?\s*)$|good (?:morning|afternoon|evening)|^(?:what'?s up|how are you|how'?s it going)$/i;
+  const hasGreeting = greetingPrefixRe.test(q) || pureGreetingRe.test(q);
+
+  if (hasGreeting) {
+    // Strip greeting prefix — what's left is the real query
+    const afterGreeting = q.replace(greetingPrefixRe, '').trim();
+    // If there's a substantial query after the greeting, process it instead
+    if (afterGreeting.length >= 3) {
+      const trailingIntent = classify(afterGreeting);
+      if (trailingIntent.type !== 'unknown') {
+        return `👋 Hey! 🐕<br><br>${generateResponse(afterGreeting)}`;
+      }
+    }
+    // Pure greeting — return welcome message
     return `👋 Woof! I'm Scout, your AI domain expert! 🐕<br><br>
 I can help you:<br>
 • Browse 282 investment-grade domains<br>
@@ -1061,7 +1214,15 @@ I can help you:<br>
 What are you looking for today? Try: <em>'Show me robotics domains'</em> or <em>'Under $5,000'</em>`;
   }
 
-  // Payment / purchase — checked before classify()
+  // Cat 13: LTO details — specific, checked before general payment
+  if (/how does lto work|explain lto|lto process|lto details|what is lto/i.test(q))
+    return EDUCATION.lto;
+
+  // Cat 12: Transfer process — specific, checked before general payment
+  if (/how.*transfer|domain transfer|transfer process|when will i get|how long.*(?:get|transfer)/i.test(q))
+    return EDUCATION.transfer;
+
+  // Cat 11: Payment / purchase — general
   if (/payment|lease.to.own|\blto\b|financing|finance\b|how do i buy|purchase|buy a domain|enquir|inquir|make.*offer|instal{1,2}ment|monthly payment|payment plan|spread the cost/i.test(q)) {
     return `💳 <strong>Payment &amp; Purchase</strong><br>
 🐕 <em>Tail wags helpfully</em><br><br>
@@ -1082,8 +1243,10 @@ Each registrar offers:<br>
 All transactions are secure and processed through the registrar — safe and simple! 🔒`;
   }
 
-  // Off-topic: clearly non-domain questions → Ask Claude fallback
-  if (/\bhow are you\b|what should i eat|what'?s? (the )?weather|who won|what happened today|how do i code|fix my computer|tell me a joke|give me a recipe|sports score|stock price|news today|what is the capital|convert \d|calculate|math problem|translate this|write me a (poem|story|essay)|my (cat|dog|pet) /i.test(q)) {
+  // Cat 18: Off-topic — expanded patterns with domain keyword safety guard (Fix 5)
+  const domainSafeRe  = /\bdomain|tld\b|web3\b|rwa\b|defi\b|nft\b|blockchain\b|registrar\b|crypto\b|scout\b|\.com\b|\.io\b|\.xyz\b/i;
+  const offTopicRe    = /\bweather\b|\bforecast\b|\btemperature\b|\brain\b|\bsnow\b|recipe|\bcooking?\b|what should i eat|\bfood\b|\bmeal\b|is the earth|who (?:is|was)\b|when did |where is |meaning of life|how old (?:is|are|was)\b|news today|sports score|stock price|who won|what happened today|tell me a joke|fix my computer|write me a (?:poem|story|essay)|math problem|translate this|\bcalculate\b|give me a recipe|how do i code/i;
+  if (offTopicRe.test(q) && !domainSafeRe.test(q)) {
     return `🐕 Woof! That's outside my domain expertise (pun intended! 😄)<br><br>
 For questions beyond domains, you can ask my friend Claude at:<br>
 🔗 <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">https://claude.ai</a><br><br>
@@ -1117,6 +1280,62 @@ Interested? I can compare this with similar domains or answer any questions.`;
   if (intent.type === 'all') {
     const results = DOMAINS;
     return `Here's the full portfolio of ${results.length} investment-grade domains. Use the chips above or ask me to filter by category, tier, or price.<br>${renderCards(results)}`;
+  }
+
+  // Cat 5: Comparison
+  if (intent.type === 'compare') {
+    const d1 = DOMAINS.find(d => intent.a.includes(d.name.toLowerCase()) || d.name.toLowerCase().includes(intent.a));
+    const d2 = DOMAINS.find(d => intent.b.includes(d.name.toLowerCase()) || d.name.toLowerCase().includes(intent.b));
+    if (d1 && d2) {
+      return `<strong>Comparing ${escHtml(d1.name)} vs ${escHtml(d2.name)}</strong><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px;border-radius:8px;overflow:hidden;">
+  <tr style="background:var(--navy);color:white;">
+    <th style="padding:9px 12px;text-align:left;width:28%"></th>
+    <th style="padding:9px 12px;text-align:left;width:36%">${escHtml(d1.name)}</th>
+    <th style="padding:9px 12px;text-align:left;width:36%">${escHtml(d2.name)}</th>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border);">
+    <td style="padding:8px 12px;font-weight:700;color:var(--navy)">Price</td>
+    <td style="padding:8px 12px;color:var(--orange);font-weight:800">${escHtml(d1.price)}</td>
+    <td style="padding:8px 12px;color:var(--orange);font-weight:800">${escHtml(d2.price)}</td>
+  </tr>
+  <tr style="background:#fafafa;border-bottom:1px solid var(--border);">
+    <td style="padding:8px 12px;font-weight:700;color:var(--navy)">Tier</td>
+    <td style="padding:8px 12px">${escHtml(d1.tier)}</td>
+    <td style="padding:8px 12px">${escHtml(d2.tier)}</td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border);">
+    <td style="padding:8px 12px;font-weight:700;color:var(--navy)">Category</td>
+    <td style="padding:8px 12px">${escHtml(d1.category)}</td>
+    <td style="padding:8px 12px">${escHtml(d2.category)}</td>
+  </tr>
+  <tr style="background:#fafafa;">
+    <td style="padding:8px 12px;font-weight:700;color:var(--navy)">Tagline</td>
+    <td style="padding:8px 12px;font-style:italic;color:#666">${d1.tagline ? '"' + escHtml(d1.tagline) + '"' : '—'}</td>
+    <td style="padding:8px 12px;font-style:italic;color:#666">${d2.tagline ? '"' + escHtml(d2.tagline) + '"' : '—'}</td>
+  </tr>
+</table><br>
+Both are available now. Want more details on either, or shall I find similar options?`;
+    }
+    if (d1 || d2) {
+      const found = d1 || d2;
+      const notFound = d1 ? intent.b : intent.a;
+      return `I found <strong>${escHtml(found.name)}</strong> in the portfolio, but couldn't locate <em>"${escHtml(notFound)}"</em>. Try using the exact domain name.<br>${renderCards([found])}`;
+    }
+    return `I couldn't find either of those domains in the portfolio. Try browsing by category — e.g. <em>"Show me Robotics domains"</em>.`;
+  }
+
+  // Cat 15: Recommendations
+  if (intent.type === 'recommend') {
+    const cats = parseCategories(intent.query);
+    const tier = parseTier(intent.query);
+    const results = searchDomains({categories: cats, tier: tier || 'Flagship'});
+    const top = results.slice(0, 6);
+    if (top.length) {
+      const label = cats.length ? cats.join(', ') : 'Flagship';
+      return `🌟 My top recommendations${cats.length ? ` for <strong>${escHtml(label)}</strong>` : ''} — investment-grade picks:<br>${renderCards(top)}`;
+    }
+    return `🌟 Here are my top investment-grade picks:<br>${renderCards(DOMAINS.filter(d=>d.tier==='Flagship').slice(0,6))}`;
   }
 
   if (intent.type === 'search') {
