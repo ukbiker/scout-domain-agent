@@ -1099,6 +1099,7 @@ function parseKeyword(q, raw) {
   // Strip common query words — longer phrases BEFORE shorter ones to avoid partial matches
   const stripped = q
     .replace(/domains? containing|domains? that have|domains? with|anything with|show me|tell me about|help with|looking for|do you have|got any|i want|i need|display|browse|search|find|show|got|need|about|that are|which are|investment.grade/gi,'')
+    .replace(/\bany\b/gi,'')
     .replace(/domains?|names?/gi,'')
     .replace(/[?!.,]/g,'')
     .trim();
@@ -1212,6 +1213,243 @@ I can help you:<br>
 • Find domains in your price range<br>
 • Learn about domain investing<br><br>
 What are you looking for today? Try: <em>'Show me robotics domains'</em> or <em>'Under $5,000'</em>`;
+  }
+
+  // Fix 1: Conversational acknowledgments
+  if (/^\s*(?:thanks scout|thank you scout|thanks|thank you|great thanks|awesome thanks|cheers|ty)[!.?]?\s*$/i.test(q)) {
+    return `🐕 You're welcome! Happy to help!<br><br>
+Need anything else? I can:<br>
+• Show you more domains in a category<br>
+• Compare domains<br>
+• Explain domain investing<br>
+• Answer questions about Web3, RWA, DeFi<br><br>
+What else can I help with? 🐕`;
+  }
+
+  // Fix 2: Scout's identity / breed questions
+  if (/what type of dog are you|what kind of dog|what breed are you|are you a real dog|what dog are you/i.test(q)) {
+    return `🐕 <em>*Tail wags proudly*</em> Woof!<br><br>
+I'm a <strong>Cairn Terrier</strong> — based on an amazing real dog named Dusty!<br><br>
+Cairn Terriers are:<br>
+• Smart and energetic<br>
+• Great at sniffing things out (like domain treasures!)<br>
+• Loyal and helpful<br>
+• Originally from Scotland<br><br>
+That's why I'm perfect for helping you find domains! 🐕<br><br>
+What domains can I help you discover today?`;
+  }
+
+  // Fix 3: Website / company connection questions
+  if (/what website are you connected with|who do you work for|what company|what'?s your website|what is your website|which company/i.test(q)) {
+    return `🐕 Woof! I'm the AI domain expert for:<br><br>
+🌐 <strong>www.domainterrier.com</strong><br><br>
+Domain Terrier specializes in:<br>
+• Investment-grade .com domains<br>
+• Web3 &amp; blockchain domains<br>
+• Robotics, Aviation, RWA, AI/Tech sectors<br>
+• 282 curated Web2 domains (live now!)<br>
+• 344 Web3 domains (coming soon!)<br><br>
+I'm here to help you find the perfect domain from our portfolio!<br><br>
+What are you looking for? 🐕`;
+  }
+
+  // Fix 4: Escrow explanation
+  if (/what is escrow|explain escrow|how does escrow work|escrow process/i.test(q)) {
+    return `🔒 <strong>Escrow Explained</strong><br>
+🐕 Woof! Great question!<br><br>
+<strong>Escrow = Safe Transaction Protection</strong><br><br>
+<strong>How it works:</strong><br><br>
+<strong>Step 1: Buyer &amp; Seller Agree</strong><br>
+• Domain + Price agreed upon<br>
+• Both parties choose escrow service (Escrow.com, Dan.com, etc.)<br><br>
+<strong>Step 2: Buyer Pays Escrow</strong><br>
+• Money goes to neutral third party (NOT seller yet)<br>
+• Escrow holds the funds safely<br><br>
+<strong>Step 3: Seller Transfers Domain</strong><br>
+• Domain unlocked<br>
+• Transfer initiated to buyer<br>
+• Buyer receives domain<br><br>
+<strong>Step 4: Buyer Confirms</strong><br>
+• Buyer verifies they have the domain<br>
+• Confirms everything is correct<br><br>
+<strong>Step 5: Seller Gets Paid</strong><br>
+• Escrow releases funds to seller<br>
+• Transaction complete! ✅<br><br>
+<strong>Why use escrow?</strong><br>
+• Protects buyer (get domain before seller gets paid)<br>
+• Protects seller (get paid when domain transfers)<br>
+• Neutral third party<br>
+• Safe for both sides!<br><br>
+Most domain sales over $500 use escrow.<br><br>
+Questions about purchasing? Email: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> 🔒`;
+  }
+
+  // Fix 5: Refund policy
+  if (/refund policy|do you offer refunds|can i get a refund|\brefund\b|money back guarantee/i.test(q)) {
+    return `💳 <strong>Refund &amp; Purchase Policy</strong><br>
+🐕 Woof!<br><br>
+<strong>Domain purchases are handled through registrars:</strong><br><br>
+Each registrar has their own refund policy:<br>
+• <strong>Atom.com</strong> — Check their refund terms<br>
+• <strong>Dynadot.com</strong> — See their purchase policy<br>
+• <strong>Freename.io</strong> — Review Web3 domain policies<br>
+• <strong>Unstoppable Domains</strong> — Check blockchain domain terms<br><br>
+<strong>Generally for domains:</strong><br>
+• Sales are typically final once transferred<br>
+• Refund policies vary by registrar<br>
+• Some registrars offer grace periods<br>
+• Web3/blockchain domains are usually non-refundable (permanent blockchain minting)<br><br>
+<strong>Before purchasing:</strong><br>
+📋 Review the specific registrar's refund policy<br>
+📧 Ask questions: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a><br>
+🔍 Make sure it's the right domain for you!<br><br>
+<strong>We're here to help you choose wisely!</strong><br><br>
+What questions can I answer about domains? 🐕`;
+  }
+
+  // Fix 6: GDPR / privacy
+  if (/gdpr compliant|is scout gdpr|privacy|data protection|do you collect data|collect.*data|data.*collect/i.test(q)) {
+    return `🔒 <strong>Privacy &amp; Data Protection</strong><br>
+🐕 Woof! Your privacy matters!<br><br>
+<strong>Scout is privacy-focused:</strong><br><br>
+✅ <strong>No data collection</strong> — I don't collect or store personal information<br>
+✅ <strong>Client-side only</strong> — Everything runs in your browser<br>
+✅ <strong>No tracking</strong> — No cookies, no analytics, no third-party scripts<br>
+✅ <strong>No account required</strong> — Chat anonymously<br>
+✅ <strong>Secure connection</strong> — HTTPS encrypted<br>
+✅ <strong>No logs</strong> — Conversations aren't saved on our servers<br><br>
+<strong>What this means:</strong><br>
+• Your searches are private<br>
+• Your questions stay between us<br>
+• No email required<br>
+• No data sold or shared<br><br>
+🔒 <strong>Your privacy is protected!</strong><br><br>
+Questions about privacy? Email: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a><br><br>
+What domains can I help you find? 🐕`;
+  }
+
+  // Fix 7: AI safety question
+  if (/is it safe to use ai bots|are ai assistants safe|is scout safe|can i trust ai|ai safety/i.test(q)) {
+    return `🤖 <strong>AI Assistant Safety</strong><br>
+🐕 <em>*Sits attentively*</em> Woof!<br><br>
+<strong>Is Scout safe to use?</strong><br><br>
+✅ <strong>YES! Here's why:</strong><br><br>
+<strong>Privacy-First:</strong><br>
+• No data collection<br>
+• Client-side processing<br>
+• No account needed<br>
+• Private conversations<br><br>
+<strong>Transparent:</strong><br>
+• I only know about Domain Terrier's portfolio<br>
+• I can't access your personal data<br>
+• I can't make purchases on your behalf<br>
+• All transactions through trusted registrars<br><br>
+<strong>Honest:</strong><br>
+• I tell you when I don't know something<br>
+• I won't make up information<br>
+• I redirect off-topic questions to Claude.ai<br>
+• I'm here to HELP, not sell aggressively<br><br>
+<strong>What Scout CAN'T do:</strong><br>
+❌ Access your accounts<br>
+❌ Process payments<br>
+❌ Store your information<br>
+❌ Share your data<br><br>
+<strong>What Scout DOES:</strong><br>
+✅ Answer domain questions<br>
+✅ Show you relevant domains<br>
+✅ Provide education<br>
+✅ Connect you with Colin for purchases<br><br>
+🐕 <strong>I'm a helpful guide, not a risk!</strong><br><br>
+Feel safe chatting with me! What domains interest you? 🐕`;
+  }
+
+  // Fix 8: Web3 safety question
+  if (/how safe is web3|is web3 safe|web3 security|is blockchain safe/i.test(q)) {
+    return `🔒 <strong>Web3 Safety &amp; Security</strong><br>
+🐕 Woof! Important question!<br><br>
+<strong>Web3 has both strengths and risks:</strong><br><br>
+<strong>✅ STRENGTHS:</strong><br>
+• <strong>Ownership:</strong> You truly own your assets<br>
+• <strong>Transparency:</strong> All transactions visible on blockchain<br>
+• <strong>Immutable:</strong> Can't be altered or censored<br>
+• <strong>Decentralized:</strong> No single point of failure<br>
+• <strong>Self-custody:</strong> You control your own assets<br><br>
+<strong>⚠️ RISKS TO KNOW:</strong><br>
+• <strong>Responsibility:</strong> YOU hold the keys — lose them = lose access<br>
+• <strong>Scams exist:</strong> Phishing, fake projects, rug pulls<br>
+• <strong>Irreversible:</strong> Blockchain transactions can't be undone<br>
+• <strong>Learning curve:</strong> New concepts to understand<br><br>
+<strong>🛡️ STAY SAFE:</strong><br>
+• Use trusted platforms (Freename, Unstoppable Domains)<br>
+• Secure your wallet/keys carefully<br>
+• Research before investing<br>
+• Never share private keys<br>
+• Verify URLs (avoid phishing)<br><br>
+<strong>Web3 domains specifically:</strong><br>
+✅ Ownership guaranteed on blockchain<br>
+✅ Can't be taken away<br>
+✅ Permanent (usually no renewals)<br><br>
+Questions? Email: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a> 🔒`;
+  }
+
+  // Fix 9: General info scope / "what else can you help with"
+  if (/do you have information on anything other|what else can you help with|can you help with|what can you do/i.test(q)) {
+    return `🐕 <strong>My Specialization</strong><br>
+Woof!<br><br>
+I'm a <strong>domain specialist</strong> — I focus exclusively on:<br><br>
+✅ <strong>Domain names</strong> (Web2 &amp; Web3)<br>
+✅ <strong>Domain investing</strong> (valuation, strategies)<br>
+✅ <strong>Web3 technology</strong> (blockchain, RWA, DeFi)<br>
+✅ <strong>TLDs</strong> (extensions, what they mean)<br>
+✅ <strong>Domain purchasing</strong> (process, escrow, payment)<br><br>
+<strong>For other topics:</strong><br>
+🔗 My friend Claude can help: <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">https://claude.ai</a><br><br>
+Claude is great for:<br>
+• General knowledge<br>
+• Coding help<br>
+• Writing assistance<br>
+• Research<br>
+• And much more!<br><br>
+<strong>I'm laser-focused on domains so I can be REALLY good at it!</strong> 🎯<br><br>
+What domain questions can I answer? 🐕`;
+  }
+
+  // Fix 12: Business recommendation — detect in-scope vs out-of-scope business type
+  const bizTriggerRe = /(?:i want to|i'?m|i am)\s+(?:open(?:ing)?|start(?:ing)?|launch(?:ing)?|build(?:ing)?|creat(?:ing)?|setting up)\s|recommend.*domain|suggest.*domain|domain.*for.*(?:my |a |an )|what domain.*for/i;
+  if (bizTriggerRe.test(q)) {
+    const outOfScopeRe = /coffee\s*shop|café|cafe|bakery|restaurant|bar\b|pub\b|pizza|food truck|clothing store|fashion|boutique|hair salon|barber|gym\b|fitness studio|yoga|pilates|real estate agent|mortgage broker|plumber|electrician|accountant|accounting firm|law firm|lawyer|dentist|dental clinic|doctor|medical clinic|veterinarian|\bvet\b|travel agent|hotel\b|tourism|grocery|florist|pet shop|retail store/i;
+    if (outOfScopeRe.test(q)) {
+      return `🐕 Woof! I specialize in domains for:<br>
+• Robotics &amp; Autonomous Systems<br>
+• Aviation &amp; Aerospace<br>
+• Real World Assets (RWA)<br>
+• AI &amp; Technology<br>
+• Web3 &amp; Blockchain<br>
+• Korean Beauty<br>
+• Smart Glasses &amp; Wearables<br><br>
+I don't currently have domains for that business type, but I have <strong>brandable domains</strong> that work for ANY business!<br><br>
+Try:<br>
+• <em>'Show me brandable domains'</em><br>
+• <em>'Domains under $3,000'</em><br>
+• <em>'What makes a great domain?'</em> (learn what to look for)<br><br>
+What can I help you find? 🐕`;
+    }
+    // In-scope: detect category and show relevant domains
+    const bizCats = parseCategories(q);
+    if (bizCats.length) {
+      const results = searchDomains({categories: bizCats});
+      const top = results.slice(0, 6);
+      const catLabel = bizCats[0];
+      if (top.length) {
+        return `🐕 Exciting! A <strong>${escHtml(catLabel)}</strong> venture!<br><br>
+Here are perfect domains for your ${escHtml(catLabel.toLowerCase())} business:<br>
+${renderCards(top)}
+Want to narrow it down? Tell me:<br>
+• Your budget? (Under $5k, $10k, etc.)<br>
+• Your focus? (Specific niche within ${escHtml(catLabel.toLowerCase())})<br><br>
+What sounds good? 🐕`;
+      }
+    }
   }
 
   // Cat 13: LTO details — specific, checked before general payment
@@ -1340,11 +1578,20 @@ Both are available now. Want more details on either, or shall I find similar opt
 
   if (intent.type === 'search') {
     const results = searchDomains(intent);
+    const hasTier = !!intent.tier;
+    const hasCats = intent.categories && intent.categories.length;
     if (!results.length) {
+      if (hasTier && hasCats) {
+        return `I don't have any <strong>${intent.tier}</strong> domains in <strong>${intent.categories.join(', ')}</strong> right now. Try:<br>
+• <em>"Show me ${intent.categories.join(', ')} domains"</em> (all tiers)<br>
+• <em>"Show me ${intent.tier} domains"</em> (all categories)`;
+      }
       return `I couldn't find any domains matching that criteria. Try broadening your search — for example, ask for a category like "show me Robotics domains" or a price range like "under $5,000".`;
     }
     let intro = '';
-    if (intent.categories && intent.categories.length) {
+    if (hasTier && hasCats) {
+      intro = `Found ${results.length} <strong>${intent.tier}</strong> domain${results.length!==1?'s':''} in <strong>${intent.categories.join(', ')}</strong>:`;
+    } else if (hasCats) {
       intro = `Found ${results.length} investment-grade domain${results.length!==1?'s':''} in <strong>${intent.categories.join(', ')}</strong>:`;
     } else if (intent.tier) {
       intro = `Here are the <strong>${intent.tier}</strong> tier domains (${results.length} found):`;
