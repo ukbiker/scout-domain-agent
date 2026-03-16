@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,6 +231,15 @@ body {
   transition: all 0.15s ease;
 }
 
+@media (max-width: 768px) {
+  #tld-tabs { gap: 5px; }
+  .tld-tab { padding: 8px 12px; font-size: 12px; flex: 1 1 auto; min-width: 110px; }
+  .tld-category-content { padding: 16px; }
+  .tld-list { gap: 6px; }
+  .tld-badge { font-size: 12px; padding: 5px 10px; }
+  #tld-showcase-header h2 { font-size: 13px; }
+}
+
 /* FAQ BUTTON */
 #faq-btn-wrap {
   position: absolute;
@@ -254,6 +264,123 @@ body {
   background: #cc6310;
   transform: translateY(-1px);
 }
+
+/* TLD SHOWCASE */
+#tld-showcase {
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 320px;
+  background: var(--cream);
+  border-top: 2px solid var(--navy);
+  scrollbar-width: thin;
+}
+#tld-showcase-inner {
+  padding: 20px 16px 16px;
+}
+#tld-showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding: 12px 16px;
+  background: var(--navy);
+  color: white;
+}
+#tld-showcase-header h2 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+#tld-toggle-arrow {
+  font-size: 13px;
+  transition: transform 0.25s;
+}
+#tld-showcase-body {
+  display: none;
+}
+#tld-showcase-body.open {
+  display: block;
+}
+#tld-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 16px 16px 0;
+}
+.tld-tab {
+  background: white;
+  border: 2px solid var(--navy);
+  color: var(--navy);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.tld-tab:hover {
+  background: var(--orange);
+  color: white;
+  border-color: var(--orange);
+}
+.tld-tab.active {
+  background: var(--navy);
+  color: white;
+}
+#tld-content {
+  padding: 16px;
+}
+.tld-category-content {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid var(--navy);
+}
+.tld-category-content h3 {
+  color: var(--navy);
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+.tld-category-content p {
+  color: #555;
+  font-size: 13px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.tld-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.tld-badge {
+  background: var(--orange);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.tld-cta {
+  margin-top: 16px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--navy), #2d4a7a);
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.tld-cta a {
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: none;
+}
+.tld-cta a:hover { text-decoration: underline; }
 
 /* FAQ MODAL */
 #faq-overlay {
@@ -325,7 +452,7 @@ body {
     </div>
   </div>
   <div class="stats">
-    <div>282 domains</div>
+    <div>~300 domains</div>
     <div>14 categories</div>
   </div>
   <div id="faq-btn-wrap">
@@ -340,10 +467,14 @@ body {
     <div id="featured-domain-tagline" style="font-style: italic; margin-bottom: 8px; color: #FFF8F0; opacity: 0.9;"></div>
     <div id="featured-domain-price" style="font-size: 20px; font-weight: bold; color: #FFD700; margin-bottom: 14px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
     <button onclick="showFeaturedDomain()" style="background: white; color: #1B2A4A; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;">Learn More 🐕</button>
+    <div style="margin-top:14px;padding:10px 14px;background:rgba(255,255,255,0.12);border-radius:8px;">
+      <p style="color:white;margin:0;font-size:12px;">💎 Want a custom domain on OUR TLD? <a href="#" onclick="scrollToTLDs();return false;" style="color:#FFD700;font-weight:bold;text-decoration:underline;">Explore our 33 owned TLDs →</a></p>
+    </div>
   </div>
 </div>
 
 <div id="chips">
+  <button class="chip" style="background:#1B2A4A;color:white;border-color:#1B2A4A;font-weight:700;" onclick="scrollToTLDs()">🏆 Explore Our 33 TLDs</button>
   <button class="chip" onclick="chip('Show me Robotics domains')">🤖 Robotics</button>
   <button class="chip" onclick="chip('Show me RWA domains')">🏠 RWA</button>
   <button class="chip" onclick="chip('Show me Aviation domains')">✈️ Aviation</button>
@@ -364,9 +495,32 @@ body {
   <button id="send-btn" onclick="handleSend()" title="Send">&#9658;</button>
 </div>
 
+<!-- TLD SHOWCASE -->
+<div id="tld-showcase">
+  <div id="tld-showcase-header" onclick="toggleTLDShowcase()" role="button" aria-expanded="true" aria-controls="tld-showcase-body">
+    <h2>🏆 DOMAIN TERRIER'S 33 WEB3 TLDs — Get YOUR custom domain minted on blockchain!</h2>
+    <span id="tld-toggle-arrow" style="transform:rotate(90deg)">▶</span>
+  </div>
+  <div id="tld-showcase-body" class="open">
+    <!-- Tab Navigation -->
+    <div id="tld-tabs">
+      <button class="tld-tab active" onclick="showTLDCategory('geographic')">🌍 Geographic</button>
+      <button class="tld-tab" onclick="showTLDCategory('aviation')">✈️ Aviation</button>
+      <button class="tld-tab" onclick="showTLDCategory('lifestyle')">🌱 Lifestyle</button>
+      <button class="tld-tab" onclick="showTLDCategory('crypto')">💰 Crypto</button>
+      <button class="tld-tab" onclick="showTLDCategory('innovation')">🎯 Innovation</button>
+      <button class="tld-tab" onclick="showTLDCategory('sports')">✊ Sports</button>
+      <button class="tld-tab" onclick="showTLDCategory('travel')">🌐 Travel</button>
+      <button class="tld-tab" onclick="showTLDCategory('all')">📋 All TLDs</button>
+    </div>
+    <!-- Tab Content Area -->
+    <div id="tld-content"></div>
+  </div>
+</div>
+
 <script>
 // ============================================================
-// DOMAIN DATABASE — 282 Investment-Grade Domains
+// DOMAIN DATABASE — Investment-Grade Domains
 // ============================================================
 const DOMAINS = [
   {name:"AFineTea.com",category:"Specialty/Niche",tier:"Affordable",price:"$2,495",tagline:"",desc:"A refined domain for specialty tea businesses, subscription boxes, or premium retail. Evokes quality and discernment in every cup."},
@@ -650,7 +804,8 @@ const DOMAINS = [
   {name:"Wearcats.com",category:"Specialty/Niche",tier:"Affordable",price:"$2,995",tagline:"",desc:"Feline-themed apparel and lifestyle domain for cat-inspired fashion, pet merchandise, and animal-themed clothing brands."},
   {name:"WearDogs.com",category:"Specialty/Niche",tier:"Affordable",price:"$2,995",tagline:"",desc:"Dog-themed apparel and merchandise domain for canine-inspired fashion, pet accessories, and dog culture lifestyle brands."},
   {name:"Wyvara.com",category:"Premium Brandables",tier:"Brandable",price:"$3,495",tagline:"",desc:"Mysterious invented premium brandable with wyvern dragon mythology. Ideal for gaming, fantasy brands, or tech companies seeking powerful distinctive identity."},
-  {name:"ZurichRWA.com",category:"RWA",tier:"Quality",price:"$5,995",tagline:"Swiss Assets. Blockchain Verified.",desc:"Companion to RWAZurich.com capturing Zurich's financial authority with both naming formats. Complete brand coverage for Switzerland's premier financial center."}
+  {name:"ZurichRWA.com",category:"RWA",tier:"Quality",price:"$5,995",tagline:"Swiss Assets. Blockchain Verified.",desc:"Companion to RWAZurich.com capturing Zurich's financial authority with both naming formats. Complete brand coverage for Switzerland's premier financial center."},
+  {name:"NeoNamespace.com",category:"AI/Tech Services",tier:"Brandable",price:"$8,995",tagline:"The Future of Digital Identity",desc:"Premium Web3 namespace platform domain. Perfect for decentralized identity services, TLD management platforms, or blockchain naming infrastructure."}
 ];
 
 // ============================================================
@@ -885,7 +1040,7 @@ A <strong>TLD (Top-Level Domain)</strong> is the ending of a domain name — the
 • <strong>.com</strong> = Most trusted, highest value<br>
 • <strong>.io</strong> = Great for tech startups<br>
 • <strong>Web3 TLDs</strong> = Blockchain ownership, crypto-friendly, future-focused<br><br>
-Domain Terrier has <strong>282 .com/.io domains</strong> PLUS <strong>355 Web3 domains</strong> across 32+ TLDs! 🚀`,
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 33 TLDs! 🚀`,
 
   pricing: `<strong>How is domain pricing determined?</strong><br><br>
 Domains in this portfolio are priced based on:<br><br>
@@ -1208,11 +1363,18 @@ function generateResponse(input) {
     // Pure greeting — return welcome message
     return `👋 Woof! I'm Scout, your AI domain expert! 🐕<br><br>
 I can help you:<br>
-• Browse 282 investment-grade domains<br>
-• Search by category (Robotics, RWA, Aviation, AI/Tech...)<br>
-• Find domains in your price range<br>
-• Learn about domain investing<br><br>
-What are you looking for today? Try: <em>'Show me robotics domains'</em> or <em>'Under $5,000'</em>`;
+• Browse around 300 investment-grade Web2 domains<br>
+• Explore our 33 owned Web3 TLDs<br>
+• Find domains by category (Robotics, RWA, Aviation, AI/Tech...)<br>
+• Learn about custom domain minting on blockchain<br>
+• Compare options and learn about domain investing<br><br>
+💎 <strong>Domain Terrier owns 33 Web3 TLDs!</strong><br>
+Want YourName.<strong>filipino</strong> or YourBrand.<strong>aviator</strong>? We can help you mint it!<br><br>
+What are you looking for? Try:<br>
+• <em>'Show me Robotics domains'</em><br>
+• <em>'Explore your TLDs'</em><br>
+• <em>'What is a Web3 TLD?'</em><br>
+• <em>'Under $5,000'</em>`;
   }
 
   // Fix 1: Conversational acknowledgments
@@ -1247,7 +1409,7 @@ Domain Terrier specializes in:<br>
 • Investment-grade .com domains<br>
 • Web3 &amp; blockchain domains<br>
 • Robotics, Aviation, RWA, AI/Tech sectors<br>
-• 282 curated Web2 domains (live now!)<br>
+• Around 300 investment-grade Web2 domains (live now!)<br>
 • 344 Web3 domains (coming soon!)<br><br>
 I'm here to help you find the perfect domain from our portfolio!<br><br>
 What are you looking for? 🐕`;
@@ -1481,6 +1643,143 @@ Each registrar offers:<br>
 All transactions are secure and processed through the registrar — safe and simple! 🔒`;
   }
 
+  // TLD-1: Show TLD portfolio / showcase
+  if (/show.*(?:your|our|the)\s+tlds?|what tlds?.*(?:you|do you|do you own|own)|your tld portfolio|list.*tlds?|tell me about.*tlds?|tld.*portfolio|tlds? you own/i.test(q)) {
+    scrollToTLDs();
+    return `🏆 <strong>Domain Terrier owns 33 Web3 TLDs!</strong><br><br>
+🌍 <strong>Geographic &amp; Cultural (8):</strong> .filipino .balikbayan .kababayan .caribbeanislands .britishisles .southeastasia .pacificislands .fareast<br><br>
+✈️ <strong>Aviation &amp; Space (4):</strong> .aviator .flightschool .flightsim .spacetech<br><br>
+🌱 <strong>Lifestyle &amp; Passion (11):</strong> .naturelover .foodieworld .bibliophile .cinephile .technophile .dreambuilder .thrillseeker .speedfreak .trailfinder .mindcoach .fittest<br><br>
+💰 <strong>Crypto (2):</strong> .cryptohunter .cryptonian<br><br>
+🎯 <strong>Innovation (3):</strong> .innovator .codebreaker .bonkers<br><br>
+✊ <strong>Combat &amp; Sports (2):</strong> .combatsport .fightfightfight<br><br>
+🌐 <strong>Travel (2):</strong> .travelphile .travelhacker<br><br>
+👇 <strong>See the TLD Showcase below</strong> to explore each category and mint your own! 🐕${tldUrgency()}`;
+  }
+
+  // TLD-2: Specific TLD info query (e.g. "what is .filipino", "tell me about .aviator")
+  const specificTldMatch = q.match(/(?:what is|tell me about|explain|info on|about)\s+\.([a-z]+)|\.([a-z]+)\s+(?:tld|domain|extension)/i);
+  if (specificTldMatch) {
+    const tldName = '.' + (specificTldMatch[1] || specificTldMatch[2]).toLowerCase();
+    let foundCat = null, foundKey = null;
+    Object.keys(TLD_CATEGORIES).forEach(key => {
+      if (TLD_CATEGORIES[key].tlds.includes(tldName)) { foundCat = TLD_CATEGORIES[key]; foundKey = key; }
+    });
+    if (foundCat) {
+      const activeTabBtn = document.querySelector(`.tld-tab[onclick="showTLDCategory('${foundKey}')"]`);
+      showTLDCategory(foundKey, activeTabBtn);
+      document.getElementById('tld-showcase').scrollIntoView({behavior:'smooth', block:'start'});
+      return `🏷️ <strong>${tldName}</strong> is one of Domain Terrier's Web3 TLDs!<br><br>
+<strong>Category:</strong> ${foundCat.icon} ${foundCat.title}<br><br>
+${foundCat.description}<br><br>
+<strong>Perfect for:</strong> ${foundCat.perfect_for.join(', ')}<br><br>
+<strong>Example domains:</strong><br>
+${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}<br><br>
+🔗 Mint yours at <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br>
+👇 TLD Showcase below has been updated to show this category! 🐕${tldUrgency()}`;
+    }
+  }
+
+  // TLD-2b: Bare TLD name search (e.g. "filipino", "aviator domains")
+  const allOwnedTlds = Object.values(TLD_CATEGORIES).flatMap(c => c.tlds.map(t => t.replace('.', '')));
+  const bareMatch = allOwnedTlds.find(t => new RegExp(`\\b${t}\\b`, 'i').test(q));
+  if (bareMatch) {
+    let foundCat = null, foundKey = null;
+    Object.keys(TLD_CATEGORIES).forEach(key => {
+      if (TLD_CATEGORIES[key].tlds.includes('.' + bareMatch)) { foundCat = TLD_CATEGORIES[key]; foundKey = key; }
+    });
+    if (foundCat) {
+      const activeTabBtn = document.querySelector(`.tld-tab[onclick="showTLDCategory('${foundKey}')"]`);
+      showTLDCategory(foundKey, activeTabBtn);
+      document.getElementById('tld-showcase').scrollIntoView({behavior:'smooth', block:'start'});
+      // Also show any matching Web2 domains from portfolio
+      const web2Matches = searchDomains({keyword: bareMatch}).slice(0, 4);
+      const web2Block = web2Matches.length ? `<br><strong>Related Web2 domains in our portfolio:</strong><br>${renderCards(web2Matches)}` : '';
+      return `🏷️ <strong>.${bareMatch}</strong> is one of Domain Terrier's owned Web3 TLDs!<br><br>
+<strong>Category:</strong> ${foundCat.icon} ${foundCat.title}<br><br>
+${foundCat.description}<br><br>
+<strong>Perfect for:</strong> ${foundCat.perfect_for.join(', ')}<br><br>
+<strong>Example domains you could mint:</strong><br>
+${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}${web2Block}<br><br>
+🔗 Mint <strong>.${bareMatch}</strong> at <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br>
+👇 TLD Showcase updated below! 🐕${tldUrgency()}`;
+    }
+  }
+
+  // TLD-3: Custom minting queries
+  if (/how.*mint|mint.*domain|get.*\.(?:filipino|aviator|kababayan|innovator|cryptohunter|travelphile|combatsport|flightschool|naturelover|foodieworld|bibliophile)\b|can.*mint|custom.*domain.*tld|tld.*mint|yourname\.|yourbrand\./i.test(q) ||
+      /how.*get.*\.(filipino|aviator|innovator|cryptohunter|travelphile|travelhacker|combatsport|bibliophile|cinephile|technophile|flightschool|flightsim|spacetech|naturelover|foodieworld|dreambuilder|thrillseeker|speedfreak|trailfinder|mindcoach|fittest|balikbayan|kababayan|caribbeanislands|britishisles|southeastasia|pacificislands|fareast|cryptonian|codebreaker|bonkers|fightfightfight)\b/i.test(q)) {
+    return `💎 <strong>Custom Domain Minting</strong><br>
+🐕 Woof!<br><br>
+<strong>Want YOUR custom domain on our TLD?</strong><br><br>
+Examples:<br>
+• YourName<strong>.filipino</strong><br>
+• YourCallSign<strong>.aviator</strong><br>
+• YourBrand<strong>.innovator</strong><br>
+• YourHandle<strong>.cryptohunter</strong><br><br>
+<strong>How to mint:</strong><br><br>
+<strong>Step 1:</strong> Visit <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br><br>
+<strong>Step 2:</strong> Search for your desired domain<br>
+Example: <em>mabuhay.filipino</em><br><br>
+<strong>Step 3:</strong> Pay one-time minting fee<br>
+(Typically $10–$100 depending on blockchain)<br><br>
+<strong>Step 4:</strong> YOU own it forever! ✅<br>
+• Total blockchain ownership<br>
+• Use, sell, transfer — your choice<br>
+• Unlimited subdomains included!<br><br>
+📚 Learn more: <a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener">What is a Web3 TLD?</a><br>
+📧 Questions: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>${tldUrgency()}`;
+  }
+
+  // TLD-4: Web3 TLD education
+  if (/what is a web3 tld|web3 tld explained|difference.*web2.*web3.*tld|web3.*tld.*explained|explain.*web3.*tld/i.test(q)) {
+    return `🌐 <strong>Web3 TLD Explained</strong><br>
+🐕 Woof! Great question!<br><br>
+A Web3 TLD is a blockchain-based domain extension that you OWN as an NFT!<br><br>
+<strong>Traditional TLDs (.com, .org):</strong><br>
+• Controlled by ICANN<br>
+• Annual renewal fees<br>
+• Can be taken away<br>
+• Rent, don't own<br><br>
+<strong>Web3 TLDs (.filipino, .aviator):</strong><br>
+• Blockchain-based NFT<br>
+• One-time minting fee<br>
+• Yours forever<br>
+• True ownership<br>
+• Unlimited subdomains!<br><br>
+<strong>Domain Terrier owns 33 Web3 TLDs!</strong><br><br>
+This means:<br>
+✓ You can mint YOUR custom domain<br>
+✓ On OUR TLD extensions<br>
+✓ Own it forever on blockchain<br>
+✓ Use for Web3 identity, crypto wallets, websites<br><br>
+<strong>Our 33 TLDs include:</strong><br>
+🌍 Geographic: .filipino .balikbayan .kababayan<br>
+✈️ Aviation: .aviator .flightschool<br>
+🎯 Innovation: .innovator .dreambuilder<br>
++ 24 more!<br><br>
+📚 <a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener">Learn more about Web3 TLDs</a><br>
+🔗 <a href="https://freename.io" target="_blank" rel="noopener">Mint yours at freename.io</a><br>
+📧 Questions: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>${tldUrgency()}`;
+  }
+
+  // TLD-5: Unlimited subdomains
+  if (/unlimited subdomains?|can i create subdomains?|subdomain limits?|how many subdomains?/i.test(q)) {
+    return `✅ <strong>Unlimited Subdomains!</strong><br>
+🐕 Woof!<br><br>
+YES! When you mint a Web3 domain on our TLD, you get <strong>UNLIMITED subdomains</strong> included!<br><br>
+<strong>Example:</strong><br>
+You mint: <strong>yourname.filipino</strong><br><br>
+You can create:<br>
+• blog.yourname.filipino<br>
+• shop.yourname.filipino<br>
+• portfolio.yourname.filipino<br>
+• wallet.yourname.filipino<br>
+• unlimited.yourname.filipino<br><br>
+<strong>All FREE once you own the main domain!</strong><br><br>
+This is a huge advantage of Web3 TLDs — no extra fees for subdomains!${tldUrgency()}`;
+  }
+
   // Cat 18: Off-topic — expanded patterns with domain keyword safety guard (Fix 5)
   const domainSafeRe  = /\bdomain|tld\b|web3\b|rwa\b|defi\b|nft\b|blockchain\b|registrar\b|crypto\b|scout\b|\.com\b|\.io\b|\.xyz\b/i;
   const offTopicRe    = /\bweather\b|\bforecast\b|\btemperature\b|\brain\b|\bsnow\b|recipe|\bcooking?\b|what should i eat|\bfood\b|\bmeal\b|is the earth|who (?:is|was)\b|when did |where is |meaning of life|how old (?:is|are|was)\b|news today|sports score|stock price|who won|what happened today|tell me a joke|fix my computer|write me a (?:poem|story|essay)|math problem|translate this|\bcalculate\b|give me a recipe|how do i code/i;
@@ -1683,6 +1982,34 @@ function chip(text) {
 }
 
 // ============================================================
+// TLD SHOWCASE UI HELPERS
+// ============================================================
+function scrollToTLDs() {
+  const showcase = document.getElementById('tld-showcase');
+  if (!showcase) return;
+  const body = document.getElementById('tld-showcase-body');
+  if (body && !body.classList.contains('open')) toggleTLDShowcase();
+  showcase.scrollIntoView({behavior: 'smooth', block: 'start'});
+  // Activate "All TLDs" tab
+  setTimeout(() => {
+    const allTab = document.querySelector('.tld-tab[onclick*="all"]');
+    if (allTab) showTLDCategory('all', allTab);
+  }, 400);
+}
+
+function tldUrgency() {
+  return `<br><br>🚨 <strong>FIRST COME, FIRST SERVED!</strong><br>
+Your perfect domain could be taken by someone else right now!<br><br>
+Early adopters get:<br>
+✓ The exact name they want<br>
+✓ Lock in today's minting price<br>
+✓ Build Web3 identity before mainstream adoption<br>
+✓ Secure their brand across multiple TLDs<br><br>
+Don't wait — mint YOUR name today!<br>
+🔗 <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a>`;
+}
+
+// ============================================================
 // DOMAIN OF THE DAY
 // ============================================================
 let todayFeatured = null;
@@ -1706,6 +2033,140 @@ function showFeaturedDomain() {
     removeTyping();
     addMsg('scout', `🌟 <strong>Today's Domain of the Day!</strong><br><br>${renderCards([d])}<br>Interested in this domain? Ask me about payment options, or type <em>'make an offer'</em> to get in touch.`);
   }, 400 + Math.random() * 300);
+}
+
+// ============================================================
+// TLD SHOWCASE DATA
+// ============================================================
+const TLD_CATEGORIES = {
+  geographic: {
+    title: "GEOGRAPHIC & CULTURAL (8 TLDs)",
+    icon: "🌍",
+    tlds: [".filipino", ".balikbayan", ".kababayan", ".caribbeanislands", ".britishisles", ".southeastasia", ".pacificislands", ".fareast"],
+    description: "Filipino identity worldwide - connect your global community. Island heritage and culture. Regional identity across Asia-Pacific.",
+    perfect_for: ["Cultural organizations", "Community groups", "Diaspora networks", "Regional businesses"],
+    examples: ["mabuhay.filipino", "heritage.caribbeanislands", "connect.kababayan"]
+  },
+  aviation: {
+    title: "AVIATION & SPACE (4 TLDs)",
+    icon: "✈️",
+    tlds: [".aviator", ".flightschool", ".flightsim", ".spacetech"],
+    description: "Perfect for pilots, flight training centers, aviation businesses, aerospace ventures, and flight sim communities.",
+    perfect_for: ["Pilots and instructors", "Flight training centers", "Aviation businesses", "Aerospace ventures", "Flight sim communities"],
+    examples: ["topgun.aviator", "acme.flightschool", "venture.spacetech"]
+  },
+  lifestyle: {
+    title: "LIFESTYLE & PASSION (11 TLDs)",
+    icon: "🌱",
+    tlds: [".naturelover", ".foodieworld", ".bibliophile", ".cinephile", ".technophile", ".dreambuilder", ".thrillseeker", ".speedfreak", ".trailfinder", ".mindcoach", ".fittest"],
+    description: "Personal brands, community building, and passion-driven identities.",
+    perfect_for: ["Content creators", "Personal brands", "Hobby communities", "Lifestyle businesses", "Coaching services"],
+    examples: ["chef.foodieworld", "reader.bibliophile", "coach.mindcoach"]
+  },
+  crypto: {
+    title: "CRYPTO (2 TLDs)",
+    icon: "💰",
+    tlds: [".cryptohunter", ".cryptonian"],
+    description: "For crypto traders, blockchain enthusiasts, and Web3 communities.",
+    perfect_for: ["Crypto traders", "Blockchain communities", "Web3 projects", "NFT collectors"],
+    examples: ["whale.cryptohunter", "dao.cryptonian"]
+  },
+  innovation: {
+    title: "INNOVATION (3 TLDs)",
+    icon: "🎯",
+    tlds: [".innovator", ".codebreaker", ".bonkers"],
+    description: "For entrepreneurs, developers, and creative disruptors.",
+    perfect_for: ["Startups and founders", "Tech innovators", "Creative agencies", "Disruptive brands"],
+    examples: ["startup.innovator", "hacker.codebreaker", "creative.bonkers"]
+  },
+  sports: {
+    title: "COMBAT & SPORTS (2 TLDs)",
+    icon: "✊",
+    tlds: [".combatsport", ".fightfightfight"],
+    description: "For martial artists, fighters, gyms, and combat sports communities.",
+    perfect_for: ["Martial arts schools", "MMA fighters", "Combat sports gyms", "Fighting communities"],
+    examples: ["dojo.combatsport", "champion.fightfightfight"]
+  },
+  travel: {
+    title: "TRAVEL (2 TLDs)",
+    icon: "🌐",
+    tlds: [".travelphile", ".travelhacker"],
+    description: "For travel bloggers, digital nomads, and adventure seekers.",
+    perfect_for: ["Travel bloggers", "Digital nomads", "Travel agencies", "Adventure communities"],
+    examples: ["nomad.travelphile", "points.travelhacker"]
+  }
+};
+
+// ============================================================
+// TLD SHOWCASE FUNCTIONS
+// ============================================================
+function toggleTLDShowcase() {
+  const body = document.getElementById('tld-showcase-body');
+  const arrow = document.getElementById('tld-toggle-arrow');
+  const header = document.getElementById('tld-showcase-header');
+  const isOpen = body.classList.contains('open');
+  if (isOpen) {
+    body.classList.remove('open');
+    arrow.style.transform = '';
+    header.setAttribute('aria-expanded', 'false');
+  } else {
+    body.classList.add('open');
+    arrow.style.transform = 'rotate(90deg)';
+    header.setAttribute('aria-expanded', 'true');
+    // Render default tab if content is empty
+    if (!document.getElementById('tld-content').innerHTML.trim()) {
+      showTLDCategory('geographic', document.querySelector('.tld-tab'));
+    }
+  }
+}
+
+function showTLDCategory(category, tabEl) {
+  // Update active tab — use passed element or fall back to event.target
+  const activeTab = tabEl || (typeof event !== 'undefined' && event.target ? event.target : null);
+  document.querySelectorAll('.tld-tab').forEach(t => t.classList.remove('active'));
+  if (activeTab) activeTab.classList.add('active');
+
+  const contentDiv = document.getElementById('tld-content');
+
+  if (category === 'all') {
+    let allHTML = '<div class="tld-category-content">';
+    allHTML += '<h3 style="color:#1B2A4A;margin-bottom:20px;">📋 All 33 TLDs</h3>';
+    Object.keys(TLD_CATEGORIES).forEach(key => {
+      const cat = TLD_CATEGORIES[key];
+      allHTML += `<h4 style="color:#E87722;margin-top:20px;">${cat.icon} ${cat.title}</h4>`;
+      allHTML += '<div class="tld-list">';
+      cat.tlds.forEach(tld => { allHTML += `<span class="tld-badge">${tld}</span>`; });
+      allHTML += '</div>';
+    });
+    allHTML += '<div style="margin-top:24px;padding:16px;background:#FFF8F0;border-radius:8px;text-align:center;">';
+    allHTML += '<p style="font-weight:bold;color:#1B2A4A;margin-bottom:10px;">🚨 GET YOUR NAME BEFORE SOMEONE ELSE DOES!</p>';
+    allHTML += '<a href="https://freename.io" target="_blank" rel="noopener" style="display:inline-block;background:#E87722;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin:6px;">Mint on Freename →</a>';
+    allHTML += '<a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener" style="display:inline-block;background:#1B2A4A;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin:6px;">Learn About Web3 TLDs →</a>';
+    allHTML += '</div></div>';
+    contentDiv.innerHTML = allHTML;
+  } else {
+    const cat = TLD_CATEGORIES[category];
+    if (!cat) return;
+    let html = '<div class="tld-category-content">';
+    html += `<h3 style="color:#1B2A4A;margin-bottom:10px;">${cat.title}</h3>`;
+    html += '<div class="tld-list">';
+    cat.tlds.forEach(tld => { html += `<span class="tld-badge">${tld}</span>`; });
+    html += '</div>';
+    html += `<p style="color:#555;font-size:13px;margin:14px 0;line-height:1.6;">${cat.description}</p>`;
+    html += '<h4 style="color:#E87722;margin-top:16px;margin-bottom:6px;">Perfect for:</h4>';
+    html += '<ul style="color:#1B2A4A;font-size:13px;line-height:1.8;list-style:none;padding:0;">';
+    cat.perfect_for.forEach(item => { html += `<li>✓ ${item}</li>`; });
+    html += '</ul>';
+    html += '<h4 style="color:#E87722;margin-top:16px;margin-bottom:6px;">Example domains:</h4>';
+    html += '<ul style="color:#1B2A4A;font-size:13px;line-height:1.8;list-style:none;padding:0;">';
+    cat.examples.forEach(ex => { html += `<li>• <strong>${ex}</strong></li>`; });
+    html += '</ul>';
+    html += '<div style="margin-top:20px;padding:14px;background:#FFF8F0;border-radius:8px;text-align:center;">';
+    html += '<p style="font-weight:bold;color:#1B2A4A;margin-bottom:10px;">🚨 Claim YOUR identity now!</p>';
+    html += '<a href="https://freename.io" target="_blank" rel="noopener" style="display:inline-block;background:#E87722;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;">Mint on Freename →</a>';
+    html += '</div></div>';
+    contentDiv.innerHTML = html;
+  }
 }
 
 // ============================================================
@@ -1751,7 +2212,7 @@ A short, memorable .com in a high-growth sector = maximum value!`
 • .com = Most trusted, highest value<br>
 • .io = Great for tech startups<br>
 • Web3 TLDs = Blockchain ownership<br><br>
-Domain Terrier has <strong>282 .com/.io domains</strong> PLUS <strong>355 Web3 domains</strong> across 32+ TLDs!`
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 33 TLDs!`
   },
   {
     q: 'What is Lease-to-Own (LTO)?',
@@ -1793,7 +2254,76 @@ Choose based on your industry, budget, and brand positioning. <strong>.com is ki
 • Cannot be censored or taken down<br>
 • Link to crypto wallets, serve as digital identity<br>
 • Peer-to-peer — no central authority<br><br>
-Domain Terrier has <strong>282 Web2 domains</strong> AND <strong>355 Web3 domains</strong> across 32+ TLDs! 🚀`
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> AND <strong>355 Web3 domains</strong> across 33 TLDs! 🚀`
+  },
+  {
+    q: 'What TLDs does Domain Terrier own?',
+    a: `🏆 We own <strong>33 Web3 TLDs</strong> across 7 categories:<br><br>
+🌍 <strong>GEOGRAPHIC &amp; CULTURAL (8):</strong><br>
+.filipino | .balikbayan | .kababayan | .caribbeanislands<br>
+.britishisles | .southeastasia | .pacificislands | .fareast<br><br>
+✈️ <strong>AVIATION &amp; SPACE (4):</strong><br>
+.aviator | .flightschool | .flightsim | .spacetech<br><br>
+🌱 <strong>LIFESTYLE &amp; PASSION (11):</strong><br>
+.naturelover | .foodieworld | .bibliophile | .cinephile<br>
+.technophile | .dreambuilder | .thrillseeker | .speedfreak<br>
+.trailfinder | .mindcoach | .fittest<br><br>
+💰 <strong>CRYPTO (2):</strong><br>
+.cryptohunter | .cryptonian<br><br>
+🎯 <strong>INNOVATION (3):</strong><br>
+.innovator | .codebreaker | .bonkers<br><br>
+✊ <strong>COMBAT &amp; SPORTS (2):</strong><br>
+.combatsport | .fightfightfight<br><br>
+🌐 <strong>TRAVEL (2):</strong><br>
+.travelphile | .travelhacker<br><br>
+Want YOUR custom domain? Visit: <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a>`
+  },
+  {
+    q: 'What is a Web3 TLD?',
+    a: `🌐 A Web3 TLD is a blockchain-based domain extension that you <strong>OWN as an NFT!</strong><br><br>
+<strong>Traditional TLDs (.com, .org):</strong><br>
+• Controlled by ICANN<br>
+• Annual renewal fees<br>
+• Can be taken away<br>
+• Rent, don't own<br><br>
+<strong>Web3 TLDs (.filipino, .aviator):</strong><br>
+• Blockchain-based NFT<br>
+• One-time minting fee<br>
+• Yours forever<br>
+• True ownership<br>
+• Unlimited subdomains!<br><br>
+<strong>Domain Terrier owns 33 Web3 TLDs</strong> — mint your custom domain on any of them!<br><br>
+📚 <a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener">Learn more</a> | 🔗 <a href="https://freename.io" target="_blank" rel="noopener">Mint yours at freename.io</a>`
+  },
+  {
+    q: 'How do I mint a domain on your TLD?',
+    a: `💎 <strong>Step 1:</strong> Visit <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br><br>
+<strong>Step 2:</strong> Search for your desired domain (e.g. <em>mabuhay.filipino</em>)<br><br>
+<strong>Step 3:</strong> Pay the one-time minting fee (typically $10–$100 depending on blockchain)<br><br>
+<strong>Step 4:</strong> YOU own it forever! ✅<br>
+• Total blockchain ownership<br>
+• Use, sell, transfer — your choice<br>
+• Unlimited subdomains included!<br><br>
+🚨 <strong>FIRST COME, FIRST SERVED!</strong> Someone could grab YOUR name right now!<br><br>
+📧 Questions? <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`
+  },
+  {
+    q: 'Do I really own it forever?',
+    a: `🔒 <strong>YES! Permanent Blockchain Ownership</strong><br><br>
+When you mint a Web3 domain, it's recorded on blockchain as YOUR asset!<br><br>
+<strong>You own it because:</strong><br>
+✅ <strong>NFT in your wallet</strong> — Stored as a blockchain asset<br>
+✅ <strong>No one can take it</strong> — Not even Domain Terrier!<br>
+✅ <strong>No renewals</strong> — Pay once, own forever (most blockchains)<br>
+✅ <strong>Your control</strong> — Use, sell, transfer as you wish<br><br>
+<strong>What if Domain Terrier sells the TLD?</strong><br>
+YOUR domain stays YOURS! The blockchain guarantees your ownership regardless of who owns the TLD.<br><br>
+Think of it like:<br>
+• City owns the street name<br>
+• You own your house on that street<br>
+• City changes hands → You STILL own your house!<br><br>
+🔒 Blockchain = Permanent Ownership<br><br>
+🔗 Mint yours: <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a>`
   }
 ];
 
@@ -1851,9 +2381,20 @@ function toggleFAQItem(i) {
 // INIT — Welcome Message
 // ============================================================
 initDomainOfDay();
-addMsg('scout', `I'm Scout, Colin's AI domain expert. I have access to a curated selection of <strong>282 investment-grade domains</strong> across aviation, robotics, RWA, emerging tech sectors, and more.<br><br>
-I can help you find the perfect domain, explain pricing, compare options, and educate you about domains and Web3.<br><br>
-<strong>What are you looking for?</strong>`);
+// Initialize TLD showcase with geographic tab
+showTLDCategory('geographic', document.querySelector('.tld-tab'));
+addMsg('scout', `I'm Scout, Colin's AI domain expert! 🐕<br><br>
+Domain Terrier offers:<br><br>
+<strong>WEB2 DOMAINS:</strong><br>
+• Around 300 investment-grade .com/.io/.xyz domains<br>
+• Robotics, Aviation, RWA, AI/Tech, Korean Beauty, Wearables<br><br>
+<strong>WEB3 TLDs (WE OWN THEM!):</strong><br>
+• 33 Web3 TLD extensions via Freename<br>
+• Custom domain minting available<br>
+• Get YOUR name on our TLD!<br><br>
+🚨 Want YourName.filipino or YourBrand.aviator?<br>
+We can mint it for you!<br><br>
+What are you looking for? 🐕`);
 </script>
 
 <!-- FAQ Modal -->
