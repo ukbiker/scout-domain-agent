@@ -232,12 +232,42 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* TLD Showcase */
   #tld-tabs { gap: 5px; }
   .tld-tab { padding: 8px 12px; font-size: 12px; flex: 1 1 auto; min-width: 110px; }
-  .tld-category-content { padding: 16px; }
+  .tld-category-content { padding: 15px; }
+  .tld-category-content h3 { font-size: 16px; margin-bottom: 10px; }
+  .tld-category-content h4 { font-size: 14px; margin-top: 12px; }
   .tld-list { gap: 6px; }
-  .tld-badge { font-size: 12px; padding: 5px 10px; }
+  .tld-badge { font-size: 11px; padding: 5px 10px; }
   #tld-showcase-header h2 { font-size: 13px; }
+  #tld-showcase { max-height: 280px; }
+
+  /* Header */
+  #header { padding: 8px 10px; }
+  #header .info h1 { font-size: 16px; }
+  #scout-avatar { width: 50px; }
+
+  /* Domain cards */
+  .domain-card { padding: 10px; }
+
+  /* Quick chips */
+  .chip { padding: 6px 10px; font-size: 11px; }
+
+  /* Chat bubbles */
+  .bubble { font-size: 13px; padding: 9px 12px; }
+
+  /* Input row */
+  #input-row { padding: 8px 10px; }
+  #user-input { font-size: 13px; padding: 9px 14px; }
+
+  /* Footer */
+  #site-footer { padding: 12px 10px; margin-top: 20px; }
+  #site-footer p { font-size: 11px; margin: 4px 0; line-height: 1.4; }
+  #site-footer a { font-size: 11px; }
+
+  /* FAQ button */
+  #faq-btn-wrap button { padding: 7px 13px; font-size: 12px; }
 }
 
 /* FAQ BUTTON */
@@ -2411,7 +2441,7 @@ What are you looking for? 🐕`);
   </div>
 </div>
 
-<div style="text-align: center; padding: 20px; background: #1B2A4A; color: white; margin-top: 40px; border-top: 3px solid #E87722;">
+<div id="site-footer" style="text-align: center; padding: 20px; background: #1B2A4A; color: white; margin-top: 40px; border-top: 3px solid #E87722;">
   <p style="margin: 0 0 10px 0; font-size: 14px;">
     🔒 <strong>Your Privacy Protected</strong><br>
     No data collected • Client-side only • Secure
@@ -2423,3 +2453,4 @@ What are you looking for? 🐕`);
 </div>
 </body>
 </html>
+
