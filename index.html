@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -280,13 +281,16 @@ body {
     line-height: 1.4;
   }
   #tld-showcase {
-    padding: 8px !important;
+    padding: 8px 8px 8px 8px !important;
     margin: 10px 0 !important;
+    margin-bottom: 10px !important;
   }
 
   /* Remove excessive padding from TLD showcase wrapper on mobile */
   #tld-content {
     padding: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* Tighter tab container */
@@ -298,6 +302,18 @@ body {
   /* Remove extra space around category content */
   .tld-category-content {
     margin: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Remove bottom margin from last child inside category content */
+  .tld-category-content > div:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Tighten links/buttons at bottom of TLD section */
+  .tld-category-content a {
+    margin-bottom: 5px !important;
   }
 
   /* Footer compact additions */
