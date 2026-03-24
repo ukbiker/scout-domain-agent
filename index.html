@@ -316,6 +316,20 @@ body {
     margin-bottom: 5px !important;
   }
 
+  /* Reduce CTA section padding on mobile */
+  .tld-cta-section {
+    margin-top: 10px !important;
+    padding: 8px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Tighten spacing in CTA buttons */
+  .tld-cta-section a {
+    padding: 8px 16px !important;
+    margin: 3px !important;
+    font-size: 12px !important;
+  }
+
   /* Footer compact additions */
   footer > div {
     gap: 4px !important;
@@ -2280,7 +2294,7 @@ function showTLDCategory(category, tabEl) {
       cat.tlds.forEach(tld => { allHTML += `<span class="tld-badge">${tld}</span>`; });
       allHTML += '</div>';
     });
-    allHTML += '<div style="margin-top:24px;padding:16px;background:#FFF8F0;border-radius:8px;text-align:center;">';
+    allHTML += '<div class="tld-cta-section" style="margin-top:24px;padding:16px;background:#FFF8F0;border-radius:8px;text-align:center;">';
     allHTML += '<p style="font-weight:bold;color:#1B2A4A;margin-bottom:10px;">🚨 GET YOUR NAME BEFORE SOMEONE ELSE DOES!</p>';
     allHTML += '<a href="https://freename.io" target="_blank" rel="noopener" style="display:inline-block;background:#E87722;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin:6px;">Mint on Freename →</a>';
     allHTML += '<a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener" style="display:inline-block;background:#1B2A4A;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin:6px;">Learn About Web3 TLDs →</a>';
@@ -2303,7 +2317,7 @@ function showTLDCategory(category, tabEl) {
     html += '<ul style="color:#1B2A4A;font-size:13px;line-height:1.8;list-style:none;padding:0;">';
     cat.examples.forEach(ex => { html += `<li>• <strong>${ex}</strong></li>`; });
     html += '</ul>';
-    html += '<div style="margin-top:20px;padding:14px;background:#FFF8F0;border-radius:8px;text-align:center;">';
+    html += '<div class="tld-cta-section" style="margin-top:20px;padding:14px;background:#FFF8F0;border-radius:8px;text-align:center;">';
     html += '<p style="font-weight:bold;color:#1B2A4A;margin-bottom:10px;">🚨 Claim YOUR identity now!</p>';
     html += '<a href="https://freename.io" target="_blank" rel="noopener" style="display:inline-block;background:#E87722;color:white;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold;">Mint on Freename →</a>';
     html += '</div></div>';
