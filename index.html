@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -624,13 +623,13 @@ body {
     <div id="featured-domain-price" style="font-size: 20px; font-weight: bold; color: #FFD700; margin-bottom: 14px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
     <button onclick="showFeaturedDomain()" style="background: white; color: #1B2A4A; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;">Learn More 🐕</button>
     <div style="margin-top:14px;padding:10px 14px;background:rgba(255,255,255,0.12);border-radius:8px;">
-      <p style="color:white;margin:0;font-size:12px;">💎 Want a custom domain on OUR TLD? <a href="#" onclick="scrollToTLDs();return false;" style="color:#FFD700;font-weight:bold;text-decoration:underline;">Explore our 33 owned TLDs →</a></p>
+      <p style="color:white;margin:0;font-size:12px;">💎 Want a custom domain on OUR TLD? <a href="#" onclick="scrollToTLDs();return false;" style="color:#FFD700;font-weight:bold;text-decoration:underline;">Explore our 39 owned TLDs →</a></p>
     </div>
   </div>
 </div>
 
 <div id="chips">
-  <button class="chip" style="background:#1B2A4A;color:white;border-color:#1B2A4A;font-weight:700;" onclick="scrollToTLDs()">🏆 Explore Our 33 TLDs</button>
+  <button class="chip" style="background:#1B2A4A;color:white;border-color:#1B2A4A;font-weight:700;" onclick="scrollToTLDs()">🏆 Explore Our 39 TLDs</button>
   <button class="chip" onclick="chip('Show me Robotics domains')">🤖 Robotics</button>
   <button class="chip" onclick="chip('Show me RWA domains')">🏠 RWA</button>
   <button class="chip" onclick="chip('Show me Aviation domains')">✈️ Aviation</button>
@@ -654,7 +653,7 @@ body {
 <!-- TLD SHOWCASE -->
 <div id="tld-showcase">
   <div id="tld-showcase-header" onclick="toggleTLDShowcase()" role="button" aria-expanded="true" aria-controls="tld-showcase-body">
-    <h2>🏆 DOMAIN TERRIER'S 33 WEB3 TLDs — Get YOUR custom domain minted on blockchain!</h2>
+    <h2>🏆 DOMAIN TERRIER'S 39 WEB3 TLDs — Get YOUR custom domain minted on blockchain!</h2>
     <span id="tld-toggle-arrow" style="transform:rotate(90deg)">▶</span>
   </div>
   <div id="tld-showcase-body" class="open">
@@ -667,6 +666,8 @@ body {
       <button class="tld-tab" onclick="showTLDCategory('innovation')">🎯 Innovation</button>
       <button class="tld-tab" onclick="showTLDCategory('sports')">✊ Sports</button>
       <button class="tld-tab" onclick="showTLDCategory('travel')">🌐 Travel</button>
+      <button class="tld-tab" onclick="showTLDCategory('agentic')">🤖 AI/Agentic</button>
+      <button class="tld-tab" onclick="showTLDCategory('localbusiness')">🏪 Local Business</button>
       <button class="tld-tab" onclick="showTLDCategory('all')">📋 All TLDs</button>
     </div>
     <!-- Tab Content Area -->
@@ -680,7 +681,14 @@ body {
 // ============================================================
 const DOMAINS = [
   {name:"AFineTea.com",category:"Specialty/Niche",tier:"Affordable",price:"$2,495",tagline:"",desc:"A refined domain for specialty tea businesses, subscription boxes, or premium retail. Evokes quality and discernment in every cup."},
-  {name:"AgenticWhois.com",category:"AI/Tech Services",tier:"Quality",price:"$4,995",tagline:"Agents You Can Trust",desc:"AI-powered domain intelligence and WHOIS lookup service. Positions trust and transparency at the heart of the agentic web."},
+  {name:"AgenticWhois.com",category:"AI/Tech Services",tier:"Quality",price:"Make Offer",tagline:"Agents You Can Trust",desc:"Premium bundle! Includes BOTH AgenticWhois.com domain AND the .agenticwhois TLD extension. AI-powered WHOIS and agent identity verification platform. Live lander at agenticwhois.com. Email info@domainterrier.com for serious offers.",special:"bundled_with_tld"},
+  {name:"AgentGaffer.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"AI Done Proper",desc:"British-inspired agentic domain combining 'agent' with 'gaffer' (boss/chief). Perfect for AI management platforms, agent orchestration tools, or leadership-focused AI solutions."},
+  {name:"AgenticGaffer.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"AI Done Proper",desc:"British-inspired agentic domain. The 'gaffer' is the boss who gets things done. Perfect for AI management platforms, agent orchestration, or enterprise AI leadership tools."},
+  {name:"AgentMuster.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"Draft, Detail, Deploy",desc:"Military-inspired agentic domain. 'Muster' means to assemble or gather forces. Perfect for AI agent deployment platforms, team coordination tools, or multi-agent orchestration systems."},
+  {name:"AgentMuster.org",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"Draft, Detail, Deploy",desc:"Military-inspired .org domain for AI agent coordination. Ideal for open-source agent projects, AI research initiatives, or community-driven agent development platforms."},
+  {name:"AgenticMuster.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"Draft, Detail, Deploy",desc:"Agentic variation of AgentMuster. Military precision meets AI coordination. Perfect for enterprise agent deployment, multi-agent task forces, or AI team management platforms."},
+  {name:"AgentSitrep.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"Signal, Not Noise",desc:"Military 'situation report' meets AI agents. Perfect for AI monitoring dashboards, agent status reporting, real-time intelligence platforms, or AI observability tools."},
+  {name:"AgenticSitrep.com",category:"AI/Tech Services",tier:"Quality",price:"POA",tagline:"Signal, Not Noise",desc:"Agentic situation reporting. Cut through the noise with clear AI insights. Ideal for agent monitoring, AI analytics platforms, or enterprise observability solutions."},
   {name:"AgriRWA.com",category:"RWA",tier:"Quality",price:"$5,495",tagline:"",desc:"Positions agricultural land and commodity assets for blockchain tokenization. Bridges traditional farming with DeFi investment."},
   {name:"AgriRWA.io",category:"RWA",tier:"Quality",price:"$4,495",tagline:"",desc:"Companion .io domain for agricultural asset tokenization platforms. The .io extension signals tech-forward blockchain infrastructure."},
   {name:"ARSpex.com",category:"AR/VR/XR",tier:"Quality",price:"$5,295",tagline:"",desc:"Sharp, memorable domain for AR eyewear and smart glasses brands. Combines AR tech with 'specs' for instant category recognition."},
@@ -817,6 +825,9 @@ const DOMAINS = [
   {name:"TangibleTimes.com",category:"Retro",tier:"Quality",price:"$3,995",tagline:"When Media Was Real",desc:"Nostalgic media domain for analog journalism, physical publications, and retro media culture celebrating tangible, printed formats."},
   {name:"TeaAffinity.com",category:"Specialty/Niche",tier:"Affordable",price:"$2,888",tagline:"Discover Your Tea Affinity",desc:"Personality-driven tea discovery domain for subscription services, tea matching platforms, or premium tea retail celebrating personal tea journeys."},
   {name:"TechnologyWatch.org",category:"Specialty/Niche",tier:"Affordable",price:"$2,995",tagline:"",desc:"Industry monitoring domain for emerging technology news, regulatory tracking, and sector analysis. Ideal for think tanks, researchers, or tech journalists."},
+  {name:"snafu.com",category:"Specialty/Niche",tier:"Premium",price:"POA",tagline:"Situation Normal: All Fouled Up",desc:"Legendary military acronym. Part of the 'Fouled-Up Trilogy' with tarfu.com and fugazi.com. Iconic, memorable, versatile. Perfect for problem-solving platforms, tech troubleshooting, or edgy brand positioning."},
+  {name:"tarfu.com",category:"Specialty/Niche",tier:"Premium",price:"POA",tagline:"Things Are Really Fouled Up",desc:"Military acronym, part of the Fouled-Up Trilogy. When SNAFU isn't strong enough. Perfect for crisis management platforms, incident response tools, or bold tech brands."},
+  {name:"fugazi.com",category:"Specialty/Niche",tier:"Premium",price:"POA",tagline:"Fouled Up, Got Ambushed, Zipped In",desc:"Military slang meaning 'fake' or 'messed up.' Part of the Fouled-Up Trilogy. Cultural resonance from Vietnam War era. Perfect for authenticity verification platforms, fraud detection, or countercultural brands."},
   {name:"TekSpex.com",category:"AR/VR/XR",tier:"Quality",price:"$4,995",tagline:"",desc:"Tech spectacles domain for smart eyewear, augmented reality glasses, and wearable display technology. Modern, punchy, and highly brandable."},
   {name:"Trustless.pw",category:"Web3 Concepts",tier:"Quality",price:"$5,995",tagline:"",desc:"Foundational Web3 domain for trustless protocols, permissionless smart contracts, and decentralized systems requiring no central authority."},
   {name:"UBXInstruments.com",category:"Telemetry/Instruments",tier:"Quality",price:"$4,995",tagline:"",desc:"Precision instruments domain for UBX GPS and sensor technology platforms, measurement equipment manufacturers, and navigation tool developers."},
@@ -840,6 +851,7 @@ const DOMAINS = [
   {name:"MetaverseRealms.com",category:"Metaverse/Virtual Worlds",tier:"Brandable",price:"POA",tagline:"Infinite Worlds. One Metaverse.",desc:"Premium metaverse domain for a multi-world virtual platform, immersive gaming ecosystem, or cross-world metaverse infrastructure."},
   {name:"StellarTLD.com",category:"Domain Services",tier:"Brandable",price:"POA",tagline:"",desc:"Premium TLD registry and namespace marketplace domain. Stellar positioning for a top-level domain advisory service in the Web3 domain economy."},
   {name:"TacticalTLDs.com",category:"Domain Services",tier:"Brandable",price:"POA",tagline:"",desc:"Strategic namespace domain for TLD investment advisors, domain portfolio managers, and Web3 registrar platforms with a tactical, precision-first approach."},
+  {name:"AltTLDs.com",category:"Domain Services",tier:"Quality",price:"POA",tagline:"Alternative TLD Marketplace",desc:"Perfect for alternative TLD registrars, domain marketplaces, or Web3 TLD platforms. Direct, descriptive, industry-specific. Ideal for businesses focused on non-.com extensions."},
   {name:"VirtualSpace.art",category:"Metaverse/Virtual Worlds",tier:"Affordable",price:"POA",tagline:"",desc:"Creative metaverse domain blending art and virtual environments. Ideal for digital art installations, immersive gallery experiences, and virtual creative spaces."},
   {name:"VirtualWorlds.art",category:"Metaverse/Virtual Worlds",tier:"Affordable",price:"POA",tagline:"",desc:"Artistic virtual worlds domain for creative metaverse platforms, digital storytelling environments, and immersive art experiences."},
   {name:"Airdropcourier.com",category:"Aviation",tier:"Quality",price:"$3,495",tagline:"",desc:"Dual-meaning domain combining airdrop delivery logistics with crypto airdrop distribution. Perfect for drone delivery or Web3 token distribution platforms."},
@@ -1072,6 +1084,13 @@ const CATEGORY_MAP = {
   'ai tech':         'AI/Tech Services',
   'tech tools':      'AI/Tech Services',
   'technology serv': 'AI/Tech Services',
+  // Local Business
+  'local business':  'Specialty/Niche',
+  'small business':  'Specialty/Niche',
+  'neighborhood':    'Specialty/Niche',
+  'community store': 'Specialty/Niche',
+  'grocery':         'Specialty/Niche',
+  'grocery store':   'Specialty/Niche',
 };
 
 // ============================================================
@@ -1196,7 +1215,7 @@ A <strong>TLD (Top-Level Domain)</strong> is the ending of a domain name — the
 • <strong>.com</strong> = Most trusted, highest value<br>
 • <strong>.io</strong> = Great for tech startups<br>
 • <strong>Web3 TLDs</strong> = Blockchain ownership, crypto-friendly, future-focused<br><br>
-Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 33 TLDs! 🚀`,
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 39 TLDs! 🚀`,
 
   pricing: `<strong>How is domain pricing determined?</strong><br><br>
 Domains in this portfolio are priced based on:<br><br>
@@ -1520,11 +1539,11 @@ function generateResponse(input) {
     return `👋 Woof! I'm Scout, your AI domain expert! 🐕<br><br>
 I can help you:<br>
 • Browse around 300 investment-grade Web2 domains<br>
-• Explore our 33 owned Web3 TLDs<br>
+• Explore our 39 owned Web3 TLDs<br>
 • Find domains by category (Robotics, RWA, Aviation, AI/Tech...)<br>
 • Learn about custom domain minting on blockchain<br>
 • Compare options and learn about domain investing<br><br>
-💎 <strong>Domain Terrier owns 33 Web3 TLDs!</strong><br>
+💎 <strong>Domain Terrier owns 39 Web3 TLDs!</strong><br>
 Want YourName.<strong>filipino</strong> or YourBrand.<strong>aviator</strong>? We can help you mint it!<br><br>
 What are you looking for? Try:<br>
 • <em>'Show me Robotics domains'</em><br>
@@ -1732,10 +1751,28 @@ Claude is great for:<br>
 What domain questions can I answer? 🐕`;
   }
 
+  // Fix 11b: Local Business query — show .groceryshop TLD and Local Business showcase tab
+  if (/local business|small business|domains? for.*(?:my |a |the )?shop|i run a.*shop|neighborhood business|community store|grocery store domain|groceryshop/i.test(q)) {
+    const tabBtn = document.querySelector(`.tld-tab[onclick="showTLDCategory('localbusiness')"]`);
+    showTLDCategory('localbusiness', tabBtn);
+    document.getElementById('tld-showcase').scrollIntoView({behavior:'smooth', block:'start'});
+    return `🏪 <strong>Local Business Domains</strong><br>
+🐕 Woof! Great news — we have a TLD made for exactly this!<br><br>
+<strong>Domain Terrier owns the <span style="color:#E87722;">.groceryshop</span> TLD!</strong><br><br>
+Mint YOUR custom domain on it:<br>
+• <strong>fresh.groceryshop</strong><br>
+• <strong>corner.groceryshop</strong><br>
+• <strong>organic.groceryshop</strong><br>
+• <strong>YourName.groceryshop</strong><br><br>
+<strong>Perfect for:</strong> Local grocery stores, neighborhood shops, community businesses, small retail stores, and family-owned businesses.<br><br>
+🔗 Mint at <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br>
+👇 Local Business tab in the TLD Showcase below! 🐕${tldUrgency()}`;
+  }
+
   // Fix 12: Business recommendation — detect in-scope vs out-of-scope business type
   const bizTriggerRe = /(?:i want to|i'?m|i am)\s+(?:open(?:ing)?|start(?:ing)?|launch(?:ing)?|build(?:ing)?|creat(?:ing)?|setting up)\s|recommend.*domain|suggest.*domain|domain.*for.*(?:my |a |an )|what domain.*for/i;
   if (bizTriggerRe.test(q)) {
-    const outOfScopeRe = /coffee\s*shop|café|cafe|bakery|restaurant|bar\b|pub\b|pizza|food truck|clothing store|fashion|boutique|hair salon|barber|gym\b|fitness studio|yoga|pilates|real estate agent|mortgage broker|plumber|electrician|accountant|accounting firm|law firm|lawyer|dentist|dental clinic|doctor|medical clinic|veterinarian|\bvet\b|travel agent|hotel\b|tourism|grocery|florist|pet shop|retail store/i;
+    const outOfScopeRe = /coffee\s*shop|café|cafe|bakery|restaurant|bar\b|pub\b|pizza|food truck|clothing store|fashion|boutique|hair salon|barber|gym\b|fitness studio|yoga|pilates|real estate agent|mortgage broker|plumber|electrician|accountant|accounting firm|law firm|lawyer|dentist|dental clinic|doctor|medical clinic|veterinarian|\bvet\b|travel agent|hotel\b|tourism|florist|pet shop|retail store/i;
     if (outOfScopeRe.test(q)) {
       return `🐕 Woof! I specialize in domains for:<br>
 • Robotics &amp; Autonomous Systems<br>
@@ -1802,14 +1839,16 @@ All transactions are secure and processed through the registrar — safe and sim
   // TLD-1: Show TLD portfolio / showcase
   if (/show.*(?:your|our|the)\s+tlds?|what tlds?.*(?:you|do you|do you own|own)|your tld portfolio|list.*tlds?|tell me about.*tlds?|tld.*portfolio|tlds? you own/i.test(q)) {
     scrollToTLDs();
-    return `🏆 <strong>Domain Terrier owns 33 Web3 TLDs!</strong><br><br>
+    return `🏆 <strong>Domain Terrier owns 39 Web3 TLDs!</strong><br><br>
 🌍 <strong>Geographic &amp; Cultural (8):</strong> .filipino .balikbayan .kababayan .caribbeanislands .britishisles .southeastasia .pacificislands .fareast<br><br>
 ✈️ <strong>Aviation &amp; Space (4):</strong> .aviator .flightschool .flightsim .spacetech<br><br>
-🌱 <strong>Lifestyle &amp; Passion (11):</strong> .naturelover .foodieworld .bibliophile .cinephile .technophile .dreambuilder .thrillseeker .speedfreak .trailfinder .mindcoach .fittest<br><br>
+🌱 <strong>Lifestyle &amp; Passion (12):</strong> .naturelover .foodieworld .bibliophile .cinephile .technophile .dreambuilder .thrillseeker .speedfreak .trailfinder .mindcoach .fittest .retrophile<br><br>
 💰 <strong>Crypto (2):</strong> .cryptohunter .cryptonian<br><br>
 🎯 <strong>Innovation (3):</strong> .innovator .codebreaker .bonkers<br><br>
-✊ <strong>Combat &amp; Sports (2):</strong> .combatsport .fightfightfight<br><br>
+✊ <strong>Combat &amp; Sports (3):</strong> .combatsport .fightfightfight .sportif<br><br>
 🌐 <strong>Travel (2):</strong> .travelphile .travelhacker<br><br>
+🤖 <strong>AI / Agentic (4):</strong> .agenticcloud .agentix .simulant .agenticwhois<br><br>
+🏪 <strong>Local Business (1):</strong> .groceryshop<br><br>
 👇 <strong>See the TLD Showcase below</strong> to explore each category and mint your own! 🐕${tldUrgency()}`;
   }
 
@@ -1825,12 +1864,13 @@ All transactions are secure and processed through the registrar — safe and sim
       const activeTabBtn = document.querySelector(`.tld-tab[onclick="showTLDCategory('${foundKey}')"]`);
       showTLDCategory(foundKey, activeTabBtn);
       document.getElementById('tld-showcase').scrollIntoView({behavior:'smooth', block:'start'});
+      const forSaleNote = TLD_FOR_SALE.includes(tldName) ? `<br><br>🏷️ <strong>This TLD is available for purchase!</strong> Interested in acquiring <strong>${tldName}</strong>? Contact Colin: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>` : '';
       return `🏷️ <strong>${tldName}</strong> is one of Domain Terrier's Web3 TLDs!<br><br>
 <strong>Category:</strong> ${foundCat.icon} ${foundCat.title}<br><br>
 ${foundCat.description}<br><br>
 <strong>Perfect for:</strong> ${foundCat.perfect_for.join(', ')}<br><br>
 <strong>Example domains:</strong><br>
-${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}<br><br>
+${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}${forSaleNote}<br><br>
 🔗 Mint yours at <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br>
 👇 TLD Showcase below has been updated to show this category! 🐕${tldUrgency()}`;
     }
@@ -1851,12 +1891,13 @@ ${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}<br><br>
       // Also show any matching Web2 domains from portfolio
       const web2Matches = searchDomains({keyword: bareMatch}).slice(0, 4);
       const web2Block = web2Matches.length ? `<br><strong>Related Web2 domains in our portfolio:</strong><br>${renderCards(web2Matches)}` : '';
+      const forSaleNote2b = TLD_FOR_SALE.includes('.' + bareMatch) ? `<br><br>🏷️ <strong>This TLD is available for purchase!</strong> Interested in acquiring <strong>.${bareMatch}</strong>? Contact Colin: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>` : '';
       return `🏷️ <strong>.${bareMatch}</strong> is one of Domain Terrier's owned Web3 TLDs!<br><br>
 <strong>Category:</strong> ${foundCat.icon} ${foundCat.title}<br><br>
 ${foundCat.description}<br><br>
 <strong>Perfect for:</strong> ${foundCat.perfect_for.join(', ')}<br><br>
 <strong>Example domains you could mint:</strong><br>
-${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}${web2Block}<br><br>
+${foundCat.examples.map(e => `• <strong>${e}</strong>`).join('<br>')}${forSaleNote2b}${web2Block}<br><br>
 🔗 Mint <strong>.${bareMatch}</strong> at <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a><br>
 👇 TLD Showcase updated below! 🐕${tldUrgency()}`;
     }
@@ -1903,17 +1944,17 @@ A Web3 TLD is a blockchain-based domain extension that you OWN as an NFT!<br><br
 • Yours forever<br>
 • True ownership<br>
 • Unlimited subdomains!<br><br>
-<strong>Domain Terrier owns 33 Web3 TLDs!</strong><br><br>
+<strong>Domain Terrier owns 39 Web3 TLDs!</strong><br><br>
 This means:<br>
 ✓ You can mint YOUR custom domain<br>
 ✓ On OUR TLD extensions<br>
 ✓ Own it forever on blockchain<br>
 ✓ Use for Web3 identity, crypto wallets, websites<br><br>
-<strong>Our 33 TLDs include:</strong><br>
+<strong>Our 39 TLDs include:</strong><br>
 🌍 Geographic: .filipino .balikbayan .kababayan<br>
 ✈️ Aviation: .aviator .flightschool<br>
-🎯 Innovation: .innovator .dreambuilder<br>
-+ 24 more!<br><br>
+🤖 AI/Agentic: .agenticcloud .agentix .simulant<br>
++ 30 more!<br><br>
 📚 <a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener">Learn more about Web3 TLDs</a><br>
 🔗 <a href="https://freename.io" target="_blank" rel="noopener">Mint yours at freename.io</a><br>
 📧 Questions: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>${tldUrgency()}`;
@@ -1959,6 +2000,18 @@ What domain question can I help with? 🐕`;
 
   if (intent.type === 'domain') {
     const d = intent.domain;
+    if (d.special === 'bundled_with_tld') {
+      return `💎 <strong>AgenticWhois.com — Premium Bundle</strong><br><br>
+This domain is available as a <strong>BUNDLE</strong> with the .agenticwhois TLD!<br><br>
+<strong>What you get:</strong><br>
+• <strong>AgenticWhois.com</strong> — the .com domain<br>
+• <strong>.agenticwhois</strong> — the entire TLD extension!<br><br>
+${d.tagline ? `<em>"${escHtml(d.tagline)}"</em><br><br>` : ''}
+AI-powered WHOIS and agent identity verification platform. Live lander at <a href="https://agenticwhois.com" target="_blank" rel="noopener">agenticwhois.com</a><br><br>
+<strong>Pricing:</strong> Make an Offer<br>
+<strong>Category:</strong> ${escHtml(d.category)}<br><br>
+📧 Serious offers: <a href="mailto:info@domainterrier.com">info@domainterrier.com</a>`;
+    }
     const p = priceNum(d.price);
     return `<strong>${escHtml(d.name)}</strong><br><br>
 ${d.tagline ? `<em>"${escHtml(d.tagline)}"</em><br><br>` : ''}
@@ -2212,9 +2265,9 @@ const TLD_CATEGORIES = {
     examples: ["topgun.aviator", "acme.flightschool", "venture.spacetech"]
   },
   lifestyle: {
-    title: "LIFESTYLE & PASSION (11 TLDs)",
+    title: "LIFESTYLE & PASSION (12 TLDs)",
     icon: "🌱",
-    tlds: [".naturelover", ".foodieworld", ".bibliophile", ".cinephile", ".technophile", ".dreambuilder", ".thrillseeker", ".speedfreak", ".trailfinder", ".mindcoach", ".fittest"],
+    tlds: [".naturelover", ".foodieworld", ".bibliophile", ".cinephile", ".technophile", ".dreambuilder", ".thrillseeker", ".speedfreak", ".trailfinder", ".mindcoach", ".fittest", ".retrophile"],
     description: "Personal brands, community building, and passion-driven identities.",
     perfect_for: ["Content creators", "Personal brands", "Hobby communities", "Lifestyle businesses", "Coaching services"],
     examples: ["chef.foodieworld", "reader.bibliophile", "coach.mindcoach"]
@@ -2236,12 +2289,12 @@ const TLD_CATEGORIES = {
     examples: ["startup.innovator", "hacker.codebreaker", "creative.bonkers"]
   },
   sports: {
-    title: "COMBAT & SPORTS (2 TLDs)",
+    title: "COMBAT & SPORTS (3 TLDs)",
     icon: "✊",
-    tlds: [".combatsport", ".fightfightfight"],
-    description: "For martial artists, fighters, gyms, and combat sports communities.",
-    perfect_for: ["Martial arts schools", "MMA fighters", "Combat sports gyms", "Fighting communities"],
-    examples: ["dojo.combatsport", "champion.fightfightfight"]
+    tlds: [".combatsport", ".fightfightfight", ".sportif"],
+    description: "For martial artists, fighters, gyms, combat sports communities, and sport lifestyle brands.",
+    perfect_for: ["Martial arts schools", "MMA fighters", "Combat sports gyms", "Fighting communities", "Sport lifestyle brands"],
+    examples: ["dojo.combatsport", "champion.fightfightfight", "club.sportif"]
   },
   travel: {
     title: "TRAVEL (2 TLDs)",
@@ -2250,8 +2303,27 @@ const TLD_CATEGORIES = {
     description: "For travel bloggers, digital nomads, and adventure seekers.",
     perfect_for: ["Travel bloggers", "Digital nomads", "Travel agencies", "Adventure communities"],
     examples: ["nomad.travelphile", "points.travelhacker"]
+  },
+  agentic: {
+    title: "AI / AGENTIC (4 TLDs)",
+    icon: "🤖",
+    tlds: [".agenticcloud", ".agentix", ".simulant", ".agenticwhois"],
+    description: "For AI agents, agentic platforms, simulation technology, and next-generation autonomous systems.",
+    perfect_for: ["AI agent platforms", "Agentic workflow tools", "Simulation companies", "AI SaaS brands", "Autonomous AI developers"],
+    examples: ["deploy.agenticcloud", "run.agentix", "physics.simulant"]
+  },
+  localbusiness: {
+    title: "LOCAL BUSINESS (1 TLD)",
+    icon: "🏪",
+    tlds: [".groceryshop"],
+    description: "Perfect for local shops, neighborhood businesses, and community stores.",
+    perfect_for: ["Local grocery stores", "Neighborhood shops", "Community businesses", "Small retail stores", "Family-owned businesses"],
+    examples: ["fresh.groceryshop", "corner.groceryshop", "organic.groceryshop"]
   }
 };
+
+// TLDs available for purchase (show "For Sale" badge in showcase)
+const TLD_FOR_SALE = ['.agenticwhois', '.sportif'];
 
 // ============================================================
 // TLD SHOWCASE FUNCTIONS
@@ -2286,12 +2358,12 @@ function showTLDCategory(category, tabEl) {
 
   if (category === 'all') {
     let allHTML = '<div class="tld-category-content">';
-    allHTML += '<h3 style="color:#1B2A4A;margin-bottom:20px;">📋 All 33 TLDs</h3>';
+    allHTML += '<h3 style="color:#1B2A4A;margin-bottom:20px;">📋 All 39 TLDs</h3>';
     Object.keys(TLD_CATEGORIES).forEach(key => {
       const cat = TLD_CATEGORIES[key];
       allHTML += `<h4 style="color:#E87722;margin-top:20px;">${cat.icon} ${cat.title}</h4>`;
       allHTML += '<div class="tld-list">';
-      cat.tlds.forEach(tld => { allHTML += `<span class="tld-badge">${tld}</span>`; });
+      cat.tlds.forEach(tld => { allHTML += `<span class="tld-badge">${tld}</span>${TLD_FOR_SALE.includes(tld) ? ' <span style="font-size:11px;background:#E87722;color:white;padding:2px 6px;border-radius:4px;font-weight:700;">🏷️ TLD For Sale</span>' : ''}`; });
       allHTML += '</div>';
     });
     allHTML += '<div class="tld-cta-section" style="margin-top:24px;padding:16px;background:#FFF8F0;border-radius:8px;text-align:center;">';
@@ -2306,7 +2378,7 @@ function showTLDCategory(category, tabEl) {
     let html = '<div class="tld-category-content">';
     html += `<h3 style="color:#1B2A4A;margin-bottom:10px;">${cat.title}</h3>`;
     html += '<div class="tld-list">';
-    cat.tlds.forEach(tld => { html += `<span class="tld-badge">${tld}</span>`; });
+    cat.tlds.forEach(tld => { html += `<span class="tld-badge">${tld}</span>${TLD_FOR_SALE.includes(tld) ? ' <span style="font-size:11px;background:#E87722;color:white;padding:2px 6px;border-radius:4px;font-weight:700;">🏷️ TLD For Sale</span>' : ''}`; });
     html += '</div>';
     html += `<p style="color:#555;font-size:13px;margin:14px 0;line-height:1.6;">${cat.description}</p>`;
     html += '<h4 style="color:#E87722;margin-top:16px;margin-bottom:6px;">Perfect for:</h4>';
@@ -2368,7 +2440,7 @@ A short, memorable .com in a high-growth sector = maximum value!`
 • .com = Most trusted, highest value<br>
 • .io = Great for tech startups<br>
 • Web3 TLDs = Blockchain ownership<br><br>
-Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 33 TLDs!`
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> PLUS <strong>355 Web3 domains</strong> across 39 TLDs!`
   },
   {
     q: 'What is Lease-to-Own (LTO)?',
@@ -2410,28 +2482,32 @@ Choose based on your industry, budget, and brand positioning. <strong>.com is ki
 • Cannot be censored or taken down<br>
 • Link to crypto wallets, serve as digital identity<br>
 • Peer-to-peer — no central authority<br><br>
-Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> AND <strong>355 Web3 domains</strong> across 33 TLDs! 🚀`
+Domain Terrier has <strong>around 300 investment-grade Web2 domains</strong> AND <strong>355 Web3 domains</strong> across 39 TLDs! 🚀`
   },
   {
     q: 'What TLDs does Domain Terrier own?',
-    a: `🏆 We own <strong>33 Web3 TLDs</strong> across 7 categories:<br><br>
+    a: `🏆 We own <strong>39 Web3 TLDs</strong> across 9 categories:<br><br>
 🌍 <strong>GEOGRAPHIC &amp; CULTURAL (8):</strong><br>
 .filipino | .balikbayan | .kababayan | .caribbeanislands<br>
 .britishisles | .southeastasia | .pacificislands | .fareast<br><br>
 ✈️ <strong>AVIATION &amp; SPACE (4):</strong><br>
 .aviator | .flightschool | .flightsim | .spacetech<br><br>
-🌱 <strong>LIFESTYLE &amp; PASSION (11):</strong><br>
+🌱 <strong>LIFESTYLE &amp; PASSION (12):</strong><br>
 .naturelover | .foodieworld | .bibliophile | .cinephile<br>
 .technophile | .dreambuilder | .thrillseeker | .speedfreak<br>
-.trailfinder | .mindcoach | .fittest<br><br>
+.trailfinder | .mindcoach | .fittest | .retrophile<br><br>
 💰 <strong>CRYPTO (2):</strong><br>
 .cryptohunter | .cryptonian<br><br>
 🎯 <strong>INNOVATION (3):</strong><br>
 .innovator | .codebreaker | .bonkers<br><br>
-✊ <strong>COMBAT &amp; SPORTS (2):</strong><br>
-.combatsport | .fightfightfight<br><br>
+✊ <strong>COMBAT &amp; SPORTS (3):</strong><br>
+.combatsport | .fightfightfight | .sportif<br><br>
 🌐 <strong>TRAVEL (2):</strong><br>
 .travelphile | .travelhacker<br><br>
+🤖 <strong>AI / AGENTIC (4):</strong><br>
+.agenticcloud | .agentix | .simulant | .agenticwhois<br><br>
+🏪 <strong>LOCAL BUSINESS (1):</strong><br>
+.groceryshop<br><br>
 Want YOUR custom domain? Visit: <a href="https://freename.io" target="_blank" rel="noopener">freename.io</a>`
   },
   {
@@ -2448,7 +2524,7 @@ Want YOUR custom domain? Visit: <a href="https://freename.io" target="_blank" re
 • Yours forever<br>
 • True ownership<br>
 • Unlimited subdomains!<br><br>
-<strong>Domain Terrier owns 33 Web3 TLDs</strong> — mint your custom domain on any of them!<br><br>
+<strong>Domain Terrier owns 39 Web3 TLDs</strong> — mint your custom domain on any of them!<br><br>
 📚 <a href="https://freename.com/blog/what-is-a-web3-tld" target="_blank" rel="noopener">Learn more</a> | 🔗 <a href="https://freename.io" target="_blank" rel="noopener">Mint yours at freename.io</a>`
   },
   {
@@ -2545,7 +2621,7 @@ Domain Terrier offers:<br><br>
 • Around 300 investment-grade .com/.io/.xyz domains<br>
 • Robotics, Aviation, RWA, AI/Tech, Korean Beauty, Wearables<br><br>
 <strong>WEB3 TLDs (WE OWN THEM!):</strong><br>
-• 33 Web3 TLD extensions via Freename<br>
+• 39 Web3 TLD extensions via Freename<br>
 • Custom domain minting available<br>
 • Get YOUR name on our TLD!<br><br>
 🚨 Want YourName.filipino or YourBrand.aviator?<br>
@@ -2577,5 +2653,6 @@ What are you looking for? 🐕`);
     Trusted Partners: Atom • Dynadot • Freename • Unstoppable Domains
   </p>
 </div>
+<script defer src="https://cdn.vercel-analytics.com/v1/script.js"></script>
 </body>
 </html>
